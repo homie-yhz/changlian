@@ -1,0 +1,218 @@
+/*parent*/
+.v-f{
+    display:-webkit-box;/* android 2.1-3.0, ios 3.2-4.3 */
+    display:-webkit-flex;/* Chrome 21+ */
+    display:-ms-flexbox;/* WP IE 10 */
+    display:flex;/* android 4.4 */
+  }
+  /*level*/
+  .v-fc{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-pack: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-justify-content: center;/* Chrome 21+ */
+    -ms-flex-pack: center;/* WP IE 10 */
+    justify-content: center;/* android 4.4 */
+  }
+  /*vertical*/
+  .v-fm{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-align-items: center;/* Chrome 21+ */
+    -ms-flex-align: center;/* WP IE 10 */
+    align-items: center;/* android 4.4 */
+  }
+  .v-fb{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-pack: justify;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-justify-content: space-between;/* Chrome 21+ */
+    -ms-flex-pack: justify;/* WP IE 10 */
+    justify-content: space-between;/* android 4.4 */
+  }
+  .v-fw{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+  }
+  .v-fcm{
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-pack: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-justify-content: center;/* Chrome 21+ */
+    -ms-flex-pack: center;/* WP IE 10 */
+    justify-content: center;/* android 4.4 */
+    -webkit-box-align: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-align-items: center;/* Chrome 21+ */
+    -ms-flex-align: center;/* WP IE 10 */
+    align-items: center;/* android 4.4 */
+  }
+  /*child*/
+  .v-i1{
+    -webkit-box-flex:1;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-flex:1;/* Chrome 21+ */
+    -ms-flex:1;/* WP IE 10 */
+    flex:1;/* android 4.4 */
+  }
+  
+  .left{float:left;}
+  .right{float:right;}
+  .por{position: relative;}
+  .pos{position: absolute;}
+  .ofh{overflow: hidden;}
+  .ofs{overflow:scroll;}
+  .tac{ text-align: center;}
+  .d-t{display:table;}
+  .d-tc{display:table-cell;}
+  .d-tcm{display:table-cell;vertical-align:middle;}
+  .poa{position: absolute;}
+  .right-bottom-0{right:0;bottom:0;}
+  .dt{display:table;}
+  .db{display: block;}
+  .dn{display:none;}
+  
+  .vm{vertical-align: middle;}
+  
+  .lh-init{line-height:initial; }
+  
+  .z-1{z-index:1}
+  .z-2{z-index:2}
+  .z-3{z-index:3}
+  .z-4{z-index:4}
+  .z-5{z-index:5}
+  .z-6{z-index:6}
+  .z-7{z-index:7}
+  .z-8{z-index:8}
+  .z-9{z-index:9}
+  .z-10{z-index:10}
+  
+  /*width height*/
+  .wh-100{  width:100%;  height:100%;  }
+  .w-100{width: 100%;}
+  .h-100{height:100%;}
+  .h-20{
+    height:2rem;
+  }
+  /*color*/
+  .c-f{color:#fff;}
+  .c-1a{color:#1a1a1a;}
+  .c-333{color:#333;}
+  .c-8c{color:#8c8c8c;}
+  .c-9{color:#999;}
+  .c-7d{color:#7d7d7d;}    /*disable,disable-click*/
+  .c-42{color:#424242;}
+  .c-71{color:#717171;}
+  .c-ff{color:#FF7F2A;}
+  .c-ff6405{color:#ff6405;} /*泰康云彩公众号基础色*/
+  .c-7e{color:#7e4d2a;}
+  .c-f7{color:#F71616!important;}
+  .c-d9{color:#d92717;}
+  .c-06{color:#06558c;}
+  .bg-f{background-color:#fff;}
+  .bg-ee{background-color:#ee7800;}
+  .bg-ff{background-color:#FF7F2A!important;}
+  .bg-f2{background-color: #F2F2F2;}
+  .bg-b4{  background-color:#b4b4b4!important;}
+  .bg-a1{background-color:#a1a1a1;}
+  .bg-7d{background-color:#7d7d7d!important;}  /*disable,disable-click*/
+  .bg-ff6405{background-color:#ff6405;}
+  .bg-ff7f2a{background-color:#ff7f2a;}
+  .lh-15{line-height:1.5;}
+  .lh-20{line-height: 2.0;}
+  /*size*/
+  .pd-4{padding:.4rem .5rem;}
+  .fz-50{font-size:.5rem;}
+  .fz-55{font-size:.55rem;}
+  .fz-60{font-size:.60rem;}
+  .fz-65{font-size:.65rem;}
+  .fz-70{font-size:.70rem;}
+  .fz-75{font-size:.75rem;}
+  .fz-80{font-size:.80rem!important;}
+  .fz-85{font-size:.85rem;}
+  .fz-90{font-size:.90rem;}
+  .fz-100{font-size:1rem;}
+  .fz-120{font-size:1.2rem;}
+  .fz-130{font-size:1.3rem;}
+  .fz-200{font-size:2rem;}
+  .fw-b{font-weight: bold;}
+  .mb-5{margin-bottom:.5rem;}
+  .mb-7{margin-bottom:.7rem;}
+  .mb-10{margin-bottom:1rem;}
+  .mt-10{margin-top:1rem;}
+  .mt-5{margin-top:.5rem;}
+  .mt-40{margin-top:.4rem;}
+  .pd-5{padding:.5rem;}
+  .pd-box{padding:.5rem .4rem;}
+  .pdl-5{padding-left:.5rem;}
+  
+  .pdt-15{padding-top:1.5rem;}
+  .pdt-20{padding-top:2.0rem;}
+  .pdb-3{padding-bottom:3rem;}
+  .pdr-5{padding:.5rem 0;}
+  .pdr-10{padding:1rem 0;}
+  .pdc-4{padding:0 .4rem;}
+  .pdc-5{padding:0 .5rem;}
+  .pdc-10{padding:0 1rem;}
+  .mb-0{margin-bottom:0;}
+  .mt-0{margin-top:0;}
+  .mr-1{margin-right:.1rem;}
+  .mr-2{margin-right:.2rem;}
+  .mr-3{margin-right:.3rem;}
+  .m-auto{  margin:0 auto;}
+  
+  .t-0{top:0}
+  .l-0{left:0}
+  .b-0{bottom:0}
+  .r-0{right:0;}
+  /*换行*/
+  .line-break{
+    display:-webkit-box!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    /*-webkit-box-orient: vertical;*/
+    -webkit-line-clamp:2;
+  }
+  .bb-n{border-bottom:none!important;}
+  .line-vertical{height:3.5rem;border-left:1px solid #D8D8D8;width:1px;}
+  .line-pdr5{border-top:1px solid #EEEEEE;margin:0 .5rem;}
+  .line-pdr5-f{border-top:1px solid #fff;margin:0 .5rem;}
+  .line-row{border-top:1px solid #F1F1F1;margin:0!important;padding:0!important;}
+  .line-row-dc{border-top:1px solid #dcdcdc;margin:0!important;padding:0!important;}
+  .line-space{border-top:1px solid transparent;}
+  
+  
+  @media only screen and (min-width: 359px){
+    html {font-size:22.5px;}
+  }
+  @media only screen and (min-width: 374px){
+    html {font-size:23.4375px;}
+  }
+  @media only screen and (min-width: 399px){
+    html {font-size:25px;}
+  }
+  @media only screen and (min-width: 413px){
+    html {font-size:25.875px;}
+  }
+  @media only screen and (min-width: 479px){
+    html {font-size:30px;}
+  }
+  @media only screen and (min-width: 539px){
+    html {font-size:33.75px;}
+  }
+  html,body,#app{width:100%;height:100%;}
+  
+  
