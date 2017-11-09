@@ -4,6 +4,8 @@ import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
+// const main = r => require.ensure([],() => r(require('@/component/main.vue')),'News');
+
 export default new Router({
   routes: [
     {
