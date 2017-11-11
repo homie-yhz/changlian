@@ -1,5 +1,5 @@
 <template>
-  <div>IC卡绑定</div>
+  <div>IC卡绑定fdsafdsafdsafsda</div>
 </template>
 <script>
 export default {
