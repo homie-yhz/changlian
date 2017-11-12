@@ -14,7 +14,7 @@
           <p>龙锦苑东</p>
           <p>
             <span>现金</span>
-            <span>APP支付</span>
+            <span>APP支付+</span>
           </p>
           <p>
             <span>
