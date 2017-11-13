@@ -111,7 +111,7 @@ export default new Router({
       component: startElec
     },
     {
-      path: '/stationInfo',
+      path: '/stationInfo/:stationId',
       name: 'stationInfo',
       component: stationInfo
     },

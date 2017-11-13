@@ -14,7 +14,7 @@
     <!-- 搜索列表 -->
     <ul class="station-list">
       <li v-for="stationInfo in stationList">
-        <router-link :to="{name:stationInfo}" class="v-fm" style="width:100%;">
+        <router-link :to="{name:'stationInfo',params:{stationId:stationInfo.ID}}" class="v-fm" style="width:100%;">
         <div class="ml-6 v-i1">
           <!-- 地址 -->
           <p class="fw-b">{{stationInfo.addr}}</p>

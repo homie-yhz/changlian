@@ -225,7 +225,7 @@
   .line-row-dc{border-top:1px solid #dcdcdc;margin:0!important;padding:0!important;}
   .line-space{border-top:1px solid transparent;}
   
-  
+  .td-u{text-decoration: underline;}
   @media only screen and (min-width: 359px){
     html {font-size:22.5px;}
   }
