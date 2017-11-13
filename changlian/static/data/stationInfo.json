@@ -1,0 +1,16 @@
+[
+    {
+        "addr":"龙锦苑东",
+        "totalElec":3,
+        "idleElec":2,
+        "chargeType":"fast",
+        "distanceToMe":"200m"
+    },
+    {
+        "addr":"龙锦苑东2",
+        "totalElec":12,
+        "idleElec":3,
+        "chargeType":"slow",
+        "distanceToMe":"1.5km"
+    }
+]
