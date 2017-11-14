@@ -50,8 +50,8 @@ export default {
       axios
         .get(loginUrl)
         then(function(data){
-         console.log('url|返回数据|'+JSON.stringify(data.data));
-      
+          console.log('url|返回数据|'+JSON.stringify(data.data));
+          
         })
         .catch(function(err){
           console.log({'url':url,'err':JSON.stringify(err)});
