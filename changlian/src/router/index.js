@@ -9,7 +9,7 @@ const elecing            = r => require.ensure([],() => r(require('@/components/
 const endElec            = r => require.ensure([],() => r(require('@/components/endElec.vue')),'News');
 const ICInfo             = r => require.ensure([],() => r(require('@/components/ICInfo.vue')),'News');
 const ICRecharge         = r => require.ensure([],() => r(require('@/components/ICRecharge.vue')),'News');
-const indentifyCodeInput = r => require.ensure([],() => r(require('@/components/indentifyCodeInput.vue')),'News');
+const identifyCodeInput  = r => require.ensure([],() => r(require('@/components/identifyCodeInput.vue')),'News');
 const login              = r => require.ensure([],() => r(require('@/components/login.vue')),'News');
 const main               = r => require.ensure([],() => r(require('@/components/main.vue')),'News');
 const nearbyStation      = r => require.ensure([],() => r(require('@/components/nearbyStation.vue')),'News');
@@ -61,9 +61,9 @@ export default new Router({
       component: ICRecharge
     },
     {
-      path: '/indentifyCodeInput',
-      name: 'indentifyCodeInput',
-      component: indentifyCodeInput
+      path: '/identifyCodeInput',
+      name: 'identifyCodeInput',
+      component: identifyCodeInput
     },
     {
       path: '/login',
@@ -86,7 +86,7 @@ export default new Router({
       component: personalCenter
     },
     {
-      path: '/phoneInput',
+      path: '/phoneInput/:title',
       name: 'phoneInput',
       component: phoneInput
     },

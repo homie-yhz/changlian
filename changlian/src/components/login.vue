@@ -19,8 +19,8 @@
         <input type="text" v-model="loginInfo.phone" placeholder="手机号">
         <input type="text" v-model="loginInfo.pwd" placeholder="密码">
         <p class="v-fb register-or-backpwd">
-          <router-link :to="'phoneInput'" class="v-fm td-u">新用户注册>></router-link>
-          <router-link :to="'pwdInput'" class="v-fm td-u">找回密码</router-link>
+          <router-link :to="{name:'phoneInput',params:{title:'register'}}" class="v-fm td-u">新用户注册>></router-link>
+          <router-link :to="{name:'phoneInput',params:{title:'backPwd'}}" class="v-fm td-u">找回密码</router-link>
         </p>
         <p @click="login" class="btn-login v-fcm">登录</p>
         <p class="tac agreement">登录即表示同意《畅联通用户协议》</p>
@@ -51,7 +51,7 @@ export default {
         .get(loginUrl)
         then(function(data){
           console.log('url|返回数据|'+JSON.stringify(data.data));
-          
+
         })
         .catch(function(err){
           console.log({'url':url,'err':JSON.stringify(err)});
@@ -59,7 +59,6 @@ export default {
     }
   }
 };
-log
 </script>
 <style lang="scss">
 .header {
