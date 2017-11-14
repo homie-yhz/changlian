@@ -35,6 +35,7 @@
 </template>
 <script>
 import axios from "axios";
+import GLOBAL from '../GLOBAL';
 export default {
   data() {
     return {
@@ -45,18 +46,20 @@ export default {
     login() {
       let _this = this;
       console.log("提交登录信息");
-      let loginUrl = "";
+      let url = GLOBAL.interfacePath + '';
       axios
         .get(loginUrl)
-        .then(function(data) {
-          console.log(JSON.stringify(_this.loginInfo));
+        then(function(data){
+         console.log('url|返回数据|'+JSON.stringify(data.data));
+      
         })
-        .then(function(data) {
-
-        });
+        .catch(function(err){
+          console.log({'url':url,'err':JSON.stringify(err)});
+        })
     }
   }
 };
+log
 </script>
 <style lang="scss">
 .header {
@@ -84,30 +87,37 @@ export default {
     height: 1.8rem;
     width: 100%;
     border-bottom: 1px solid #bbbbbb;
-    &:last-child{margin-top:.5rem;}
+    &:last-child {
+      margin-top: 0.5rem;
+    }
   }
 }
 .btn-login {
   background-color: #19d64e;
   color: #fff;
-  margin:.8rem 0;
-  border-radius:3px;
+  margin: 0.8rem 0;
+  border-radius: 3px;
   height: 1.6rem;
 }
-.other-login-method{
-  margin-top:2rem;
-  color:#999;
-  font-size:.5rem;
-  &>p:nth-child(2){margin:0 .5rem;}
-  &>:first-child,:last-child{border-top:1px solid #dbdbdb;}
+.other-login-method {
+  margin-top: 2rem;
+  color: #999;
+  font-size: 0.5rem;
+  & > p:nth-child(2) {
+    margin: 0 0.5rem;
+  }
+  & > :first-child,
+  :last-child {
+    border-top: 1px solid #dbdbdb;
+  }
 }
-.register-or-backpwd>a{
-  margin-top:.2rem;
+.register-or-backpwd > a {
+  margin-top: 0.2rem;
   text-decoration: underline;
-  color:#e65300;
+  color: #e65300;
 }
-.agreement{
-  color:#5c5c5c;
-  font-size: .55rem;
+.agreement {
+  color: #5c5c5c;
+  font-size: 0.55rem;
 }
 </style>
