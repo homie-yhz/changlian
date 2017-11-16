@@ -91,6 +91,11 @@ export default new Router({
       component: phoneInput
     },
     {
+      path: '/pwdInput',
+      name: 'pwdInput',
+      component: pwdInput
+    },
+    {
       path: '/recharge',
       name: 'recharge',
       component: recharge

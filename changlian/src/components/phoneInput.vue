@@ -21,8 +21,9 @@ export default {
     };
   },
   methods:{
+    // 下一步  输入手机验证码
     nextStep(){
-      this.$router.push({name:'pwdInput'})
+      this.$router.push({name:'identifyCodeInput'});
     }
   },
   created(){
@@ -31,6 +32,23 @@ export default {
   }
 };
 </script>
-<style>
-
+<style lang="scss">
+@import '../../static/css/common.scss';
+.login-box {
+  & > input {
+    height: 1.8rem;
+    width: 100%;
+    border-bottom: 1px solid #bbbbbb;
+    &:last-child {
+      margin-top: 0.5rem;
+    }
+  }
+}
+.btn-login {
+  background-color: #19d64e;
+  color: #fff;
+  margin: 0.8rem 0;
+  border-radius: 3px;
+  height: 1.6rem;
+}
 </style>

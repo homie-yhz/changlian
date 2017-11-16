@@ -1,3 +1,35 @@
 $cl-color:#ff9800;
+.header {
+    height: 2rem;
+    border-bottom: 1px solid #d9d9d9;
+}
+.arrow-back {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-left: 2px solid #616161;
+    border-top: 2px solid #616161;
+    transform: rotate(-45deg);
+    margin-left: 0.5rem;
+}
+.btn{
+    background-color:#fad202;
+    color:#fff;
+    border-radius:3px;
+    font-size:.7rem;
+    margin-top:.5rem;
+    height:2rem;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-pack: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-justify-content: center;/* Chrome 21+ */
+    -ms-flex-pack: center;/* WP IE 10 */
+    justify-content: center;/* android 4.4 */
+    -webkit-box-align: center;/* android 2.1-3.0, ios 3.2-4.3 */
+    -webkit-align-items: center;/* Chrome 21+ */
+    -ms-flex-align: center;/* WP IE 10 */
+    align-items: center;/* android 4.4 */
+}
 
   

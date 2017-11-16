@@ -53,16 +53,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.header{
-  height: 2rem;
-  border-bottom:1px solid #d9d9d9;
-}
-.arrow-back{
-  width:.4rem;
-  height:.4rem;
-  border-left:2px solid #616161;
-  border-top:2px solid #616161;
-  transform: rotate(-45deg);
-  margin-left:.5rem;
-}
+@import '../../static/css/common.scss';
+
 </style>
