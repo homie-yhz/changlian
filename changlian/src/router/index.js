@@ -61,11 +61,6 @@ export default new Router({
       component: ICRecharge
     },
     {
-      path: '/identifyCodeInput',
-      name: 'identifyCodeInput',
-      component: identifyCodeInput
-    },
-    {
       path: '/login',
       name: 'login',
       component: login
@@ -91,7 +86,12 @@ export default new Router({
       component: phoneInput
     },
     {
-      path: '/pwdInput',
+      path: '/identifyCodeInput/:title/:phone',
+      name: 'identifyCodeInput',
+      component: identifyCodeInput
+    },
+    {
+      path: '/pwdInput/:title/:phone/:indentifyCode',
       name: 'pwdInput',
       component: pwdInput
     },

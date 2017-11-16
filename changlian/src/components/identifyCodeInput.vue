@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="header v-fcm por">
-      <div class="v-fcm m-auto h-100" style="width:80%">找回密码</div>
+      <div class="v-fcm m-auto h-100" style="width:80%">{{title}}</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>
@@ -32,6 +32,7 @@ const leftTime = 60;
 export default {
   data() {
     return {
+      title:'',
       getCodeBtn: {
         state: 0,                    //0:不可以点击  1：允许点击  2：倒计时
         leftTime: leftTime,
@@ -46,9 +47,9 @@ export default {
   methods: {
     //点击下一步
     nextStep(){
-      let _this = this;
       if(this.nextStepBtn.state === 1){
         console.log('点击下一步');
+        this.$router.push({name:'pwdInput',params:{title:this.$route.params.title,phone:this.$route.params.phone,indentifyCode:'22222'}});
       }
     },
     //获取验证码
@@ -96,6 +97,10 @@ export default {
     }
   },
   created() {
+
+    console.log(this.$route.params.title);
+    this.title = this.$route.params.title === "register" ? "注册" : "找回密码";
+
     this.countDown();
     this.getIndentifyCode_IF();
     // 监听验证码输入框
@@ -112,7 +117,6 @@ export default {
   },
   watch:{
     inputs:function(nv){
-      console.log(nv); 
       for(var i = 0;i<nv.length;i++){
         if(!nv[i]){
           this.nextStepBtn.state = 0;

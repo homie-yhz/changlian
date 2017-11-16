@@ -8,7 +8,7 @@
     </header>
     <div style="width:85%;" class="m-auto login-box mt-5">
         <input type="tel" v-model="phone" maxlength="11" class="mt-5" placeholder="手机号">
-        <p @click="nextStep" class="btn-login v-fcm">下一步</p>
+        <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:phone.length!=11}">下一步</p>
     </div>
   </div>
 </template>
@@ -16,24 +16,29 @@
 export default {
   data() {
     return {
-      phone:'',
-      title:''
+      phone: "",
+      title: ""
     };
   },
-  methods:{
+  methods: {
     // 下一步  输入手机验证码
-    nextStep(){
-      this.$router.push({name:'identifyCodeInput'});
+    nextStep() {
+      if (this.phone.length === 11) {
+        this.$router.push({
+          name: "identifyCodeInput",
+          params: { phone: this.phone }
+        });
+      }
     }
   },
-  created(){
+  created() {
     console.log(this.$route.params.title);
-    this.title = (this.$route.params.title==='register')?'注册':'找回密码';
+    this.title = this.$route.params.title === "register" ? "注册" : "找回密码";
   }
 };
 </script>
 <style lang="scss">
-@import '../../static/css/common.scss';
+@import "../../static/css/common.scss";
 .login-box {
   & > input {
     height: 1.8rem;
@@ -45,8 +50,7 @@ export default {
   }
 }
 .btn-login {
-  background-color: #19d64e;
-  color: #fff;
+  
   margin: 0.8rem 0;
   border-radius: 3px;
   height: 1.6rem;
