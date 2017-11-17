@@ -11,6 +11,14 @@ $cl-color:#ff9800;
     transform: rotate(-45deg);
     margin-left: 0.5rem;
 }
+.blank{
+    height:.5rem;
+    width:100%;
+    display: block;
+    background-color:#f2f2f2;
+    border-top:1px solid #f2f2f2;
+    border-bottom:1px solid #f2f2f2;
+}
 .btn{
     background-color: #19d64e;
     color:#fff;
