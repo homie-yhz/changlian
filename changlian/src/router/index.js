@@ -22,6 +22,9 @@ const showIC             = r => require.ensure([],() => r(require('@/components/
 const startElec          = r => require.ensure([],() => r(require('@/components/startElec.vue')),'News');
 const stationInfo        = r => require.ensure([],() => r(require('@/components/stationInfo.vue')),'News');
 const usuallyStation     = r => require.ensure([],() => r(require('@/components/usuallyStation.vue')),'News');
+const myNews             = r => require.ensure([],() => r(require('@/components/myNews.vue')),'News');
+const operatorPlatform   = r => require.ensure([],() => r(require('@/components/operatorPlatform.vue')),'News');
+const aboutUs            = r => require.ensure([],() => r(require('@/components/aboutUs.vue')),'News');
 
 export default new Router({
   routes: [
@@ -124,6 +127,21 @@ export default new Router({
       path: '/usuallyStation',
       name: 'usuallyStation',
       component: usuallyStation
+    },
+    {
+      path: '/myNews',
+      name: 'myNews',
+      component: myNews
+    },
+    {
+      path: '/operatorPlatform',
+      name: 'operatorPlatform',
+      component: operatorPlatform
+    },
+    {
+      path: '/aboutUs',
+      name: 'aboutUs',
+      component: aboutUs
     }
   ]
 })
