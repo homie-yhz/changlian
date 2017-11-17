@@ -17,11 +17,14 @@
           <input type="password" v-model="pwd2" class="v-i1" placeholder="请再次确认密码">
         </p>
       </div>
-        <p @click="nextStep" class="btn btn-login v-fcm mt-10" :class="{disable:nextStepBtnState === 0}">下一步</p>
+        <p @click="nextStep" class="btn btn-login v-fcm mt-10" :class="{disable:nextStepBtnState === 0}">确认</p>
     </div>
   </div>
 </template>
 <script>
+import { Toast } from 'mint-ui'
+import 'mint-ui/lib/toast/style.css';
+
 export default {
   data() {
     return {
@@ -43,7 +46,11 @@ export default {
     nextStep(){
       if(this.nextStepBtnState === 1){
         console.log('允许点击');
-        
+        if(this.pwd1 === this.pwd2){
+          this.$router.push({name:'personalCenter'});
+        }else{
+          Toast('两次输入不一致！');
+        }
       }
     }
   },
