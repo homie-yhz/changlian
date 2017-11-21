@@ -32,7 +32,7 @@ export default {
       }
     },
     go(){
-      
+
     }
   },
   created() {
@@ -54,7 +54,6 @@ export default {
   }
 }
 .btn-login {
-  
   margin: 0.8rem 0;
   border-radius: 3px;
   height: 1.6rem;
