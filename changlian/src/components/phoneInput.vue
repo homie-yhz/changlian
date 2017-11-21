@@ -10,7 +10,6 @@
         <input type="tel" v-model="phone" maxlength="11" class="mt-5" placeholder="手机号">
         <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:phone.length!=11}">下一步</p>
     </div>
-    <div @click="go">fdsafdsa</div>
   </div>
 </template>
 <script>
@@ -30,9 +29,6 @@ export default {
           params: { phone: this.phone }
         });
       }
-    },
-    go(){
-
     }
   },
   created() {
