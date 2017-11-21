@@ -145,3 +145,10 @@ export default new Router({
     }
   ]
 })
+this.a.beforeEach(function(to,from,next){
+  console.log('beforeEach='+location.href);
+  next();
+});
+this.a.afterEach(function(to,from){
+  console.log('afterEach='+location.href);
+});
