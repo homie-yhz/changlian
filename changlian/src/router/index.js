@@ -12,7 +12,6 @@ const ICRecharge         = r => require.ensure([],() => r(require('@/components/
 const identifyCodeInput  = r => require.ensure([],() => r(require('@/components/identifyCodeInput.vue')),'News');
 const login              = r => require.ensure([],() => r(require('@/components/login.vue')),'News');
 const main               = r => require.ensure([],() => r(require('@/components/main.vue')),'News');
-const nearbyStation      = r => require.ensure([],() => r(require('@/components/nearbyStation.vue')),'News');
 const personalCenter     = r => require.ensure([],() => r(require('@/components/personalCenter.vue')),'News');
 const phoneInput         = r => require.ensure([],() => r(require('@/components/phoneInput.vue')),'News');
 const pwdInput           = r => require.ensure([],() => r(require('@/components/pwdInput.vue')),'News');
@@ -22,6 +21,8 @@ const showIC             = r => require.ensure([],() => r(require('@/components/
 const startElec          = r => require.ensure([],() => r(require('@/components/startElec.vue')),'News');
 const stationInfo        = r => require.ensure([],() => r(require('@/components/stationInfo.vue')),'News');
 const usuallyStation     = r => require.ensure([],() => r(require('@/components/usuallyStation.vue')),'News');
+const nearbyStation      = r => require.ensure([],() => r(require('@/components/nearbyStation.vue')),'News');
+const bindStation        = r => require.ensure([],() => r(require('@/components/bindStation.vue')),'News');
 const myNews             = r => require.ensure([],() => r(require('@/components/myNews.vue')),'News');
 const operatorPlatform   = r => require.ensure([],() => r(require('@/components/operatorPlatform.vue')),'News');
 const aboutUs            = r => require.ensure([],() => r(require('@/components/aboutUs.vue')),'News');
@@ -129,6 +130,11 @@ export default new Router({
       component: usuallyStation
     },
     {
+      path: '/bindStation',
+      name: 'bindStation',
+      component: bindStation
+    },
+    {
       path: '/myNews',
       name: 'myNews',
       component: myNews
@@ -145,10 +151,8 @@ export default new Router({
     }
   ]
 })
-this.a.beforeEach(function(to,from,next){
-  console.log('beforeEach='+location.href);
-  next();
-});
-this.a.afterEach(function(to,from){
-  console.log('afterEach='+location.href);
-});
+// this.a.beforeEach(function(to,from,next){
+//   next();
+// });
+// this.a.afterEach(function(to,from){
+// });
