@@ -134,7 +134,7 @@
   .lh-15{line-height:1.5;}
   .lh-20{line-height: 2.0;}
   /*size*/
-  .pd-4{padding:.4rem .5rem;}
+  .pd-40{padding:.4rem .5rem;}
   .fz-50{font-size:.5rem;}
   .fz-55{font-size:.55rem;}
   .fz-60{font-size:.60rem;}
@@ -155,7 +155,12 @@
   .mt-10{margin-top:1rem;}
   .mt-5{margin-top:.5rem;}
   .mt-40{margin-top:.4rem;}
-  .pd-5{padding:.5rem;}
+  .pd-50{padding:.5rem;}
+  .pd-60{padding:.6rem;}
+  .pd-70{padding:.7rem;}
+  .pd-80{padding:.8rem;}
+  .pd-90{padding:.9rem;}
+  .pd-100{padding:1rem;}
   .pdl-5{padding-left:.5rem;}
   
   .pdt-15{padding-top:1.5rem;}

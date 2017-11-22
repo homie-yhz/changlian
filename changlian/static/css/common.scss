@@ -4,6 +4,16 @@ $cl-color:#19d64e;
 .header {
     height: 2rem;
     border-bottom: 1px solid #d9d9d9;
+    background:#fff;
+}
+.header-poa{
+    height:2rem;
+    border-bottom: 1px solid #d9d9d9;
+    position: absolute;
+    top:0;
+    width:100%;
+    z-index:2;
+    background:#fff;
 }
 .arrow-back {
     width: 0.4rem;
@@ -13,6 +23,14 @@ $cl-color:#19d64e;
     transform: rotate(-45deg);
     margin-left: 0.5rem;
 }
+.icon-right {
+    width: 0.4rem !important;
+    height: 0.4rem !important;
+    border-right: 2px solid #adadad;
+    border-top: 2px solid #adadad;
+    transform: rotate(45deg);
+    margin-right: 0.8rem !important;
+  }
 .blank{
     height:.5rem;
     width:100%;
@@ -43,6 +61,15 @@ $cl-color:#19d64e;
 .disable{
     background-color:#c3c3c3;
     color:#fff;
+}
+.scroll-box{
+    width:100%;
+    height:100%;
+    padding-top:2rem!important;
+    overflow: scroll;
+    position: absolute;
+    top:0;
+    z-index:1;
 }
 
   
