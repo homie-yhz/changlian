@@ -6,7 +6,7 @@ Vue.use(Router)
 const bindIC = r => require.ensure([], () => r(require('@/components/bindIC.vue')), 'News');
 const chargeElecLog = r => require.ensure([], () => r(require('@/components/chargeElecLog.vue')), 'News');
 const elecing = r => require.ensure([], () => r(require('@/components/elecing.vue')), 'News');
-const endElec = r => require.ensure([], () => r(require('@/components/endElec.vue')), 'News');
+const endCharge = r => require.ensure([], () => r(require('@/components/endCharge.vue')), 'News');
 const ICInfo = r => require.ensure([], () => r(require('@/components/ICInfo.vue')), 'News');
 const ICRecharge = r => require.ensure([], () => r(require('@/components/ICRecharge.vue')), 'News');
 const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardList.vue')), 'News');
@@ -53,9 +53,9 @@ export default new Router({
       component: elecing
     },
     {
-      path: '/endElec',
-      name: 'endElec',
-      component: endElec
+      path: '/endCharge',
+      name: 'endCharge',
+      component: endCharge
     },
     {
       path: '/ICInfo',

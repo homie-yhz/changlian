@@ -1,6 +1,8 @@
 // $cl-color:#ff9800;
 $cl-color:#19d64e;
 .cl-color{color:$cl-color};
+.cl-bg-green{background-color:$cl-color}
+.c-666{color:#666;}
 .header {
     height: 2rem;
     border-bottom: 1px solid #d9d9d9;
@@ -70,6 +72,9 @@ $cl-color:#19d64e;
     position: absolute;
     top:0;
     z-index:1;
+}
+.cl-box{
+    padding:0 .8rem;
 }
 
   
