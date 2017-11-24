@@ -1,18 +1,23 @@
 [
     {
-        "addr":"龙锦苑东",
-        "totalElec":3,
-        "idleElec":2,
-        "chargeType":"fast",
-        "distanceToMe":"200m",
-        "ID":"fsafdsaf"
-    },
-    {
-        "addr":"龙锦苑东2",
-        "totalElec":12,
-        "idleElec":3,
-        "chargeType":"slow",
-        "distanceToMe":"1.5km",
-        "ID":"fdsafdsafdsafas"
+        "stationName":"龙锦苑东五区充电站",      //充电站名称
+        "stationAddr":"北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面", //充电站地址
+        "stationId":"001",  //充电站ID
+        "payMethod":["刷卡","APP支付"],    //支持的支付方式
+        "totalChargePortsNum":3,         //一共的充电口数
+        "idleChargePortsNum":2,          //闲置的充电口数
+        "chargeType":"fast",   //充电口类型  fast/slow
+        "distanceToMe":"200m", //距离我的位置
+        "ID":"充电站ID",        //充电站ID
+        "operationTime":"00:00-24:00",  //运营时间
+        "operator":"运营商",              //运营商
+        "parkCost":"免费/2元/h",      //停车费用
+        "chargePortsList":[
+            {
+                "ID":"port1",
+                "method":"AC", //交流电AC、直流电DC
+                "state":"broken/charging/idle"  //损坏/充电中/闲置broken/charging/idle
+            }
+        ]
     }
 ]

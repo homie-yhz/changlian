@@ -10,7 +10,7 @@ const endElec = r => require.ensure([], () => r(require('@/components/endElec.vu
 const ICInfo = r => require.ensure([], () => r(require('@/components/ICInfo.vue')), 'News');
 const ICRecharge = r => require.ensure([], () => r(require('@/components/ICRecharge.vue')), 'News');
 const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardList.vue')), 'News');
-const ICCardCharge = r => require.ensure([], () => r(require('@/components/ICCardCharge.vue')), 'News');
+const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
 const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
@@ -21,7 +21,7 @@ const recharge = r => require.ensure([], () => r(require('@/components/recharge.
 const rechargeLog = r => require.ensure([], () => r(require('@/components/rechargeLog.vue')), 'News');
 const showIC = r => require.ensure([], () => r(require('@/components/showIC.vue')), 'News');
 const startElec = r => require.ensure([], () => r(require('@/components/startElec.vue')), 'News');
-const stationInfo = r => require.ensure([], () => r(require('@/components/stationInfo.vue')), 'News');
+const stationDetail = r => require.ensure([], () => r(require('@/components/stationDetail.vue')), 'News');
 const usuallyStation = r => require.ensure([], () => r(require('@/components/usuallyStation.vue')), 'News');
 const nearbyStation = r => require.ensure([], () => r(require('@/components/nearbyStation.vue')), 'News');
 const bindStation = r => require.ensure([], () => r(require('@/components/bindStation.vue')), 'News');
@@ -73,9 +73,9 @@ export default new Router({
       component: ICCardList
     },
     {
-      path: '/ICCardCharge',
-      name: 'ICCardCharge',
-      component: ICCardCharge
+      path: '/ICCardRecharge/:ICCardId',
+      name: 'ICCardRecharge',
+      component: ICCardRecharge
     },
     {
       path: '/login',
@@ -133,9 +133,9 @@ export default new Router({
       component: startElec
     },
     {
-      path: '/stationInfo/:stationId',
-      name: 'stationInfo',
-      component: stationInfo
+      path: '/stationDetail/:stationId',
+      name: 'stationDetail',
+      component: stationDetail
     },
     {
       path: '/usuallyStation',

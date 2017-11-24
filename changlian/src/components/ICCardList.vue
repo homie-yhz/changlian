@@ -10,12 +10,12 @@
 			<div class="ICCard-charge">
 				<ul>
 					<li v-for="ICCard in ICCardList">
-						<router-link :to="{name: 'ICCardCharge'}" class="v-fm">
+						<router-link :to="{name: 'ICCardRecharge',params:{ICCardId:ICCard.ID}}" class="v-fm">
 							<span>IC卡</span> <span class="v-i1">{{ICCard.num}}</span>
 						</router-link>
 					</li>
 					<li class="add-ICCard v-fm">
-						<router-link :to="{name:'bindIC'}">
+						<router-link class="v-fm" :to="{name:'bindIC'}">
 							<span>＋</span>
 							<span class="v-i1">添加IC卡</span>
 							<span class="icon-right"></span>
@@ -97,7 +97,11 @@
 				background-color: #fff;
 				box-shadow: 0 0 0;
 				border: 1px solid #bbb;
-				color: #adadad;
+				&>a:last-child{
+					height: 100%;
+					color: #adadad!important;
+					padding:0;
+				}
 				span {
 					&:first-child {
 						margin: 0 .3rem 0 .2rem;

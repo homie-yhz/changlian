@@ -27,3 +27,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 2.vue配置 typescript 的简单教程
 http://blog.csdn.net/u014633852/article/details/73706459
+
+3.微信调用支付宝支付方式。（网页，客户端。。。）
+4.charge 充值页面  赠送的钱如何计算？？
+5.每个充电站 不同充电口 固定充电方式了？？快充/慢充
+6.充电口状态：占用，非占用，是否可用
