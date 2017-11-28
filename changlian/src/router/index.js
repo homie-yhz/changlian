@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
+// 用户页面
 const bindIC = r => require.ensure([], () => r(require('@/components/bindIC.vue')), 'News');
 const chargeElecLog = r => require.ensure([], () => r(require('@/components/chargeElecLog.vue')), 'News');
 const charging = r => require.ensure([], () => r(require('@/components/charging.vue')), 'News');
@@ -29,6 +29,12 @@ const myNews = r => require.ensure([], () => r(require('@/components/myNews.vue'
 const operatorPlatform = r => require.ensure([], () => r(require('@/components/operatorPlatform.vue')), 'News');
 const aboutUs = r => require.ensure([], () => r(require('@/components/aboutUs.vue')), 'News');
 const chooseToCharge = r => require.ensure([], () => r(require('@/components/chooseToCharge.vue')), 'News');
+// 运营商管理平台页面
+const operatorLogin = r => require.ensure([], () => r(require('@/components/operatorLogin.vue')), 'News');
+const operatorMain = r => require.ensure([], () => r(require('@/components/operatorMain.vue')), 'News');
+const agentList = r => require.ensure([], () => r(require('@/components/agentList.vue')), 'News'); //代理商列表
+const createAgent = r => require.ensure([], () => r(require('@/components/createAgent.vue')), 'News'); //创建代理商
+const updateAgent = r => require.ensure([], () => r(require('@/components/updateAgent.vue')), 'News'); //修改更新代理商信息
 
 export default new Router({
   routes: [
@@ -166,7 +172,33 @@ export default new Router({
       path: '/chooseToCharge',
       name: 'chooseToCharge',
       component: chooseToCharge
-    }
+    },
+    //运营商管理平台相关页面
+    {
+      path: '/operatorLogin',
+      name: 'operatorLogin',
+      component: operatorLogin
+    }, 
+    {
+      path: '/operatorMain',
+      name: 'operatorMain',
+      component: operatorMain
+    }, 
+    {
+      path: '/agentList',
+      name: 'agentList',
+      component: agentList
+    }, 
+    {
+      path: '/createAgent',
+      name: 'createAgent',
+      component: createAgent
+    }, 
+    {
+      path: '/updateAgent',
+      name: 'updateAgent',
+      component: updateAgent
+    },
   ]
 })
 // this.a.beforeEach(function(to,from,next){

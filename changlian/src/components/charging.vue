@@ -102,32 +102,8 @@
       }
     },
     methods: {
-      choosePort(port) {
-        console.log(port.ID);
-        let portState = port.state;
-        if (portState === 'idle') {
-          //增加样式
-          this.postData.portId = port.ID;
-        } else if (portState === 'broken') {
-          Toast('抱歉！该充电口暂时无法使用！');
-        } else if (portState === 'charging') {
-          Toast('该端口正在使用！');
-        }
-      },
-      // 选择充电模式
-      chooseChargeMethod(method) {
-        console.log(method.ID);
-        // 充电模式存入postData
-        this.postData.methodId = method.ID;
-      },
-      startCharge() {
-        if (!this.postData.portId) {
-          Toast('请选择充电设备');
-        } else if (!this.postData.methodId) {
-          Toast('请选择充电方式');
-        } else {
-          console.log(JSON.stringify(this.postData));
-        }
+      stopCharge(){
+        
       }
     },
     created() {
