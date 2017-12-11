@@ -5,23 +5,31 @@ $cl-color:#19d64e;
 .c-666{color:#666;}
 .header {
     height: 2rem;
-    border-bottom: 1px solid #d9d9d9;
-    background:#fff;
+    // border-bottom: 1px solid #d9d9d9;
+    background:rgba(46, 175, 237, .9);
+    color:#fff;
 }
 .header-poa{
     height:2rem;
-    border-bottom: 1px solid #d9d9d9;
     position: absolute;
     top:0;
     width:100%;
     z-index:2;
-    background:#fff;
+    background:rgba(46, 175, 237, .9);
+    color:#fff;
+}
+.footer{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    z-index:2;
+    height:3rem;
 }
 .arrow-back {
     width: 0.4rem;
     height: 0.4rem;
-    border-left: 2px solid #616161;
-    border-top: 2px solid #616161;
+    border-left: 2px solid #fff;
+    border-top: 2px solid #fff;
     transform: rotate(-45deg);
     margin-left: 0.5rem;
 }
@@ -68,13 +76,20 @@ $cl-color:#19d64e;
     width:100%;
     height:100%;
     padding-top:2rem!important;
-    overflow: scroll;
     position: absolute;
     top:0;
     z-index:1;
 }
+.scroll-box>div{
+    height:100%;
+    overflow: scroll;
+}
 .cl-box{
     padding:0 .8rem;
 }
-
-  
+.icon-elec{
+    width:2rem;
+    height:2rem;
+    background: url('../../static/img/elec.png') center center no-repeat;
+    background-size:100% 100%;
+}
