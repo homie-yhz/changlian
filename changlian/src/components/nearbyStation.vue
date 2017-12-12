@@ -9,8 +9,10 @@
         </div>
       </header>
       <!-- 搜索框 -->
-      <div class="v-fm" style="height:2rem;">
-        <input type="text" class="v-i1 ml-6 search-station" placeholder="请输入电站" style="" v-model="searchInfo">
+      <div class="v-fm" style="height:2rem;color:black;">
+        <div class="por">
+          <input type="text" class="v-i1 ml-6 search-station" placeholder="请输入电站" style="" v-model="searchInfo">
+        </div>
         <div class="v-fcm" style="width:2.8rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
@@ -83,152 +85,148 @@
 </template>
 
 <script>
-  import Vue from "Vue";
-  import axios from "axios";
-  import {
+import Vue from "Vue";
+import axios from "axios";
+import { Tab, TabItem } from "vux";
+export default {
+  components: {
     Tab,
     TabItem
-  } from "vux";
-  export default {
-    components: {
-      Tab,
-      TabItem
+  },
+  data() {
+    return {
+      searchInfo: "",
+      stationList: [],
+      index01: 0
+    };
+  },
+  methods: {
+    getStationList() {
+      let _this = this;
+      var stationListUrl = "../../../../static/data/stationInfo.json";
+      axios.get(stationListUrl).then(function(data) {
+        console.log(data.data);
+        console.log(JSON.stringify(data));
+        _this.stationList = data.data;
+      });
     },
-    data() {
-      return {
-        searchInfo: "",
-        stationList: [],
-        index01: 0
-      };
+    switchTabItem(index) {
+      console.log("on-before-index-change", index);
+      // this.$vux.loading.show({
+      //   text: 'loading'
+      // })
+      // setTimeout(() => {
+      // this.$vux.loading.hide()
+      this.index01 = index;
+      // }, 1000)
     },
-    methods: {
-      getStationList() {
-        let _this = this;
-        var stationListUrl = "../../../../static/data/stationInfo.json";
-        axios.get(stationListUrl).then(function(data) {
-          console.log(data.data);
-          console.log(JSON.stringify(data));
-          _this.stationList = data.data;
-        });
-      },
-      switchTabItem(index) {
-        console.log("on-before-index-change", index);
-        // this.$vux.loading.show({
-        //   text: 'loading'
-        // })
-        // setTimeout(() => {
-        // this.$vux.loading.hide()
-        this.index01 = index;
-        // }, 1000)
-      },
-      onItemClick(index) {
-        console.log("on item click:", index);
-      }
-    },
-    created() {
-      //获取附近电站信息列表
-      this.getStationList();
+    onItemClick(index) {
+      console.log("on item click:", index);
     }
-  };
+  },
+  created() {
+    //获取附近电站信息列表
+    this.getStationList();
+  }
+};
 </script>
 
 <style lang="less">
-  @import "~vux/src/styles/1px.less";
-  @import "~vux/src/styles/center.less";
+@import "~vux/src/styles/1px.less";
+@import "~vux/src/styles/center.less";
 </style>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
-  $cl-c: #ff9800;
-  $cl-bgc: #ff9800;
-  //重置tabs样式
-  .vux-tab .vux-tab-item.vux-tab-selected {
-    color: rgb(46, 175, 237) !important;
+@import "../../static/css/common.scss";
+$cl-c: #ff9800;
+$cl-bgc: #ff9800;
+//重置tabs样式
+.vux-tab .vux-tab-item.vux-tab-selected {
+  color: rgb(46, 175, 237) !important;
+}
+
+.vux-tab-ink-bar {
+  background-color: rgb(46, 175, 237) !important;
+}
+
+.vux-tab .vux-tab-item {
+  height: 1.7rem !important;
+  line-height: 1.7rem !important;
+}
+
+.vux-tab {
+  height: 1.7rem !important;
+}
+
+.search-station {
+  border: 1px solid #dbdbdb;
+  padding-left: 0.2rem;
+  height: 1.3rem;
+  border-radius: 3px;
+  background-color: #f7f7f7;
+}
+
+.fast-charge {
+  width: 2rem;
+  background-color: $cl-c;
+  color: #fff;
+  margin: auto 0.5rem;
+  border-radius: 3px;
+  height: 1rem;
+}
+
+.slow-charge {
+  width: 2rem;
+  background-color: #fff;
+  color: $cl-c;
+  border: 1px solid $cl-c;
+  margin: auto 0.2rem;
+  border-radius: 3px;
+}
+
+.icon-star {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background: url("../assets/logo.png") center center no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto;
+}
+
+.station-list > li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #e3e3e3;
+  &:last-child {
+    border-bottom: none;
   }
-  
-  .vux-tab-ink-bar {
-    background-color: rgb(46, 175, 237) !important;
-  }
-  
-  .vux-tab .vux-tab-item {
-    height: 1.7rem !important;
-    line-height: 1.7rem !important;
-  }
-  
-  .vux-tab {
-    height: 1.7rem !important;
-  }
-  
-  .search-station {
-    border: 1px solid #dbdbdb;
-    padding-left: 0.2rem;
-    height: 1.3rem;
-    border-radius: 3px;
-    background-color: #f7f7f7;
-  }
-  
-  .fast-charge {
-    width: 2rem;
-    background-color: $cl-c;
-    color: #fff;
-    margin: auto 0.5rem;
-    border-radius: 3px;
-    height: 1rem;
-  }
-  
-  .slow-charge {
-    width: 2rem;
-    background-color: #fff;
-    color: $cl-c;
-    border: 1px solid $cl-c;
-    margin: auto 0.2rem;
-    border-radius: 3px;
-  }
-  
-  .icon-star {
-    display: block;
-    width: 1rem;
-    height: 1rem;
-    background: url("../assets/logo.png") center center no-repeat;
-    background-size: 100% 100%;
-    margin: 0 auto;
-  }
-  
-  .station-list>li {
-    padding: 0.3rem 0;
-    border-bottom: 1px solid #e3e3e3;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-  
-  .icon-total {
-    background-color: $cl-c;
-    font-size: 0.45rem;
-    width: 0.8rem;
-    height: 0.8rem;
-    margin-right: 0.2rem;
-    border-radius: 3px;
-    color: #fff;
-  }
-  
-  
-  /* 剩余的 */
-  
-  .icon-idle {
-    background-color: #00d94a;
-    color: #fff;
-    width: 0.8rem;
-    height: 0.8rem;
-    font-size: 0.45rem;
-    margin-right: 0.2rem;
-    border-radius: 3px;
-  }
-  
-  .icon-label-box>span {
-    padding: 0 0.3rem;
-    border: 1px solid #e3e3e3;
-    border-radius: 10rem;
-    font-size: 0.5rem;
-  }
+}
+
+.icon-total {
+  background-color: $cl-c;
+  font-size: 0.45rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.2rem;
+  border-radius: 3px;
+  color: #fff;
+}
+
+/* 剩余的 */
+
+.icon-idle {
+  background-color: #00d94a;
+  color: #fff;
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.45rem;
+  margin-right: 0.2rem;
+  border-radius: 3px;
+}
+
+.icon-label-box > span {
+  padding: 0 0.3rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 10rem;
+  font-size: 0.5rem;
+}
 </style>
