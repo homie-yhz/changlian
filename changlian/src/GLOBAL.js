@@ -1,3 +1,8 @@
+import Vue from 'vue';
+import axios from 'axios';
+import {MessageBox} from 'mint-ui';
+import 'mint-ui/lib/message-box/style.css';
+
 export default {
     env:'UAT',
     interfacePath:'http://epsout.life.taikang.com/epstk',   //UAT 接口路径
@@ -16,4 +21,32 @@ export default {
      appPath:'http://tkyc.eps.group.taikang.com/tkyc/tkgq/#',    //前台应用路径
      publicAccountAddress:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNjk1OTQ2NQ==&scene=124#wechat_redirect'*/
   
+}
+
+//是否登录模块
+export function judgeLogin(){
+    return {
+        promiseFn:function(){
+            return new Promise(function(resolve,reject){
+                //let judgeLoginUrl = GLOBAL.interfacePath + '';
+                let judgeLoginUrl = '';
+                axios
+                  .get(judgeLoginUrl)
+                  .then(function(data){
+                      console.log('judgeLoginUrl|返回数据|'+JSON.stringify(data.data));
+                      data.data = {
+                          "hasLogin":false
+                      }
+                      if(data.data.hasLogin){
+                        resolve(true);
+                      }else{
+                        resolve(false);
+                      }
+                  })
+                  .catch(function(err){
+                      console.log({'url':judgeLoginUrl,'err':JSON.stringify(err)});
+                  });
+            });
+        }
+    }
 }

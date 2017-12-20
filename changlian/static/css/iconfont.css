@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1513057828821'); /* IE9*/
-  src: url('iconfont.eot?t=1513057828821#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  src: url('../../static/fonts/iconfont.eot?t=1513057828821'); /* IE9*/
+  src: url('../../static/fonts/iconfont.eot?t=1513057828821#iefix') format('embedded-opentype'), /* IE6-IE8 */
   url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
-  url('iconfont.ttf?t=1513057828821') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1513057828821#iconfont') format('svg'); /* iOS 4.1- */
+  url('../../static/fonts/iconfont.ttf?t=1513057828821') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../../static/fonts/iconfont.svg?t=1513057828821#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -16,12 +16,169 @@
 }
 
 .icon-ttpodicon:before { content: "\e607"; }
-
+.icon-ttpodicon{
+  display: block;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  text-align: center;
+  margin-left:.5rem;
+}
+/* 省略 */
 .icon-shenglve:before { content: "\e737"; }
+/*  */
+.icon-shezhi:before { content: "\e61d";font-size:.8rem; }
+/* 铃铛 */
+.icon-lingdang:before { content: "\e62c"; font-size:.8rem;}
+/* 搜索 */
+.icon-sousuo:after { content: "\E6D8";
+  position: absolute;
+  right: .3rem;
+  display: block;
+  top: 0;
+  /* right: .5rem; */
+  font-size: 0.7rem;
+  /* vertical-align: middle; */
+  color: #bbb;
+  display: block;
+  height: 1.3rem;
+  line-height: 1.3rem;}
+/* 星星 */
+.icon-star{
+  background:url('../../static/img/star.png') center center no-repeat;
+  background-size:100% 100%;
+  display: block;
+  width: .7rem;
+  height: .7rem;
+  margin: 0 auto;
+}
+/* 定位图标 */
+.icon-distance{
+  background: url('../../static/img/distance.png') center center no-repeat;
+  background-size: 100% 100%;
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0 auto;
+}
+/* 闪电 */
+.icon-elec{
+  width:1rem;
+  height:1rem;
+  background: url('../../static/img/bolt-black.png') center center no-repeat;
+  background-size:100% 100%;
+  display: block;
+}
+/* 扫一扫 */
+.icon-scan {
+  position: absolute;
+  left: 50%;
+  transform: translate(-1rem,-1rem);
+  height: 2rem;
+  width: 2rem;
+  background:#2eafed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius:50%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.icon-scan>i{
+  display: block;
+  background:url('../../static/img/scan-white.png') center center no-repeat;
+  background-size:100% 100%;
+  width:1.5rem;
+  height:1.5rem;
+}
+/* 我的 */
+.icon-me{
+  width:1rem;
+  height:1rem;
+  display: block;
+  background:url('../../static/img/person-gray.png') center center no-repeat;
+  background-size:100% 100%;
+  margin:.1rem auto 0;
+}
 
-.icon-shezhi:before { content: "\e61d"; }
+/* 右箭头 */
+.icon-right {
+  width: 0.4rem !important;
+  height: 0.4rem !important;
+  border-right: 2px solid #adadad;
+  border-top: 2px solid #adadad;
+  transform: rotate(45deg);
+  margin-right: 0.8rem !important;
+}
+/* 充电 */
+.icon-charge {
+  background: url("../../static/img/money.png") center center no-repeat;
+}
+/* 绑定IC */
+.icon-ICbind {
+  background: url("../../static/img/book.png") center center no-repeat;
+}
+/* 充电花费 */
+.icon-chargeMoneyLog {
+  background: url("../../static/img/money-red.png") center center no-repeat;
+}
+/*  */
+.icon-chargeElecLog {
+  background: url("../../static/img/recharge-log.png") center center no-repeat;
+}
+/* 邮箱 */
+.icon-email {
+  background: url("../../static/img/email-green.png") center center no-repeat;
+}
+/* 合作 */
+.icon-operator {
+  background: url("../../static/img/person-blue.png") center center no-repeat;
+}
+/* 注意 */
+.icon-attention {
+  background: url("../../static/img/attention.png") center center no-repeat;
+}
+/* 红点 */
+.icon-redPoint {
+  color: red;
+  font-size: 1.3rem;
+  position: absolute;
+  margin-top: -0.8rem;
+  margin-left: 0.1rem;
+}
+/* 总共 */
+.icon-total {
+  background-color: #ff9800;
+  font-size:0.45rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.2rem;
+  border-radius: 3px;
+  color: #fff;
+}
 
-.icon-lingdang:before { content: "\e62c"; }
+/* 闲 */
+.icon-idle {
+  background-color: #2eafed !important;
+  color: #fff;
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.45rem;
+  margin-right: 0.2rem;
+  border-radius: 3px;
+}
 
-.icon-sousuo:before { content: "\e6d8"; }
-
+.icon-label-box>span {
+  padding: 0 0.3rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 10rem;
+  font-size: 0.5rem;
+}

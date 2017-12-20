@@ -35,6 +35,7 @@ const operatorMain = r => require.ensure([], () => r(require('@/components/opera
 const agentList = r => require.ensure([], () => r(require('@/components/agentList.vue')), 'News'); //代理商列表
 const createAgent = r => require.ensure([], () => r(require('@/components/createAgent.vue')), 'News'); //创建代理商
 const updateAgent = r => require.ensure([], () => r(require('@/components/updateAgent.vue')), 'News'); //修改更新代理商信息
+const scroller = r => require.ensure([], () => r(require('@/components/vueScroller.vue')), 'News'); //修改更新代理商信息
 
 export default new Router({
   routes: [
@@ -199,6 +200,12 @@ export default new Router({
       name: 'updateAgent',
       component: updateAgent
     },
+    , 
+    {
+      path: '/scroller',
+      name: 'scroller',
+      component: scroller
+    }
   ]
 })
 // this.a.beforeEach(function(to,from,next){

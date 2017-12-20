@@ -2,17 +2,25 @@
   <div class="center-box">
     <!-- 头部 -->
     <div class="center-header">
-      <div>
+      <div class="por">
         <div class="v-fm">
-          <img src="../../static/img/person-green2.png" alt="">
+          <img src="../../static/img/head-pic-blue.png" alt="">
           <p @click="login">登录</p>
           <p style="margin:0 .2rem;">|</p>
           <p @click="register">注册</p>
         </div>
         <div>账户余额：<span v-text="accountReharge"></span>元</div>
+        <div class="setting-message v-fm">
+          <i class="iconfont icon-lingdang"></i>
+          <span>
+            <span class="icon-point">·</span>消息中心
+          </span>
+          <div>
+            <i class="iconfont icon-ttpodicon" style="display:block;"></i>
+          </div>
+        </div>
       </div>
     </div>
-  
     <div class="blank"></div>
     <!-- tab卡 -->
     <div class="center-handle v-f">
@@ -22,24 +30,24 @@
           <p>充值</p>
         </div>
       </router-link>
-      <router-link :to="{name:'bindIC'}" class="v-fcm v-i1">
-        <div class="tac">
-          <i class="icon-ICbind"></i>
-          <p>IC卡绑定</p>
-        </div>
-      </router-link>
       <router-link :to="{name:'rechargeLog'}" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-chargeMoneyLog"></i>
-          <p>充值记录</p>
+          <p>卡包</p>
         </div>
       </router-link>
-      <router-link :to="{name:'chargeElecLog'}" class="v-fcm v-i1">
+      <router-link :to="{name:'bindIC'}" class="v-fcm v-i1">
+        <div class="tac">
+          <i class="icon-ICbind"></i>
+          <p>卡片绑定</p>
+        </div>
+      </router-link>
+      <!-- <router-link :to="{name:'chargeElecLog'}" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-chargeElecLog"></i>
           <p>充电记录</p>
         </div>
-      </router-link>
+      </router-link> -->
     </div>
     <div class="blank"></div>
     <!-- 中心列表 -->
@@ -65,6 +73,23 @@
         <i class="icon-right"></i>
       </router-link>
     </div>
+    <!-- 底部导航栏 -->
+    <div class="footer v-f">
+      <router-link class="v-i1" :to="{name:'nearbyStation'}">
+        <i class="icon-elec m-auto"></i>
+        <p class="tac">电站</p>
+      </router-link>
+      <div class="v-i1">
+        <p class="tac" style="margin-top:1.05rem;">扫一扫</p>
+      </div>
+      <div  class="v-i1 checked">
+        <i class="icon-me"></i>
+        <p class="tac">我</p>
+      </div>
+      <div class="icon-scan">
+        <i></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,6 +110,7 @@ export default {
 
 <style lang="scss">
 @import "../../static/css/common.scss";
+@import "../../static/css/iconfont.css";
 .center-header {
   overflow: hidden;
   height: 8.5rem;
@@ -99,6 +125,11 @@ export default {
   }
   & > div {
     margin: 1rem 0 0 1rem;
+  }
+  & .setting-message{
+    position: absolute;
+    right:.5rem;
+    top:0;
   }
 }
 
@@ -131,51 +162,35 @@ export default {
     }
   }
 }
-.icon-right {
-  width: 0.4rem !important;
-  height: 0.4rem !important;
-  border-right: 2px solid #adadad;
-  border-top: 2px solid #adadad;
-  transform: rotate(45deg);
-  margin-right: 0.8rem !important;
-}
-.icon-charge {
-  background: url("../../static/img/money.png") center center no-repeat;
-}
-
-.icon-ICbind {
-  background: url("../../static/img/book.png") center center no-repeat;
-}
-
-.icon-chargeMoneyLog {
-  background: url("../../static/img/money-red.png") center center no-repeat;
-}
-
-.icon-chargeElecLog {
-  background: url("../../static/img/recharge-log.png") center center no-repeat;
-}
-
-.icon-star {
-  background: url("../../static/img/star.png") center center no-repeat;
-}
-
-.icon-email {
-  background: url("../../static/img/email-green.png") center center no-repeat;
-}
-
-.icon-operator {
-  background: url("../../static/img/person-blue.png") center center no-repeat;
-}
-
-.icon-attention {
-  background: url("../../static/img/attention.png") center center no-repeat;
-}
-
-.icon-redPoint {
-  color: red;
-  font-size: 1.3rem;
-  position: absolute;
-  margin-top: -0.8rem;
-  margin-left: 0.1rem;
-}
+.footer {
+    border-top:1px solid #eee;
+    position: absolute;
+    bottom:0;
+    width:100%;
+    z-index:2;
+    background:#f8f8f8;
+    border-top:1px solid #d0d0d0;
+    &>div {
+      height:2rem;
+      &.checked {
+        color:#2eafed;
+        &>.icon-elec {
+          background: url('../../static/img/bolt-blue.png') center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-scan {
+          background: url('../../static/img/bolt-blue.png') center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-me{
+          background:url('../../static/img/person-blue.png') center center no-repeat;
+          background-size:100% 100%;
+        }
+        &>p {
+          text-align: center;
+        }
+      }
+      
+    }
+  }
 </style>

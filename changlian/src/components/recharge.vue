@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="header v-fcm por">
+    <header class="header-bg-fff v-fcm por">
       <div class="v-fcm m-auto h-100" style="width:80%">充值</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
@@ -14,6 +14,9 @@
           <span v-if="!!val.discount" class="discount">赠{{val.discount}}元</span>
           <i v-if="selectedMoney===val.money" class="icon-check"></i>
         </p>
+      </div>
+      <div class="mt-5 mb-5">
+        <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span> 
       </div>
       <div class="payMethod">
         <p style="margin:.5rem auto;">支付方式</p>
@@ -103,7 +106,7 @@
         border-radius: 4px;
         margin-top: .5rem;
         margin-top: .5rem;
-        background: url('../../static/img/recharge-bg.jpeg') center center no-repeat;
+        background: url('../../static/img/recharge-card-bg-blue.jpg') center center no-repeat;
         &.checked {
           background-color: $cl-color;
           color: #fff;

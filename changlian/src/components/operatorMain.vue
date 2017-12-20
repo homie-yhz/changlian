@@ -15,11 +15,11 @@
 				<i class="icon-star"></i>
 				<div>绑定设备</div>
 			</router-link>
-			<router-link :to="{name:''}">
+			<router-link :to="{name:'agentList'}">
 				<i class="icon-star"></i>
 				<div>充值</div>
 			</router-link>
-			<router-link :to="{name:''}">
+			<router-link :to="{name:'agentList'}">
 				<i class="icon-star"></i>
 				<div>设备供电管理</div>
 			</router-link>

@@ -10,8 +10,9 @@
       </header>
       <!-- 搜索框 -->
       <div class="v-fm" style="height:2rem;color:black;">
-        <div class="por">
-          <input type="text" class="v-i1 ml-6 search-station" placeholder="请输入电站" style="" v-model="searchInfo">
+        <div class="por v-fm v-i1">
+          <input type="text" class="v-i1 ml-6 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
+          <span class="iconfont icon-sousuo"></span>
         </div>
         <div class="v-fcm" style="width:2.8rem;padding:.1rem 0;">
           <div class="">
@@ -28,11 +29,20 @@
       </tab>
     </div>
     <!-- 电站列表 -->
-    <div class="scroll-box" style="padding-top:5.7rem!important;padding-bottom:4rem;">
-      <div>
-        <ul class="station-list">
-          <li v-for="stationInfo in stationList">
-            <router-link :to="{name:'stationInfo',params:{stationId:stationInfo.ID}}" class="v-fm" style="width:100%;">
+    <div class="scroll-box" style="padding-top:5.7rem!important;padding-bottom:2rem;">
+    <div style="position:relative;height:100%;">
+      <scroller 
+        :on-refresh="refresh"
+        :on-infinite="infinite"
+        ref="scrollDom"
+        :no-data-text="noDataText"
+        >
+            <router-link 
+            v-for="stationInfo in stationList" 
+            :key="stationInfo.stationId" 
+            tag="div" 
+            :to="{name:'stationDetail',params:{stationId:stationInfo.stationId}}" 
+            class="v-fm station-item" style="width:100%;">
               <div class="ml-6 v-i1">
                 <!-- 地址 -->
                 <p class="fw-b">{{stationInfo.stationAddr}}</p>
@@ -56,62 +66,96 @@
               <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
               <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
                 <div>
-                  <i class="icon-star" style="margin-top:.2rem;"></i>
+                  <i class="icon-distance" style="margin-top:.2rem;"></i>
                   <!-- 据我多远 -->
                   <span>{{stationInfo.distanceToMe}}</span>
                 </div>
               </div>
             </router-link>
-          </li>
-          <li class="v-fcm">附近4公里范围内没有更多站点了</li>
-        </ul>
-      </div>
+      </scroller>
     </div>
-    <div class="footer v-fm">
-      <div class="v-i1 v-fcm">
+    </div>
+    <!-- 底部选项卡 -->
+    <div class="footer v-f">
+      <div class="v-i1 checked">
         <i class="icon-elec m-auto"></i>
-        <p class="m-auto">电站</p>
+        <p class="tac">电站</p>
       </div>
-      <div class="v-i1 v-fcm">
-        <i class="icon-scan"></i>
-        <p class="m-auto">扫一扫</p>
+      <div class="v-i1">
+        <p class="tac" style="margin-top:1.05rem;">扫一扫</p>
       </div>
-      <div class="v-i1 v-fcm">
+      <router-link class="v-i1" :to="{name:'personalCenter'}">
         <i class="icon-me"></i>
-        <p class="m-auto">我</p>
+        <p class="tac">我</p>
+      </router-link>
+      <div class="icon-scan">
+        <i></i>
       </div>
     </div>
+    <float-circle :num="chargingNum" :show="showFloatCircle"></float-circle>
   </div>
 </template>
 
 <script>
-import Vue from "Vue";
+import Vue from "vue";
 import axios from "axios";
+import VueScroller from "vue-scroller";
+import FloatCircle from "./my-cpt/float-circle.vue";
+import $ from "jquery";
+Vue.use(VueScroller);
 import { Tab, TabItem } from "vux";
+import GLOBAL, { judgeLogin } from "../GLOBAL";
 export default {
   components: {
     Tab,
-    TabItem
+    TabItem,
+    FloatCircle
   },
   data() {
     return {
       searchInfo: "",
       stationList: [],
-      index01: 0
+      index01: 0,
+      refreshing: false,
+      chargingNum: 0,
+      showFloatCircle: true,
+      hasNext: true,
+      noDataText: "附近10公里范围内没有更多站点了",
+      postData: {
+        currentPage: 0,
+        searchMethod: "all",
+        searchInfo: ""
+      }
     };
   },
+  computed: {},
   methods: {
-    getStationList() {
+    getStationList(done) {
+      this.postData.currentPage++;
+      console.log(JSON.stringify(this.postData));
       let _this = this;
-      var stationListUrl = "../../../../static/data/stationInfo.json";
+      let stationListUrl = "../../../../static/data/stationInfo.json";
       axios.get(stationListUrl).then(function(data) {
-        console.log(data.data);
-        console.log(JSON.stringify(data));
-        _this.stationList = data.data;
+        // console.log(data.data);
+        // console.log(JSON.stringify(data));
+        setTimeout(function() {
+          _this.stationList = _this.stationList.concat(data.data.stationList);
+          _this.hasNext = data.data.hasNext;
+          if (_this.stationList.length === 0) {
+            let noDataMsgHtml =
+              '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
+            $(".loading-layer>div").html(noDataMsgHtml);
+          } else {
+            _this.noDataText = "附近10公里范围内没有更多站点了";
+          }
+          done();
+        }, 2000);
       });
     },
     switchTabItem(index) {
       console.log("on-before-index-change", index);
+      this.postData.searchMethod =
+        index === 0 ? "all" : index === 1 ? "slow" : "fast";
       // this.$vux.loading.show({
       //   text: 'loading'
       // })
@@ -119,14 +163,95 @@ export default {
       // this.$vux.loading.hide()
       this.index01 = index;
       // }, 1000)
+      console.log(this.postData.searchMethod);
+      this.refresh();
     },
-    onItemClick(index) {
-      console.log("on item click:", index);
+    onItemClick(index, item) {
+      console.log(index);
+    },
+    refresh(done) {
+      console.log("refresh");
+      this.$nextTick(function() {
+        if (this.hasNext) {
+          $(".loading-layer")
+            .find(".spinner-holder")
+            .addClass("active");
+        } else {
+          $(".loading-layer")
+            .find(".spinner-holder")
+            .removeClass("active");
+        }
+      });
+      let _this = this;
+      this.refreshing = true;
+      this.postData.currentPage = 0;
+      this.postData.currentPage++;
+      console.log(this.postData);
+      let stationListUrl = "../../../../static/data/stationInfo.json";
+      axios.get(stationListUrl).then(function(data) {
+        // console.log(data.data);
+        // console.log(JSON.stringify(data));
+        setTimeout(function() {
+          _this.stationList = [];
+          _this.stationList = _this.stationList.concat(data.data.stationList);
+          _this.hasNext = data.data.hasNext;
+          _this.$nextTick(function() {
+            if (this.hasNext) {
+              $(".loading-layer")
+                .find(".spinner-holder")
+                .addClass("active");
+            } else {
+              $(".loading-layer")
+                .find(".spinner-holder")
+                .removeClass("active");
+            }
+          });
+          if (_this.stationList.length === 0) {
+            let noDataMsgHtml =
+              '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
+            $(".loading-layer>div").html(noDataMsgHtml);
+          } else {
+            _this.noDataText = "附近10公里范围内没有更多站点了";
+          }
+
+          _this.refreshing = false;
+          done();
+        }, 2000);
+      });
+    },
+    infinite(done) {
+      if (!this.refreshing) {
+        if (this.hasNext) {
+          console.log("infinite");
+          this.getStationList(done);
+        } else {
+          this.$refs.scrollDom.finishInfinite(true);
+        }
+      } else {
+        done();
+      }
     }
   },
+  mounted() {},
   created() {
     //获取附近电站信息列表
-    this.getStationList();
+    // this.getStationList();
+    console.log(this.hasNext);
+    //调用  是否登录接口
+    axios.all(){
+      
+    }
+    judgeLogin().then(function(hasLogin) {
+      console.log("是否登录：" + hasLogin);
+      
+    });
+  },
+  watch: {
+    searchInfo: function(nv, ov) {
+      console.log(nv, ov);
+      this.postData.searchInfo = nv;
+      this.refresh();
+    }
   }
 };
 </script>
@@ -138,11 +263,15 @@ export default {
 
 <style lang="scss">
 @import "../../static/css/common.scss";
-$cl-c: #ff9800;
-$cl-bgc: #ff9800;
+@import "../../static/css/iconfont.css";
+
 //重置tabs样式
 .vux-tab .vux-tab-item.vux-tab-selected {
   color: rgb(46, 175, 237) !important;
+}
+
+.search1:after {
+  content: "\e6d8";
 }
 
 .vux-tab-ink-bar {
@@ -164,6 +293,7 @@ $cl-bgc: #ff9800;
   height: 1.3rem;
   border-radius: 3px;
   background-color: #f7f7f7;
+  padding-right: 1.3rem;
 }
 
 .fast-charge {
@@ -183,50 +313,43 @@ $cl-bgc: #ff9800;
   margin: auto 0.2rem;
   border-radius: 3px;
 }
-
-.icon-star {
-  display: block;
-  width: 1rem;
-  height: 1rem;
-  background: url("../assets/logo.png") center center no-repeat;
-  background-size: 100% 100%;
-  margin: 0 auto;
+.station-item {
+  border-bottom: 1px solid #bbb;
+  padding: 0.5rem 0;
 }
 
-.station-list > li {
-  padding: 0.3rem 0;
-  border-bottom: 1px solid #e3e3e3;
-  &:last-child {
-    border-bottom: none;
+// 底部
+.footer {
+  border-top: 1px solid #eee;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  background: #f8f8f8;
+  border-top: 1px solid #d0d0d0;
+  & > div {
+    height: 2rem;
+    &.checked {
+      color: #2eafed;
+      & > .icon-elec {
+        background: url("../../static/img/bolt-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      & > .icon-scan {
+        background: url("../../static/img/bolt-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      & > .icon-me {
+        background: url("../../static/img/person-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      & > p {
+        text-align: center;
+      }
+    }
   }
-}
-
-.icon-total {
-  background-color: $cl-c;
-  font-size: 0.45rem;
-  width: 0.8rem;
-  height: 0.8rem;
-  margin-right: 0.2rem;
-  border-radius: 3px;
-  color: #fff;
-}
-
-/* 剩余的 */
-
-.icon-idle {
-  background-color: #00d94a;
-  color: #fff;
-  width: 0.8rem;
-  height: 0.8rem;
-  font-size: 0.45rem;
-  margin-right: 0.2rem;
-  border-radius: 3px;
-}
-
-.icon-label-box > span {
-  padding: 0 0.3rem;
-  border: 1px solid #e3e3e3;
-  border-radius: 10rem;
-  font-size: 0.5rem;
 }
 </style>
