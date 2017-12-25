@@ -20,33 +20,86 @@ export default {
      interfacePath:'http://eps.taikanglife.com/epstkrs',//接口路径公共域名部分
      appPath:'http://tkyc.eps.group.taikang.com/tkyc/tkgq/#',    //前台应用路径
      publicAccountAddress:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNjk1OTQ2NQ==&scene=124#wechat_redirect'*/
-  
 }
 
-//是否登录模块
-export function judgeLogin(){
-    return {
-        promiseFn:function(){
-            return new Promise(function(resolve,reject){
-                //let judgeLoginUrl = GLOBAL.interfacePath + '';
-                let judgeLoginUrl = '';
-                axios
-                  .get(judgeLoginUrl)
-                  .then(function(data){
-                      console.log('judgeLoginUrl|返回数据|'+JSON.stringify(data.data));
-                      data.data = {
-                          "hasLogin":false
-                      }
-                      if(data.data.hasLogin){
-                        resolve(true);
-                      }else{
-                        resolve(false);
-                      }
-                  })
-                  .catch(function(err){
-                      console.log({'url':judgeLoginUrl,'err':JSON.stringify(err)});
-                  });
-            });
-        }
+//判断是否登录模块
+export let judgeLoginObj = {
+    url:'',//let judgeLoginUrl = GLOBAL.interfacePath + '';
+    normalFn:function(){
+        return axios.get(this.url);
+    },
+    promiseFn:function(){
+        return new Promise(function(resolve,reject){
+            axios
+              .get(this.url)
+              .then(function(data){
+                  console.log('judgeLoginUrl|返回数据|'+JSON.stringify(data.data));
+                  data.data = {
+                      "hasLogin":false
+                  }
+                  if(data.data.hasLogin){
+                    resolve(true);
+                  }else{
+                    resolve(false);
+                  }
+              })
+              .catch(function(err){
+                  console.log({'url':judgeLoginUrl,'err':JSON.stringify(err)});
+              });
+        });
     }
+}
+
+//判断是否有设备正在充电  模块
+export let hasChargingMechineObj = {
+    url:'',//let hasChargingMechineUrl = GLOBAL.interfacePath + '';
+    normalFn:function(){
+        return axios.get(this.url);
+    },
+    promiseFn:function(){
+        return new Promise(function(resolve,reject){
+            //let judgeLoginUrl = GLOBAL.interfacePath + '';
+            let hasChargingMechineUrl = '';
+            axios
+              .get(hasChargingMechineUrl)
+              .then(function(data){
+                  console.log('hasChargingMechineUrl|返回数据|'+JSON.stringify(data.data));
+                  data.data = {
+                      'chargingMechineAmount':0
+                  }
+                 if(!!data.data.chargingMechineAmount){
+                     resolve(data.data.chargingMechineAmount);
+                 }else{
+                     resolve(0);
+                 }
+              })
+              .catch(function(err){
+                  console.log({'url':hasChargingMechineUrl,'err':JSON.stringify(err)});
+              });
+        });
+    }
+}
+
+// 获取用户信息
+/**
+ * 
+ */
+export function getUserInfo(){
+    return new Promise(function(resolve,reject){
+        //let userInfoUrl = GLOBAL.interfacePath + '';
+        let getUserInfoUrl = '';
+        axios
+            .get(getUserInfoUrl)
+            .then(function(data){
+                data.data = {
+                    bindState:true,
+                    balance:"100.00",
+                }
+                console.log('getUserInfoUrl|返回数据|'+JSON.stringify(data.data));
+                resolve(data.data);
+            })
+            .catch(function(err){
+                console.log({'url':getUserInfoUrl,'err':JSON.stringify(err)});
+            });
+    })
 }

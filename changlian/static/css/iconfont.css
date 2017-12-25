@@ -34,7 +34,7 @@
 /* 搜索 */
 .icon-sousuo:after { content: "\E6D8";
   position: absolute;
-  right: .3rem;
+  right: .9rem;
   display: block;
   top: 0;
   /* right: .5rem; */
@@ -181,4 +181,51 @@
   border: 1px solid #e3e3e3;
   border-radius: 10rem;
   font-size: 0.5rem;
+}
+
+/* 电话 */
+.icon-phone{
+  width:.7rem;
+  height: 0.7rem;
+  background:url('../../static/img/email-green.png') center center no-repeat;
+}
+
+/* 充电端口图标 */
+.icon-port{
+  width:.8rem;
+  height:.8rem;
+  margin:0 auto;
+  display: block;
+}
+/* 直流电-白色 */
+.icon-dc-white{
+  background:url('../../static/img/dc-white.png') center center no-repeat;
+  background-size:110% 110%;
+}
+/* 直流电-蓝色 */
+.icon-dc-blue{
+  background:url('../../static/img/dc-blue.png') center center no-repeat;
+  background-size:110% 110%;
+  margin-right:.3rem;
+}
+/* 交流电-白色 */
+.icon-ac-white{
+  background:url('../../static/img/ac-white.png') center center no-repeat;
+  background-size:120% 120%;
+}
+/* 交流电-蓝色 */
+.icon-ac-blue{
+  background:url('../../static/img/ac-blue.png') center center no-repeat;
+  background-size:120% 120%;
+  margin-right:.3rem;
+}
+
+/* 选中对号 圆形 背景为对号 */
+.icon-check-yes{
+  display: block;
+  width:1rem;
+  height:1rem;
+  border-radius:50%;
+  background:#2eafed url('../../static/img/yes-white.png') center center no-repeat;
+  background-size:100% 100%;
 }

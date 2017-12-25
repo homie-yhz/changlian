@@ -11,15 +11,15 @@
       <!-- 搜索框 -->
       <div class="v-fm" style="height:2rem;color:black;">
         <div class="por v-fm v-i1">
-          <input type="text" class="v-i1 ml-6 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
+          <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
           <span class="iconfont icon-sousuo"></span>
         </div>
-        <div class="v-fcm" style="width:2.8rem;padding:.1rem 0;">
+        <router-link tag="div" :to="{name:'stationDetail',params:{stationId:stationList.stationId}}" v-show="showUsuallyStation" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
           </div>
-        </div>
+        </router-link>
       </div>
       <!-- 搜索列表 -->
       <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
@@ -61,14 +61,21 @@
                   </span>
                 </p>
               </div>
-              <!-- 快慢充 -->
-              <div v-if="stationInfo.chargeType==='fast'" class="v-fcm fast-charge">快充</div>
-              <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
-              <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
-                <div>
-                  <i class="icon-distance" style="margin-top:.2rem;"></i>
-                  <!-- 据我多远 -->
-                  <span>{{stationInfo.distanceToMe}}</span>
+              <div class="">
+                <div class="v-f">
+                  <!-- 快慢充 -->
+                  <div v-if="stationInfo.chargeType==='fast'" class="v-fcm fast-charge">快充</div>
+                  <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
+                  <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
+                    <div>
+                      <i class="icon-distance" style="margin-top:.2rem;"></i>
+                      <!-- 据我多远 -->
+                      <span>{{stationInfo.distanceToMe}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-bind" v-if="stationList.showBindBtn">
+                  绑定
                 </div>
               </div>
             </router-link>
@@ -104,7 +111,7 @@ import FloatCircle from "./my-cpt/float-circle.vue";
 import $ from "jquery";
 Vue.use(VueScroller);
 import { Tab, TabItem } from "vux";
-import GLOBAL, { judgeLogin } from "../GLOBAL";
+import GLOBAL, { judgeLoginObj,hasChargingMechineObj } from "../GLOBAL";
 export default {
   components: {
     Tab,
@@ -118,9 +125,10 @@ export default {
       index01: 0,
       refreshing: false,
       chargingNum: 0,
-      showFloatCircle: true,
+      showFloatCircle: false, //是否展示悬浮球。
       hasNext: true,
       noDataText: "附近10公里范围内没有更多站点了",
+      showUsuallyStation:false, //是否展示常用电站按钮
       postData: {
         currentPage: 0,
         searchMethod: "all",
@@ -238,13 +246,29 @@ export default {
     // this.getStationList();
     console.log(this.hasNext);
     //调用  是否登录接口
-    axios.all(){
+    axios.all([judgeLoginObj.normalFn(),hasChargingMechineObj.normalFn()])
+      .then(function(){
+        console.log('all');
+        axios.spread(function(acc,pers){
+          console.log(acc);
+          console.log(pers);
+        })
+      });
+    // function judgeLoginFn(){
+    //   return axios.get('');
+    // }
+    // function hasChargingMechineFn(){
+    //   return axios.get('');
+    // }
+    // axios.all([judgeLoginFn(),hasChargingMechineFn()]).then(function(){
+    //   console.log('2222');
       
-    }
-    judgeLogin().then(function(hasLogin) {
-      console.log("是否登录：" + hasLogin);
-      
-    });
+    //   axios.spread(function(acc,pers){
+    //     console.log(222);
+    //     console.log(acc);
+    //     console.log(pers);
+    //   });
+    // })
   },
   watch: {
     searchInfo: function(nv, ov) {
@@ -294,6 +318,7 @@ export default {
   border-radius: 3px;
   background-color: #f7f7f7;
   padding-right: 1.3rem;
+  margin:0 .6rem;
 }
 
 .fast-charge {
@@ -351,5 +376,14 @@ export default {
       }
     }
   }
+}
+.btn-bind{
+  width:80%;
+  border:1px solid #2eafed;
+  height:1.2rem;
+  @include fcm;
+  border-radius:5px;
+  color:#2eafed;
+  margin:.2rem auto;
 }
 </style>

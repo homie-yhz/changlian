@@ -4,7 +4,7 @@
 		class="circle-box" 
 		:class="{'circle-box-shine':shine}"
 		:to="{name:'bindIc'}" 
-		v-show='show'
+		v-if='show'
 		>
 		<p class="v-fcm">{{num}}</p>
 		<p>充电中</p>

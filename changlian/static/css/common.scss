@@ -5,6 +5,7 @@ $cl-color:#19d64e;
 $cl-c: #ff9800;
 $cl-bgc: #ff9800;
 .c-666{color:#666;}
+.cl-red{color:rgb(229, 28, 35);}
 .header {
     height: 2rem;
     // border-bottom: 1px solid #d9d9d9;
@@ -32,16 +33,34 @@ $cl-bgc: #ff9800;
     z-index:2;
     background:rgba(46, 175, 237, .9);
     color:#fff;
+    .arrow-back {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-left: 2px solid #fff;
+        border-top: 2px solid #fff;
+        transform: rotate(-45deg);
+        margin-left: 0.5rem;
+    }
+}
+.header-poa-white{
+    height:2rem;
+    position: absolute;
+    top:0;
+    width:100%;
+    z-index:2;
+    background:#fff;
+    color:#4d4d4d;
+    border-bottom:1px solid #d9d9d9;
+    .arrow-back {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-left: 2px solid #2eafed;
+        border-top: 2px solid #2eafed;
+        transform: rotate(-45deg);
+        margin-left: 0.5rem;
+    }
 }
 
-.arrow-back {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-left: 2px solid #fff;
-    border-top: 2px solid #fff;
-    transform: rotate(-45deg);
-    margin-left: 0.5rem;
-}
 .icon-right {
     width: 0.4rem !important;
     height: 0.4rem !important;
@@ -94,7 +113,14 @@ $cl-bgc: #ff9800;
     overflow: scroll;
 }
 .cl-box{
-    padding:0 .8rem;
+    padding:.5rem .8rem;
+}
+.cl-footer{
+    height:2rem;
+    position: absolute;
+    bottom:0;
+    z-index:2;
+    width:100%;
 }
 @mixin f{
     display:-webkit-box;/* android 2.1-3.0, ios 3.2-4.3 */
@@ -164,4 +190,3 @@ $cl-bgc: #ff9800;
     -ms-flex:1;/* WP IE 10 */
     flex:1;/* android 4.4 */
   }
-
