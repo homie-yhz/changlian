@@ -2,7 +2,7 @@
   <div>
     <!-- 详情 -->
     <header class="header-poa-white v-fcm">
-      <div class="v-fcm m-auto h-100" style="width:80%">详情</div>
+      <div class="v-fcm m-auto h-100 header-title" style="width:80%">{{stationDetail.stationName}}</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>

@@ -1,4 +1,5 @@
 <template>
+<!-- 充值页面 -->
   <div>
     <header class="header-bg-fff v-fcm por">
       <div class="v-fcm m-auto h-100" style="width:80%">充值</div>
@@ -44,14 +45,19 @@
         <div @click="rechargeNow" class="recharge-btn v-fcm">立即充值</div>
       </div>
     </div>
+    <!-- 弹出层 -->
+    <cl-alert v-on:closeClAlert="closeClAlert" v-show="showClAlert"></cl-alert>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import { Toast } from "mint-ui";
 import axios from 'axios';
 import "mint-ui/lib/toast/style.css";
 import GLOBAL, { getUserInfo } from "../GLOBAL";
+import clAlert from './my-cpt/cl-alert.vue';
+Vue.component('cl-alert',clAlert);
 export default {
   data() {
     return {
@@ -86,14 +92,21 @@ export default {
       postData: {
         cardId: "", //卡号
         payMethod: "" //支付方式：微信/支付宝
-      }
+      },
+      showClAlert:false //展示 绑定弹出层
     };
   },
   methods: {
+    //监听子组件关闭事件
+    closeClAlert(state){
+      this.showClAlert = state;
+    },
+    // 选择卡片事件
     chooseCard(val) {
       this.selectedMoney = val.money;
       this.postData.cardId = val.cardId;
     },
+    // 选择付款方式
     payMethods(method) {
       this.postData.payMethod = method;
     },
@@ -127,13 +140,16 @@ export default {
         console.log(JSON.stringify(this.postData));
         // 判断是否绑定过用户
         getUserInfo().then(function(userInfo) {
+          console.log('bind');
+          console.log(userInfo);
           // 已绑定  调用充值接口
           if(userInfo.bindState===true){
             _this.rechargeInterface();
           }
           // 未绑定  弹框提示
           else{
-            
+            _this.showClAlert = true;
+            console.log(_this.showClAlert);
           }
         });
       }
