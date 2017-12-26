@@ -120,19 +120,23 @@
 }
 /* 充电 */
 .icon-charge {
-  background: url("../../static/img/money.png") center center no-repeat;
+  background: url("../../static/img/money-yellow.png") center center no-repeat;
 }
 /* 绑定IC */
-.icon-ICbind {
-  background: url("../../static/img/book.png") center center no-repeat;
+.icon-bindCard {
+  background: url("../../static/img/bind-card.png") center center no-repeat;
 }
-/* 充电花费 */
-.icon-chargeMoneyLog {
-  background: url("../../static/img/money-red.png") center center no-repeat;
+/* 卡包 */
+.icon-cardBox {
+  background: url("../../static/img/card-box.png") center center no-repeat;
 }
-/*  */
-.icon-chargeElecLog {
-  background: url("../../static/img/recharge-log.png") center center no-repeat;
+/* 充值记录 */
+.icon-rechargeLog {
+  background: url("../../static/img/charge-log-4.png") center center no-repeat;
+}
+/* 充电记录 */
+.icon-chargeLog{
+  background:url("../../static/img/charge-log-1.png") center center no-repeat;
 }
 /* 邮箱 */
 .icon-email {
@@ -140,7 +144,7 @@
 }
 /* 合作 */
 .icon-operator {
-  background: url("../../static/img/person-blue.png") center center no-repeat;
+  background: url("../../static/img/manage.png") center center no-repeat;
 }
 /* 注意 */
 .icon-attention {

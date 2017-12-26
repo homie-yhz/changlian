@@ -1,5 +1,5 @@
 // $cl-color:#ff9800;
-$cl-color:#19d64e;
+$cl-color:#2eafed;
 .cl-color{color:$cl-color};
 .cl-bg-green{background-color:$cl-color}
 $cl-c: #ff9800;
@@ -199,3 +199,8 @@ $cl-bgc: #ff9800;
     -ms-flex:1;/* WP IE 10 */
     flex:1;/* android 4.4 */
   }
+.cl-blank{
+    width:100%;
+    height:.5rem;
+    background-color: #c0e7f9;
+}

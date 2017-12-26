@@ -1,26 +1,43 @@
 <template>
   <div class="charge-box">
     <!-- 详情 -->
-    <header class="header-poa v-fcm">
-      <div class="v-fcm m-auto h-100" style="width:80%">充电状态</div>
+    <header class="header-poa-white v-fcm">
+      <div class="v-fcm m-auto h-100 header-title" style="width:80%">充电</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>
+      <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
+        <span class="arrow-back"></span>
+      </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
+      <div>
+        <!-- 设备信息 -->
+        <div>
+          <div class="equitment-box v-fb v-fm">
+            <div class="">
+              <!-- 设备地址 -->
+              <p>{{equipment.addr}}</p>
+              <!-- 设备编号 -->
+              <p>设备编号：{{equipment.num}}</p>
+            </div>
+          <div class="v-fcm icon-equipment-num">{{equipment.index}}</div>
+        </div>
+        <div class="v-fm" style="margin:0 0 .5rem .8rem;">
+          <i class="icon"></i>APP
+        </div>
+      </div>
+      <!-- 空格 -->
+      <div class="cl-blank"></div>
       <!-- 冲电圈 -->
-      <div class="charge-state">
-        <div class="circle">
+      <div class="charge-state por" style="overflow:hidden;">
+        <!-- 请求充电中 -->
+        <div class="circle" v-class="{'opacityToggle':chargingState}">
           <div class="percent">
             <span>70%</span>
           </div>
-          <!-- 电池 -->
-          <div class="battery m-auto v-fm">
-            <div class="v-fcm por">
-              ⚡️
-              <p class="poa"></p>
-            </div>
-            <div></div>
+          <div class="v-fcm" style="margin-top:1rem">
+            ⚡️
           </div>
           <div>健康保养充电中...</div>
           <div class="v-fcm">
@@ -30,45 +47,31 @@
             <p>当前功率 800瓦</p>
           </div>
         </div>
-      </div>
-      <!-- 设备信息 -->
-      <div class="equitment-box v-fb v-fm">
-        <div class="">
-          <!-- 设备地址 -->
-          <p>{{equipment.addr}}</p>
-          <!-- 设备编号 -->
-          <p>设备编号：{{equipment.num}}</p>
+        <!-- 请求充电中 -->
+        <div v-class="{'opacityToggle':!chargingState}" style="position:absolute;width:100%;top:0;opacity:0;">
+          <div class="circle v-fcm">
+          <div style="font-size:2rem;">⚡️</div>
+          <div style="position:absolute;bottom:.5rem;">请求充电中...</div>
         </div>
-        <div class="v-fcm icon-equipment-num">{{equipment.index}}</div>
+        </div>
       </div>
       <!-- 收费方式 -->
-      <ul class="cl-box cost-method-box">
-        <li class="v-fm">收费方式：按时长收费</li>
-        <li class="v-fm v-fb">
-          <div class="v-fm">
-            <i class="icon-point-green"></i>0
-            <功率≤200瓦 </div>
-              <div>0.5元/小时</div>
-        </li>
-        <li class="v-fm v-fb">
-          <div class="v-fm">
-            <i class="icon-point-green"></i>200
-            <功率≤500瓦 </div>
-              <div>0.7元/小时</div>
-        </li>
-        <li class="v-fm v-fb">
-          <div class="v-fm">
-            <i class="icon-point-green"></i>500
-            <功率≤800瓦 </div>
-              <div>1元/小时</div>
-        </li>
-        <li class="v-fm v-fb">
-          <div class="v-fm">
-            <i class="icon-point-green"></i>800
-            <功率≤1000瓦 </div>
-              <div>1.2元/小时</div>
-        </li>
-      </ul>
+      <div class="cost-method-box">
+        <div class="v-fm v-fb" style="padding:.5rem .8rem;">
+          <div class="v-fm">预设充电时长</div>
+          <div>2小时</div>
+        </div>
+        <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
+          <div class="mb-40">收费标准</div>
+          <div class="v-fm v-fb">
+            <div class="v-fm">
+              200<功率≤500瓦
+            </div>
+            <div>0.7元/小时</div>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
     <!-- 底部开始充电按钮 -->
     <div class="v-fcm" style="padding:0 .8rem;height:2rem;width:100%;bottom:0;position:absolute;z-index:2;">
@@ -77,183 +80,173 @@
   </div>
 </template>
 <script>
-  import axios from "axios";
-  import GLOBAL from "../GLOBAL";
-  import {
-    Toast
-  } from 'mint-ui'
-  import 'mint-ui/lib/toast/style.css';
-  export default {
-    data() {
-      return {
-        stationInfo: {},
-        postData: {
-          portId: '',
-          stationId: '',
-          methodId: '',
-        },
-        chargeMethods: [],
-        equipment: {
-          'addr': 'fdsafsa',
-          'num': '321321321',
-          'index': '02'
-        }
+import axios from "axios";
+import GLOBAL from "../GLOBAL";
+import { Toast } from "mint-ui";
+import "mint-ui/lib/toast/style.css";
+export default {
+  data() {
+    return {
+      stationInfo: {},
+      postData: {
+        portId: "",
+        stationId: "",
+        methodId: ""
+      },
+      chargeMethods: [],
+      equipment: {
+        addr: "fdsafsa",
+        num: "321321321",
+        index: "02"
       }
-    },
-    methods: {
-      stopCharge(){
-        
-      }
-    },
-    created() {
-      let _this = this;
-  
-    }
+    };
+  },
+  methods: {
+    stopCharge() {}
+  },
+  created() {
+    let _this = this;
+    //let requestChargeUrl = GLOBAL.interfacePath + '';
+    let requestChargeUrl = "";
+    axios
+      .get(requestChargeUrl)
+      .then(function(data) {
+        console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
+        data.data = {};
+      })
+      .catch(function(err) {
+        console.log({ url: requestChargeUrl, err: JSON.stringify(err) });
+      });
   }
+};
 </script>
 
 <style lang="scss">
-  @import '../../static/css/common.scss';
-  .bgc-2e {
-    background-color: #2e2e2e;
-  }
-  
-  .charge-box {
-    color: #fff;
-    height: 100%;
-    background-color: #2e2e2e;
-    header {
-      background-color: #2e2e2e;
-      border-bottom-color: #666;
-      color: #fff;
-      .arrow-back {
-        border-color: #fff;
+@import "../../static/css/common.scss";
+.bgc-2e {
+  background-color: #2e2e2e;
+}
+
+.charge-box {
+  color: #fff;
+  height: 100%;
+  background-color: #2daeec;
+  .charge-state {
+    .circle {
+      border: 2px solid #fff;
+      border-radius: 50%;
+      height: 7rem;
+      width: 7rem;
+      margin: 0.5rem auto;
+      position: relative;
+      & > div {
+        margin: 0 auto 0.2rem;
+        text-align: center;
       }
-    }
-    .charge-state {
-      .circle {
-        border: 1px solid #06c421;
-        border-radius: 50%;
-        height: 7rem;
-        width: 7rem;
-        margin: .5rem auto;
-        position: relative;
-        &>div {
-          margin: 0 auto .2rem;
-          text-align: center;
+      // 70%
+      & > div:nth-child(1) {
+        color: #fff !important;
+      }
+      // 健康保养充电中...
+      & > div:nth-child(3) {
+        margin-top: 0.4rem;
+        color: #fff !important;
+        text-shadow: #fff 0px 0px 4px;
+      }
+      & > div:nth-child(4) {
+        color: #ebd510;
+        & > p {
+          border-bottom: 1px solid #b2dbee;
         }
-        // 70%
-        &>div:nth-child(1) {
-          color: #06c421!important;
+      }
+      & > div:nth-child(5) {
+        color: #ebd510;
+        & > p {
+          border-bottom: 1px solid #b2dbee;
         }
-        // 健康保养充电中...
-        &>div:nth-child(3) {
-          margin-top: .4rem;
-          color: #06c421!important;
-          text-shadow: #19d74f 0px 0px 4px;
+      }
+      .percent {
+        position: absolute;
+        top: -0.4rem;
+        width: 100%;
+        text-align: center;
+        span {
+          background-color: #2daeec;
         }
-        &>div:nth-child(4) {
-          color: #f2960c;
-          &>p {
-            border-bottom: 1px solid #ababab;
+      }
+      .battery {
+        width: 3rem;
+        margin-top: 1rem;
+        & > div:first-child {
+          width: 95%;
+          height: 1.3rem;
+          border: 1px solid #fff;
+          p {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            animation: changeWidth 3s linear infinite;
           }
         }
-        &>div:nth-child(5) {
-          color: #f2960c;
-          &>p {
-            border-bottom: 1px solid #ababab;
-          }
-        }
-        .percent {
-          position: absolute;
-          top: -.4rem;
-          width: 100%;
-          text-align: center;
-          span {
-            background-color: #2e2e2e;
-          }
-        }
-        .battery {
-          width: 3rem;
-          margin-top: 1rem;
-          &>div:first-child {
-            width: 95%;
-            height: 1.3rem;
-            border: 1px solid #06c421;
-            p {
-              background-color: #06c421;
-              height: 100%;
-              width: 100%;
-              top: 0;
-              left: 0;
-              z-index: -1;
-              animation: changeWidth 3s linear infinite;
-            }
-          }
-          &>div:last-child {
-            width: 5%;
-            height: .4rem;
-            background-color: #06c421;
-          }
+        & > div:last-child {
+          width: 5%;
+          height: 0.4rem;
+          background-color: #06c421;
         }
       }
     }
   }
-  
-  .equitment-box {
-    padding: 0.5rem 0.8rem;
-    background-color: #757575;
-    &>div>p:first-child {
-      margin-bottom: 0.4rem;
-    }
+}
+
+.equitment-box {
+  padding: 0.5rem 0.8rem;
+  background-color: #2daeec;
+  & > div > p:first-child {
+    margin-bottom: 0.4rem;
   }
-  
   .icon-equipment-num {
     border-radius: 100rem;
     height: 2rem;
     width: 2rem;
     background-color: #ff9800;
     color: #fff;
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
-  
-  .cost-method-box {
-    &>li {
-      height: 1.8rem;
-      border-bottom: 1px dashed #fff;
-      &:first-child {
-        border-bottom: none;
-        height: 1rem;
-        margin-top: .3rem;
-      }
-    }
+}
+
+.cost-method-box {
+  & > div {
   }
-  
-  .icon-point-green {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    display: block;
-    background-color: #19d74f;
-    margin-right: .2rem;
+}
+
+.icon-point-green {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  display: block;
+  background-color: #19d74f;
+  margin-right: 0.2rem;
+}
+.stop-btn {
+  width: 100%;
+  margin: 0 auto;
+  height: 1.6rem;
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 5px;
+}
+@keyframes changeWidth {
+  0% {
+    width: 0%;
   }
-  .stop-btn{
-    width:100%;
-    margin:0 auto;
-    height: 1.6rem;
-    border:1px solid #19d74f;
-    color:#19d74f;
-    border-radius:5px;
+  50% {
+    width: 100%;
   }
-  @keyframes changeWidth {
-    0% {
-      width: 0%;
-    }
-    50% {
-      width: 100%;
-    }
-    100% {
-      width: 0%;
-    }
+  100% {
+    width: 0%;
   }
+}
 </style>

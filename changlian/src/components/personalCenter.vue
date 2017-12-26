@@ -12,10 +12,11 @@
         <div>账户余额：<span v-text="accountReharge"></span>元</div>
         <div class="setting-message v-fm">
           <i class="iconfont icon-lingdang"></i>
-          <span>
-            <span class="icon-point">·</span>消息中心
-          </span>
-          <div>
+          <div class="v-f" style="height:.8rem;">
+            <span class="icon-point-red"></span>
+          </div>
+          消息中心
+          <div class="v-fcm">
             <i class="iconfont icon-ttpodicon" style="display:block;"></i>
           </div>
         </div>
@@ -32,13 +33,13 @@
       </router-link>
       <router-link :to="{name:'rechargeLog'}" class="v-fcm v-i1">
         <div class="tac">
-          <i class="icon-chargeMoneyLog"></i>
+          <i class="icon-cardBox"></i>
           <p>卡包</p>
         </div>
       </router-link>
       <router-link :to="{name:'bindIC'}" class="v-fcm v-i1">
         <div class="tac">
-          <i class="icon-ICbind"></i>
+          <i class="icon-bindCard"></i>
           <p>卡片绑定</p>
         </div>
       </router-link>
@@ -52,27 +53,35 @@
     <div class="blank"></div>
     <!-- 中心列表 -->
     <div class="center-list">
-      <router-link :to="{name:'usuallyStation'}" class="v-fm">
+      <router-link :to="{name:'rechargeLog'}" class="v-fm">
+        <i class="icon-rechargeLog"></i>
+        <p class="v-i1">充值记录</p>
+        <i class="icon-right"></i>
+      </router-link>
+      <router-link :to="{name:'myNews'}" class="v-fm">
+        <i class="icon-chargeLog"></i>
+        <p class="v-i1">充电记录</p>
+        <i class="icon-right"></i>
+      </router-link>
+      <router-link :to="{name:'operatorPlatform'}" class="v-fm">
         <i class="icon-star"></i>
         <p class="v-i1">常用电站</p>
         <i class="icon-right"></i>
       </router-link>
-      <router-link :to="{name:'myNews'}" class="v-fm">
-        <i class="icon-email"></i>
-        <p class="v-i1">我的消息<i v-show="hasNews" class="icon-redPoint">·</i></p>
-        <i class="icon-right"></i>
-      </router-link>
-      <router-link :to="{name:'operatorPlatform'}" class="v-fm">
-        <i class="icon-operator"></i>
-        <p class="v-i1">运营商管理平台</p>
-        <i class="icon-right"></i>
-      </router-link>
-      <router-link :to="{name:'aboutUs'}" class="v-fm">
-        <i class="icon-attention"></i>
-        <p class="v-i1">关于我们</p>
-        <i class="icon-right"></i>
-      </router-link>
     </div>
+    <div class="blank"></div>
+    <div class="center-list">
+      <router-link :to="{name:'aboutUs'}" class="v-fm">
+          <i class="icon-operator"></i>
+          <p class="v-i1">经营者管理平台</p>
+          <i class="icon-right"></i>
+        </router-link>
+        <router-link :to="{name:'aboutUs'}" class="v-fm">
+          <i class="icon-attention"></i>
+          <p class="v-i1">关于我们</p>
+          <i class="icon-right"></i>
+        </router-link>
+      </div>
     <!-- 底部导航栏 -->
     <div class="footer v-f">
       <router-link class="v-i1" :to="{name:'nearbyStation'}">
@@ -130,6 +139,14 @@ export default {
     position: absolute;
     right:.5rem;
     top:0;
+    .icon-point-red{
+      width:5px;
+      height: 5px;
+      display: block;
+      border-radius:50%;
+      background-color:#e51c23;
+      margin-right:.2rem;
+    }
   }
 }
 
@@ -141,8 +158,8 @@ export default {
       border: none;
     }
     i {
-      width: 1.3rem;
-      height: 1.3rem;
+      width: 1.5rem;
+      height: 1.5rem;
       margin: 0 auto 0.2rem;
       display: block;
       background-size: 100% 100%;
@@ -151,12 +168,12 @@ export default {
 }
 .center-list {
   & > a {
-    height: 1.5rem;
+    height: 1.8rem;
     border-bottom: 1px solid #e6e6e6;
     & > i {
-      width: 0.7rem;
-      height: 0.7rem;
-      margin: 0 0.3rem 0;
+      width: 1rem;
+      height: 1rem;
+      margin: 0 1rem 0;
       display: block;
       background-size: 100% 100%;
     }
