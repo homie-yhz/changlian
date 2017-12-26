@@ -10,7 +10,7 @@
         <span class="arrow-back"></span>
       </div>
     </header>
-    <div class="scroll-box" style="padding-bottom:2rem">
+    <div class="scroll-box">
       <div>
       <!-- 选择充电口 -->
       <div class="cl-box">
@@ -38,28 +38,10 @@
             </div>
           </div>
         </div>
-        <p class="mt-50">选择充电方式</p>
-        <div class="method-box">
-          <div :class="{'checked':postData.methodId === method.ID}" @click="chooseChargeMethod(method)" class="v-fcm" v-for="method in chargeMethods">
-            {{method.name}}
-            <div v-if="postData.methodId === method.ID">
-              <i class="icon-triangle"></i>
-              <i class="icon-yes"></i>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="blank"></div>
       <!-- 充电站补充信息 -->
       <div class="cl-box">
-        <p>收费标准说明</p>
-        <!-- 收费说明块 -->
-        <ul class="charge-description">
-          <li v-for="chargeDescriptionItem in stationDetail.chargeDescripetionList">
-            <p>{{chargeDescriptionItem.wRange}}</p>
-            <p>{{chargeDescriptionItem.priceRate}}</p>
-          </li>
-        </ul>
         <div style="color:#666;">
           <div class="v-fb">
             <span>运营时间</span>
@@ -78,14 +60,7 @@
       </div>
       </div>
     </div>
-    <!-- 底部开始充电按钮 -->
-    <div class="cl-footer v-fb">
-      <div class="v-fcm v-i1" style="background-color:#f2f2f2;">
-        <span class="v-i1 tac">余额：<span class="cl-red balance">{{userInfo.balance}}</span></span>
-        <router-link :to="{name:'recharge'}" @click="recharge"  class="v-fcm btn-recharge">充值</router-link>
-      </div>
-      <div @click="startCharge" class="v-fcm btn-start-charge">开始充电</div>
-    </div>
+    
   </div>
 </template>
 <script>
@@ -114,6 +89,7 @@ export default {
       if (portState === "idle") {
         //增加样式
         this.postData.portId = port.ID;
+        this.$router.push({name:'chooseChargeMethod',params:{'portId':port.ID}})
       } else if (portState === "broken") {
         Toast("抱歉！该充电口暂时无法使用！");
       } else if (portState === "charging") {
@@ -134,6 +110,7 @@ export default {
         Toast("请选择充电方式");
       } else {
         console.log(JSON.stringify(this.postData));
+        this.$router.push({name:'charging'});
       }
     },
     // 充值
@@ -157,7 +134,6 @@ export default {
           idleChargePortsNum: 2, //闲置的充电口数
           chargeType: "fast", //充电口类型  fast/slow
           distanceToMe: "200m", //距离我的位置
-          ID: "充电站ID", //充电站ID
           operationTime: "00:00-24:00", //运营时间
           operator: "运营商", //运营商
           parkCost: "免费/2元/h", //停车费用
@@ -359,10 +335,10 @@ $cl-bgc: #ff9800;
       }
     }
     &.broken {
-      border: 1px solid #e6e6e6;
+      border: 1px solid #bbbbbb;
       & > div {
         &:last-child {
-          background-color: #e6e6e6;
+          background-color: #bbbbbb;
         }
       }
     }
@@ -375,17 +351,17 @@ $cl-bgc: #ff9800;
       }
     }
     &.idle {
-      border: 1px solid #2eafed;
+      border: 1px solid #19d64e;
       & > div {
         &:last-child {
-          background-color: #2eafed;
+          background-color: #19d64e;
         }
       }
       &.checked {
-        background-color: #2eafed;
+        background-color: #19d64e;
         color: #fff;
-        border-color: #0c81b3;
-        box-shadow:0 0 4px #0564a8;
+        border-color: #19d64e;
+        box-shadow:0 0 4px #19d64e;
         font-weight:bold;
       }
     }

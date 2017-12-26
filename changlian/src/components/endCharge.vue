@@ -20,7 +20,7 @@
           </div>
         </div>
         <!-- 充电设备详情 -->
-        <div class="equitment-box v-fb v-fm">
+        <div class="equitment-box v-fb v-fm" style="background-color: #f2f2f2;">
           <div class="">
             <!-- 设备地址 -->
             <p>{{equipment.addr}}</p>
@@ -66,8 +66,7 @@
         <span>{{endChargeInfo.chargeEndTime}}</span>
       </p>
     </div>
-    
-    <router-link :to="{name:''}" class="btn" style="height:1.8rem;width:90%;margin:0 auto;">关闭</router-link>
+    <router-link :to="{name:'nearbyStation'}" replace class="btn" style="height:1.8rem;width:90%;margin:0 auto;">关闭</router-link>
       </div>
     </div>
   </div>
@@ -84,6 +83,11 @@
           num: "321321321",
           index: "02",
         }
+      }
+    },
+    methods:{
+      closeEndChargePage(){
+        this.$router.replace();
       }
     },
     created() {

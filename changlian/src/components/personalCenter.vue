@@ -5,11 +5,16 @@
       <div class="por">
         <div class="v-fm">
           <img src="../../static/img/head-pic-blue.png" alt="">
-          <p @click="login">登录</p>
-          <p style="margin:0 .2rem;">|</p>
-          <p @click="register">注册</p>
+          <div v-if="!userInfo.loginState" class="v-fcm">
+            <p @click="login">登录</p>
+            <p style="margin:0 .2rem;">|</p>
+            <p @click="register">注册</p>
+          </div>
+          <div v-else>
+            <span>{{userInfo.phone}}</span>
+          </div>
         </div>
-        <div>账户余额：<span v-text="accountReharge"></span>元</div>
+        <div>账户余额：<span>{{userInfo.loginState?userInfo.balance:'--:--'}}</span> 元</div>
         <div class="setting-message v-fm">
           <i class="iconfont icon-lingdang"></i>
           <div class="v-f" style="height:.8rem;">
@@ -43,12 +48,6 @@
           <p>卡片绑定</p>
         </div>
       </router-link>
-      <!-- <router-link :to="{name:'chargeElecLog'}" class="v-fcm v-i1">
-        <div class="tac">
-          <i class="icon-chargeElecLog"></i>
-          <p>充电记录</p>
-        </div>
-      </router-link> -->
     </div>
     <div class="blank"></div>
     <!-- 中心列表 -->
@@ -103,16 +102,23 @@
 </template>
 
 <script>
+import GLOBAL,{getUserInfo} from '../GLOBAL';
 export default {
   data() {
     return {
-      accountReharge: "" || "--:--",
-      hasNews: true
+      hasNews: true,
+      userInfo:{}
     };
   },
   methods: {
     login() {},
     register() {}
+  },
+  created(){
+    let _this = this;
+    getUserInfo().then(function(userInfo){
+      _this.userInfo = userInfo;
+    })
   }
 };
 </script>

@@ -30,9 +30,9 @@
       <!-- 空格 -->
       <div class="cl-blank"></div>
       <!-- 冲电圈 -->
-      <div class="charge-state por" style="overflow:hidden;">
-        <!-- 请求充电中 -->
-        <div class="circle" v-class="{'opacityToggle':chargingState}">
+      <div class="charge-state por " style="overflow:hidden;">
+        <!-- 正在充电 -->
+        <div class="circle opacity0" :class="{'opacity1':equipment.chargingState}">
           <div class="percent">
             <span>70%</span>
           </div>
@@ -48,15 +48,15 @@
           </div>
         </div>
         <!-- 请求充电中 -->
-        <div v-class="{'opacityToggle':!chargingState}" style="position:absolute;width:100%;top:0;opacity:0;">
+        <div class="opacity0" :class="{'opacity1':!equipment.chargingState}" style="position:absolute;width:100%;top:0;">
           <div class="circle v-fcm">
           <div style="font-size:2rem;">⚡️</div>
-          <div style="position:absolute;bottom:.5rem;">请求充电中...</div>
+          <div style="position:absolute;bottom:1rem;">请求充电中...</div>
         </div>
         </div>
       </div>
       <!-- 收费方式 -->
-      <div class="cost-method-box">
+      <div class="cost-method-box opacity0" :class="{'opacity1':equipment.chargingState}">
         <div class="v-fm v-fb" style="padding:.5rem .8rem;">
           <div class="v-fm">预设充电时长</div>
           <div>2小时</div>
@@ -74,7 +74,7 @@
     </div>
     </div>
     <!-- 底部开始充电按钮 -->
-    <div class="v-fcm" style="padding:0 .8rem;height:2rem;width:100%;bottom:0;position:absolute;z-index:2;">
+    <div class="v-fcm opacity0" :class="{'opacity1':equipment.chargingState}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
       <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
     </div>
   </div>
@@ -94,15 +94,25 @@ export default {
         methodId: ""
       },
       chargeMethods: [],
-      equipment: {
-        addr: "fdsafsa",
-        num: "321321321",
-        index: "02"
-      }
+      equipment:{},
+      chargingState:false
     };
   },
   methods: {
-    stopCharge() {}
+    stopCharge() {
+      let _this = this;
+      //let stopChargeUrl = GLOBAL.interfacePath + '';
+      let stopChargeUrl = '';
+      axios
+        .get(stopChargeUrl)
+        .then(function(data){
+          console.log('stopChargeUrl|返回数据|'+JSON.stringify(data.data));
+          _this.$router.push({name:'endCharge'});
+        })
+        .catch(function(err){
+          console.log({'url':stopChargeUrl,'err':JSON.stringify(err)});
+        });
+    }
   },
   created() {
     let _this = this;
@@ -112,7 +122,14 @@ export default {
       .get(requestChargeUrl)
       .then(function(data) {
         console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
-        data.data = {};
+        setTimeout(()=>{
+          _this.equipment = {
+            addr: "fdsafsa",
+            num: "321321321",
+            index: "02",
+            chargingState : true
+          };
+        },2000);
       })
       .catch(function(err) {
         console.log({ url: requestChargeUrl, err: JSON.stringify(err) });
@@ -170,31 +187,11 @@ export default {
         top: -0.4rem;
         width: 100%;
         text-align: center;
+        @include fcm;
         span {
           background-color: #2daeec;
-        }
-      }
-      .battery {
-        width: 3rem;
-        margin-top: 1rem;
-        & > div:first-child {
-          width: 95%;
-          height: 1.3rem;
-          border: 1px solid #fff;
-          p {
-            background-color: #fff;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            animation: changeWidth 3s linear infinite;
-          }
-        }
-        & > div:last-child {
-          width: 5%;
-          height: 0.4rem;
-          background-color: #06c421;
+          display: block;
+          width:1.8rem;
         }
       }
     }
@@ -231,22 +228,18 @@ export default {
   margin-right: 0.2rem;
 }
 .stop-btn {
-  width: 100%;
+  width: 80%;
   margin: 0 auto;
   height: 1.6rem;
   border: 1px solid #fff;
   color: #fff;
   border-radius: 5px;
 }
-@keyframes changeWidth {
-  0% {
-    width: 0%;
-  }
-  50% {
-    width: 100%;
-  }
-  100% {
-    width: 0%;
-  }
+.opacity0{
+  opacity:0;
+  transition:opacity 0.25s ease-in;
+}
+.opacity1{
+  opacity:1;
 }
 </style>

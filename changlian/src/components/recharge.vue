@@ -11,13 +11,16 @@
     <div class="recharge-box">
       <div class="money-box">
         <p class="v-fcm por" v-for="val in moneyList" @click="chooseCard(val)" :class="{'checked':postData.cardId===val.cardId}" :key="val.cardId">
+          <span class="agent-name">{{val.agentName}}</span>
+          <i class="icon-cl-log"></i>
           <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.money}}</span></span>
           <span v-show="!!val.giveMoney" class="give-money">赠{{val.giveMoney}}元</span>
           <i v-show="postData.cardId===val.cardId" class="icon-check"></i>
           <i v-show="postData.cardId===val.cardId" class="icon-check-yes"></i>
+          <span class="give-money-end-time">赠额有效期至{{val.giveMoneyEndTime}}</span>
         </p>
       </div>
-      <div class="mt-5 mb-5">
+      <div class="mt-8 mb-5 fz-50">
         <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span> 
       </div>
       <div class="payMethod">
@@ -36,7 +39,7 @@
     <div class="recharge-bottom-box">
       <div class="agreement v-fcm">
         点击立即充值，即表示您已经同意
-        <router-link :to="{name:''}">《充值协议》</router-link>
+        <router-link :to="{name:'rechargeAgreement'}">《充值协议》</router-link>
       </div>
       <div class="recharge-btn-box v-f">
         <div class="v-fcm v-i1">
@@ -66,25 +69,29 @@ export default {
           money: 20,
           giveMoney: 0,
           giveMoneyEndTime:"2017-01-01",
-          cardId:"a"
+          cardId:"a",
+          agentName:"代理商名称"
         },
         {
           money: 50,
           giveMoney: 5,
           giveMoneyEndTime:"2017-01-01",
-          cardId:"b"
+          cardId:"b",
+          agentName:"代理商名称"
         },
         {
           money: 100,
           giveMoneyEndTime:"2017-01-01",
           giveMoney: 10,
-          cardId:"c"
+          cardId:"c",
+          agentName:"代理商名称"
         },
         {
           money: 200,
           giveMoneyEndTime:"2017-01-01",
           giveMoney: 15,
-          cardId:"d"
+          cardId:"d",
+          agentName:"代理商名称"
         }
       ],
       selectedMoney: "",
@@ -153,7 +160,13 @@ export default {
           }
         });
       }
+    },
+    back(){
+      this.$router.go(-1);
     }
+  },
+  created(){
+
   }
 };
 </script>
@@ -169,7 +182,7 @@ export default {
     p {
       color: #fff;
       overflow: hidden;
-      width: 46%;
+      width: 48%;
       height: 4rem;
       border-radius: 4px;
       margin-top: 0.5rem;
@@ -183,7 +196,7 @@ export default {
         box-shadow: 0 0 6px #0564a8;
       }
       &:nth-child(2n-1) {
-        margin-right: 8%;
+        margin-right: 4%;
       }
       .give-money {
         position: absolute;
@@ -198,11 +211,42 @@ export default {
       }
       .icon-check-yes {
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: 1px;
+        right: 1px;
         width: 0.7rem;
         height: 0.7rem;
+        z-index:11;
       }
+    }
+    .agent-name{
+      display: block;
+      color:#fff;
+      position: absolute;
+      width:100%;
+      left: 0;
+      top:0;
+      font-size:.4rem;
+      padding:.1rem 0 0 .2rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .icon-cl-log{
+      background:url('../../static/img/changlian-logo-white.png') center center no-repeat;
+      background-size:140% 170%;
+      display: block;
+      width:1.6rem;
+      height:1.4rem;
+      position: absolute;
+      left: 0;bottom:0;
+      opacity:.5;
+    }
+    .give-money-end-time{
+      position: absolute;
+      bottom:0;
+      right:0;
+      display: block;
+      font-size:.4rem;
     }
   }
 }
@@ -243,17 +287,13 @@ export default {
 }
 
 .icon-check {
-  // height: 0.8rem;
-  // width:.8rem;
-  // background-color: red;
-  // position: absolute;
-  // right: 0;bottom:0;
   border: 1.4rem solid transparent;
   border-bottom: 1.4rem solid #fff;
   display: block;
   position: absolute;
   right: -1.4rem;
   bottom: -1px;
+  z-index:2;
 }
 
 .recharge-bottom-box {

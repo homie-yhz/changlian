@@ -13,6 +13,7 @@ const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardL
 const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
+const rechargeAgreement = r => require.ensure([], () => r(require('@/components/rechargeAgreement.vue')), 'News');
 const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
 const personalCenter = r => require.ensure([], () => r(require('@/components/personalCenter.vue')), 'News');
 const phoneInput = r => require.ensure([], () => r(require('@/components/phoneInput.vue')), 'News');
@@ -21,7 +22,8 @@ const recharge = r => require.ensure([], () => r(require('@/components/recharge.
 const rechargeLog = r => require.ensure([], () => r(require('@/components/rechargeLog.vue')), 'News');
 const showIC = r => require.ensure([], () => r(require('@/components/showIC.vue')), 'News');
 const startElec = r => require.ensure([], () => r(require('@/components/startElec.vue')), 'News');
-const stationDetail = r => require.ensure([], () => r(require('@/components/stationDetail.vue')), 'News');
+const chooseStationPort = r => require.ensure([], () => r(require('@/components/chooseStationPort.vue')), 'News');
+const chooseChargeMethod = r => require.ensure([], () => r(require('@/components/chooseChargeMethod.vue')), 'News');
 const usuallyStation = r => require.ensure([], () => r(require('@/components/usuallyStation.vue')), 'News');
 const nearbyStation = r => require.ensure([], () => r(require('@/components/nearbyStation.vue')), 'News');
 const bindStation = r => require.ensure([], () => r(require('@/components/bindStation.vue')), 'News');
@@ -90,6 +92,11 @@ export default new Router({
       component: login
     },
     {
+      path: '/rechargeAgreement',
+      name: 'rechargeAgreement',
+      component: rechargeAgreement
+    },
+    {
       path: '/main',
       name: 'main',
       component: main
@@ -140,9 +147,14 @@ export default new Router({
       component: startElec
     },
     {
-      path: '/stationDetail/:stationId',
-      name: 'stationDetail',
-      component: stationDetail
+      path: '/chooseStationPort/:stationId',
+      name: 'chooseStationPort',
+      component: chooseStationPort
+    },
+    {
+      path: '/chooseChargeMethod/:portId',
+      name: 'chooseChargeMethod',
+      component: chooseChargeMethod
     },
     {
       path: '/usuallyStation',

@@ -41,7 +41,7 @@
             v-for="stationInfo in stationList" 
             :key="stationInfo.stationId" 
             tag="div" 
-            :to="{name:'stationDetail',params:{stationId:stationInfo.stationId}}" 
+            :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" 
             class="v-fm station-item" style="width:100%;">
               <div class="ml-6 v-i1">
                 <!-- 地址 -->

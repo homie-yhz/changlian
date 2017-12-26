@@ -8,13 +8,12 @@ $cl-bgc: #ff9800;
 .cl-red{color:rgb(229, 28, 35);}
 .header {
     height: 2rem;
-    // border-bottom: 1px solid #d9d9d9;
-    background:rgba(46, 175, 237, .9);
+    background:rgba(46, 175, 237, .7);
     color:#fff;
 }
 .header-bg-fff{
     height:2rem;
-    background:#fff;
+    background:rgba(255,255,255,.7);
     border-bottom:1px solid #f8f8f8;
 }
 .header-bg-fff .arrow-back{
@@ -57,7 +56,7 @@ $cl-bgc: #ff9800;
     top:0;
     width:100%;
     z-index:2;
-    background:#fff;
+    background:rgba(255,255,255,.7);
     color:#4d4d4d;
     border-bottom:1px solid #d9d9d9;
     .arrow-back {

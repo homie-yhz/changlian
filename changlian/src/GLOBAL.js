@@ -94,6 +94,8 @@ export function getUserInfo(){
                 data.data = {
                     bindState:true,
                     balance:"100.00",
+                    loginState:true,
+                    phone:'17777777777'
                 }
                 console.log('getUserInfoUrl|返回数据|'+JSON.stringify(data.data));
                 resolve(data.data);
