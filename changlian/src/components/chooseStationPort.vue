@@ -96,27 +96,7 @@ export default {
         Toast("该端口正在使用！");
       }
     },
-    // 选择充电模式
-    chooseChargeMethod(method) {
-      console.log(method.ID);
-      // 充电模式存入postData
-      this.postData.methodId = method.ID;
-    },
-    // 开始充电
-    startCharge() {
-      if (!this.postData.portId) {
-        Toast("请选择充电设备");
-      } else if (!this.postData.methodId) {
-        Toast("请选择充电方式");
-      } else {
-        console.log(JSON.stringify(this.postData));
-        this.$router.push({name:'charging'});
-      }
-    },
-    // 充值
-    recharge(){
-      console.log('点击充值');
-    },
+    
   },
   created() {
     let _this = this;
@@ -178,23 +158,6 @@ export default {
               method: "AC", //交流电AC、直流电DC
               state: "idle" //损坏/充电中/闲置broken/charging/idle
             }
-          ],
-          chargeDescripetionList:[
-            {
-              "wRange":"0<功率≤200瓦",
-              "priceRate":".5元/小时"
-            },
-            {
-              "wRange":"0<功率≤200瓦",
-              "priceRate":".5元/小时"
-            },{
-              "wRange":"999<功率≤200瓦",
-              "priceRate":".5元/小时"
-            }
-            ,{
-              "wRange":"999<功率≤200瓦",
-              "priceRate":".5元/小时"
-            }
           ]
         };
         console.log("stationInfoUrl|返回数据|" + JSON.stringify(data.data));
@@ -209,50 +172,7 @@ export default {
         });
       });
 
-    // let chargeMethodsUrl = GLOBAL.interfacePath + '';
-    let chargeMethodsUrl = "";
-    axios
-      .get(chargeMethodsUrl)
-      .then(function(data) {
-        data.data = [
-          {
-            name: "充满自停",
-            ID: "full"
-          },
-          {
-            name: "1小时",
-            ID: "1"
-          },
-          {
-            name: "2小时",
-            ID: "2"
-          },
-          {
-            name: "3小时",
-            ID: "3"
-          },
-          {
-            name: "5小时",
-            ID: "5"
-          },
-          {
-            name: "8小时",
-            ID: "8"
-          }
-        ];
-        console.log("chargeMethodsUrl|返回数据|" + JSON.stringify(data.data));
-        _this.chargeMethods = data.data;
-      })
-      .catch(function(err) {
-        console.log({
-          url: chargeMethodsUrl,
-          err: JSON.stringify(err)
-        });
-      });
-
-    getUserInfo().then(function(userInfo){
-      _this.userInfo = userInfo;
-    });
+    
   }
 };
 </script>
@@ -267,46 +187,7 @@ $cl-bgc: #ff9800;
   border-bottom: 1px solid #e6e6e6;
 }
 
-.method-box {
-  display: flex;
-  flex-wrap: wrap;
-  & > div {
-    position: relative;
-    border: 1px solid #8a8a8a;
-    border-radius: 4px;
-    width: 30%;
-    height: 1.6rem;
-    margin-right: 5%;
-    margin-top: 0.5rem;
-    overflow: hidden;
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
-    &.checked {
-      border: 1px solid #2eafed;
-      color: #2eafed;
-    }
-    .icon-triangle{
-      position: absolute;
-      right: 0;
-      bottom: -1rem;
-      display: block;
-      border:1rem solid transparent;
-      border-right:1rem solid #2eafed;
-      
-    }
-    .icon-yes{
-      position: absolute;
-      right: 0;
-      bottom:0;
-      width:.6rem;
-      height:.6rem;
-      z-index:2;
-      background:url('../../static/img/yes-white.png') top right no-repeat;
-      background-size:100% 100%;
-    }
-  }
-}
+
 
 .ports-box {
   display: flex;
@@ -439,49 +320,6 @@ $cl-bgc: #ff9800;
   background-color: $cl-color;
   bottom: 0;
   z-index: 2;
-}
-
-// 收费说明
-.charge-description{
-  margin-bottom:.5rem;
-  @include fw;
-  li{
-    width: 30%;
-    margin:.5rem 5% 0 0;
-    height:2.5rem;
-    border:1px solid #2daeec;
-    border-radius:4px;
-    background-color: #f7f7f7;
-    p{
-      text-align: center;
-      font-size:.5rem;
-      margin-top:.3rem;
-      &:last-child{
-        color:#2daeec;
-        font-size:.6rem;
-        margin-top:.2rem;
-      }
-    }
-    &:nth-child(3n){
-      margin-right:0;
-    }
-  }
-}
-// 充值按钮
-.btn-recharge{
-  height: 1.2rem;
-  width:3rem;
-  margin:0 .5rem;
-  color:#2daeec;
-  border:1px solid #2daeec;
-  @include fcm;
-}
-// 开始充电按钮
-.btn-start-charge{
-  background-color: #2daeec;
-  @include fcm;
-  width:40%;
-  color:#fff;
 }
 .balance{
   width:3rem;
