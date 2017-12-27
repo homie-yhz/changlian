@@ -83,6 +83,9 @@ export default {
     };
   },
   methods: {
+    back(){
+      this.$router.go(-1);
+    },
     choosePort(port) {
       console.log(port.ID);
       let portState = port.state;
@@ -247,15 +250,6 @@ $cl-bgc: #ff9800;
       }
     }
   }
-}
-
-.icon-star {
-  display: block;
-  width: 1rem;
-  height: 1rem;
-  background: url("../assets/logo.png") center center no-repeat;
-  background-size: 100% 100%;
-  margin: 0 auto;
 }
 
 .icon-total {

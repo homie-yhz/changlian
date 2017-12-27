@@ -57,12 +57,12 @@
         <p class="v-i1">充值记录</p>
         <i class="icon-right"></i>
       </router-link>
-      <router-link :to="{name:'myNews'}" class="v-fm">
+      <router-link :to="{name:'chargeElecLog'}" class="v-fm">
         <i class="icon-chargeLog"></i>
         <p class="v-i1">充电记录</p>
         <i class="icon-right"></i>
       </router-link>
-      <router-link :to="{name:'operatorPlatform'}" class="v-fm">
+      <router-link :to="{name:'chooseStationPort',params:{stationId:userInfo.usualStationId}}" class="v-fm"> 
         <i class="icon-star"></i>
         <p class="v-i1">常用电站</p>
         <i class="icon-right"></i>
