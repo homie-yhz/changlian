@@ -28,7 +28,6 @@ import axios from 'axios';
 import GLOBAL from '../GLOBAL';
 //倒计时时间设定
 const leftTime = 60;
-
 export default {
   data() {
     return {

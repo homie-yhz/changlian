@@ -243,3 +243,14 @@
   background-size: 100% 100%;
   margin: 0 auto .5rem;
 }
+
+/* 微信logo */
+.icon-wx-logo{
+  display: block;
+  width:1.5rem;
+  height:1.5rem;
+  border-radius:2rem;
+  background:url('../../static/img/wechart-log.png') center center no-repeat;
+  background-size: 100% 100%;
+  margin:0 auto;
+}

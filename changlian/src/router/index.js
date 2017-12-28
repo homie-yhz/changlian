@@ -14,6 +14,7 @@ const cardsBag = r => require.ensure([], () => r(require('@/components/cardsBag.
 const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
+const register = r => require.ensure([], () => r(require('@/components/register.vue')), 'News');
 const rechargeAgreement = r => require.ensure([], () => r(require('@/components/rechargeAgreement.vue')), 'News');
 const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
 const personalCenter = r => require.ensure([], () => r(require('@/components/personalCenter.vue')), 'News');
@@ -32,6 +33,7 @@ const myNews = r => require.ensure([], () => r(require('@/components/myNews.vue'
 const operatorPlatform = r => require.ensure([], () => r(require('@/components/operatorPlatform.vue')), 'News');
 const aboutUs = r => require.ensure([], () => r(require('@/components/aboutUs.vue')), 'News');
 const chooseToCharge = r => require.ensure([], () => r(require('@/components/chooseToCharge.vue')), 'News');
+const userAgreement = r => require.ensure([], () => r(require('@/components/userAgreement.vue')), 'News');
 // 运营商管理平台页面
 const operatorLogin = r => require.ensure([], () => r(require('@/components/operatorLogin.vue')), 'News');
 const operatorMain = r => require.ensure([], () => r(require('@/components/operatorMain.vue')), 'News');
@@ -91,6 +93,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
     },
     {
       path: '/rechargeAgreement',
@@ -186,6 +193,11 @@ export default new Router({
       path: '/chooseToCharge',
       name: 'chooseToCharge',
       component: chooseToCharge
+    },
+    {
+      path: '/userAgreement',
+      name: 'userAgreement',
+      component: userAgreement
     },
     //运营商管理平台相关页面
     {

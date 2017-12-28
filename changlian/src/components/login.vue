@@ -32,6 +32,7 @@
             <p>其它方式登录</p>
             <p class="v-i1"></p>
           </div>
+          <div class="icon-wx-logo" style="margin-top:.3rem;"></div>
         </div>
       </div>
     </div>
@@ -48,6 +49,9 @@ export default {
     };
   },
   methods: {
+    back(){
+      this.$router.go(-1);
+    },
     login() {
       let _this = this;
       console.log("提交登录信息");
@@ -124,7 +128,7 @@ export default {
 .agreement {
   color: #5c5c5c;
   font-size: 0.55rem;
-  span{
+  a{
     color:#2eafed;
   }
 }
