@@ -2,7 +2,7 @@
   <div>
     <!-- 充值记录 -->
     <header class="header-poa-white v-fcm por">
-      <div class="v-fcm m-auto h-100" style="width:80%">常用电站</div>
+      <div class="v-fcm m-auto h-100" style="width:80%">充值记录</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>

@@ -26,7 +26,7 @@
   margin-left:.5rem;
 }
 /* 省略 */
-.icon-shenglve:before { content: "\e737"; }
+.icon-shenglve:before { content: "\e737"; color:#fff;}
 /*  */
 .icon-shezhi:before { content: "\e61d";font-size:.8rem; }
 /* 铃铛 */

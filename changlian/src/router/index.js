@@ -3,13 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 // 用户页面
-const bindIC = r => require.ensure([], () => r(require('@/components/bindIC.vue')), 'News');
+const IDCardList = r => require.ensure([], () => r(require('@/components/IDCardList.vue')), 'News');
 const chargeElecLog = r => require.ensure([], () => r(require('@/components/chargeElecLog.vue')), 'News');
 const charging = r => require.ensure([], () => r(require('@/components/charging.vue')), 'News');
 const endCharge = r => require.ensure([], () => r(require('@/components/endCharge.vue')), 'News');
 const ICInfo = r => require.ensure([], () => r(require('@/components/ICInfo.vue')), 'News');
 const ICRecharge = r => require.ensure([], () => r(require('@/components/ICRecharge.vue')), 'News');
-const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardList.vue')), 'News');
+// const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardList.vue')), 'News');
+const cardsBag = r => require.ensure([], () => r(require('@/components/cardsBag.vue')), 'News');
 const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
@@ -47,9 +48,9 @@ export default new Router({
       component: main
     },
     {
-      path: '/bindIC',
-      name: 'bindIC',
-      component: bindIC
+      path: '/IDCardList',
+      name: 'IDCardList',
+      component: IDCardList
     },
     {
       path: '/chargeElecLog',
@@ -77,9 +78,9 @@ export default new Router({
       component: ICRecharge
     },
     {
-      path: '/ICCardList',
-      name: 'ICCardList',
-      component: ICCardList
+      path: '/cardsBag',
+      name: 'cardsBag',
+      component: cardsBag
     },
     {
       path: '/ICCardRecharge/:ICCardId',
@@ -132,7 +133,7 @@ export default new Router({
       component: recharge
     },
     {
-      path: '/rechargeLog',
+      path: '/rechargeLog/:userId',
       name: 'rechargeLog',
       component: rechargeLog
     },
