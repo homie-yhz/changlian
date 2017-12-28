@@ -6,21 +6,21 @@
         <div class="v-fm">
           <img src="../../static/img/head-pic-blue.png" alt="">
           <div v-if="!userInfo.loginState" class="v-fcm">
-            <p @click="login">登录</p>
+            <p @click="routerTo('login')">登录</p>
             <p style="margin:0 .2rem;">|</p>
-            <p @click="register">注册</p>
+            <p @click="routerTo('login')">注册</p>
           </div>
           <div v-else>
             <span>{{userInfo.phone}}</span>
           </div>
         </div>
-        <div>账户余额：<span>{{userInfo.loginState?userInfo.balance:'--:--'}}</span> 元</div>
+        <div>账户余额：<span v-bind:val1="userInfo.loginState">{{userInfo.loginState?userInfo.balance:'--:--'}}</span> 元</div>
         <div class="setting-message v-fm">
           <i class="iconfont icon-lingdang"></i>
-          <div class="v-f" style="height:.8rem;">
+          <div v-if="userInfo.loginState && userInfo.hasNews" class="v-f" style="height:.8rem;">
             <span class="icon-point-red"></span>
           </div>
-          消息中心
+          <span @click="routerTo('myNews','')">消息中心</span>
           <div class="v-fcm">
             <i class="iconfont icon-ttpodicon" style="display:block;"></i>
           </div>
@@ -30,57 +30,57 @@
     <div class="blank"></div>
     <!-- tab卡 -->
     <div class="center-handle v-f">
-      <router-link :to="{name:'recharge'}" class="v-fcm v-i1">
+      <a @click="routerTo('recharge')" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-charge"></i>
           <p>充值</p>
         </div>
-      </router-link>
-      <router-link :to="{name:'rechargeLog'}" class="v-fcm v-i1">
+      </a>
+      <a @click="routerTo('rechargeLog')" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-cardBox"></i>
           <p>卡包</p>
         </div>
-      </router-link>
-      <router-link :to="{name:'bindIC'}" class="v-fcm v-i1">
+      </a>
+      <a @click="routerTo('IDCardList')" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-bindCard"></i>
           <p>卡片绑定</p>
         </div>
-      </router-link>
+      </a>
     </div>
     <div class="blank"></div>
     <!-- 中心列表 -->
     <div class="center-list">
-      <router-link :to="{name:'rechargeLog'}" class="v-fm">
+      <a @click="routerTo('rechargeLog')" class="v-fm">
         <i class="icon-rechargeLog"></i>
         <p class="v-i1">充值记录</p>
         <i class="icon-right"></i>
-      </router-link>
-      <router-link :to="{name:'chargeElecLog'}" class="v-fm">
+      </a>
+      <a @click="routerTo('chargeElecLog')" class="v-fm">
         <i class="icon-chargeLog"></i>
         <p class="v-i1">充电记录</p>
         <i class="icon-right"></i>
-      </router-link>
-      <router-link :to="{name:'chooseStationPort',params:{stationId:userInfo.usualStationId}}" class="v-fm"> 
+      </a>
+      <a @click="routerTo('chooseStationPort')" :to="{name:'chooseStationPort',params:{stationId:userInfo.usualStationId}}" class="v-fm">
         <i class="icon-star"></i>
         <p class="v-i1">常用电站</p>
         <i class="icon-right"></i>
-      </router-link>
+      </a>
     </div>
     <div class="blank"></div>
     <div class="center-list">
       <router-link :to="{name:'aboutUs'}" class="v-fm">
-          <i class="icon-operator"></i>
-          <p class="v-i1">经营者管理平台</p>
-          <i class="icon-right"></i>
-        </router-link>
-        <router-link :to="{name:'aboutUs'}" class="v-fm">
-          <i class="icon-attention"></i>
-          <p class="v-i1">关于我们</p>
-          <i class="icon-right"></i>
-        </router-link>
-      </div>
+        <i class="icon-operator"></i>
+        <p class="v-i1">经营者管理平台</p>
+        <i class="icon-right"></i>
+      </router-link>
+      <router-link :to="{name:'aboutUs'}" class="v-fm">
+        <i class="icon-attention"></i>
+        <p class="v-i1">关于我们</p>
+        <i class="icon-right"></i>
+      </router-link>
+    </div>
     <!-- 底部导航栏 -->
     <div class="footer v-f">
       <router-link class="v-i1" :to="{name:'nearbyStation'}">
@@ -90,7 +90,7 @@
       <div class="v-i1">
         <p class="tac" style="margin-top:1.05rem;">扫一扫</p>
       </div>
-      <div  class="v-i1 checked">
+      <div class="v-i1 checked">
         <i class="icon-me"></i>
         <p class="tac">我</p>
       </div>
@@ -102,23 +102,33 @@
 </template>
 
 <script>
-import GLOBAL,{getUserInfo} from '../GLOBAL';
+import GLOBAL, { getUserInfo } from "../GLOBAL";
 export default {
   data() {
     return {
-      hasNews: true,
-      userInfo:{}
+      userInfo: {}
     };
   },
   methods: {
     login() {},
-    register() {}
+    register() {},
+    // 跳到到相关页面
+    routerTo(name, params) {
+      if(this.userInfo.loginState){
+        this.$router.push({name:name,params:params});
+      }else{
+        this.$router.push({name:'login'});
+      }
+    }
   },
-  created(){
+  created() {
     let _this = this;
-    getUserInfo().then(function(userInfo){
-      _this.userInfo = userInfo;
-    })
+    let userId = sessionStorage.getItem("userId");
+    if (!!userId) {
+      getUserInfo().then(function(userInfo){
+        _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
+      })
+    }
   }
 };
 </script>
@@ -141,17 +151,17 @@ export default {
   & > div {
     margin: 1rem 0 0 1rem;
   }
-  & .setting-message{
+  & .setting-message {
     position: absolute;
-    right:.5rem;
-    top:0;
-    .icon-point-red{
-      width:5px;
+    right: 0.5rem;
+    top: 0;
+    .icon-point-red {
+      width: 5px;
       height: 5px;
       display: block;
-      border-radius:50%;
-      background-color:#e51c23;
-      margin-right:.2rem;
+      border-radius: 50%;
+      background-color: #e51c23;
+      margin-right: 0.2rem;
     }
   }
 }
@@ -172,6 +182,7 @@ export default {
     }
   }
 }
+
 .center-list {
   & > a {
     height: 1.8rem;
@@ -185,35 +196,38 @@ export default {
     }
   }
 }
+
 .footer {
-    border-top:1px solid #eee;
-    position: absolute;
-    bottom:0;
-    width:100%;
-    z-index:2;
-    background:#f8f8f8;
-    border-top:1px solid #d0d0d0;
-    &>div {
-      height:2rem;
-      &.checked {
-        color:#2eafed;
-        &>.icon-elec {
-          background: url('../../static/img/bolt-blue.png') center center no-repeat;
-          background-size: 100% 100%;
-        }
-        &>.icon-scan {
-          background: url('../../static/img/bolt-blue.png') center center no-repeat;
-          background-size: 100% 100%;
-        }
-        &>.icon-me{
-          background:url('../../static/img/person-blue.png') center center no-repeat;
-          background-size:100% 100%;
-        }
-        &>p {
-          text-align: center;
-        }
+  border-top: 1px solid #eee;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  background: #f8f8f8;
+  border-top: 1px solid #d0d0d0;
+  & > div {
+    height: 2rem;
+    &.checked {
+      color: #2eafed;
+      & > .icon-elec {
+        background: url("../../static/img/bolt-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
       }
-      
+      & > .icon-scan {
+        background: url("../../static/img/bolt-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      & > .icon-me {
+        background: url("../../static/img/person-blue.png") center center
+          no-repeat;
+        background-size: 100% 100%;
+      }
+      & > p {
+        text-align: center;
+      }
     }
   }
+}
 </style>

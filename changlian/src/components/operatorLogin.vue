@@ -10,7 +10,7 @@
 			<!-- 图标 -->
 			<div class="v-fcm">
 				<div style="margin:2rem 0;">
-					<div class="icon-changlian"></div>
+					<div class="icon-changlian-logo"></div>
 					<div>欢迎登录运营管理平台</div>
 				</div>
 			</div>
@@ -84,6 +84,7 @@
 
 <style lang="scss">
 	@import "../../static/css/common.scss";
+	@import "../../static/css/iconfont.css";
 	.header {
 		height: 2rem;
 		border-bottom: 1px solid #d9d9d9;
@@ -96,16 +97,6 @@
 		border-top: 2px solid #616161;
 		transform: rotate(-45deg);
 		margin-left: 0.5rem;
-	}
-	
-	.icon-changlian {
-		display: block;
-		width: 3rem;
-		height: 3rem;
-		border-radius: 10rem;
-		background: url("../../static/img/changlianlog.png") center center no-repeat;
-		background-size: 100% 100%;
-		margin: 0 auto .5rem;
 	}
 	
 	.operator-login-box {
