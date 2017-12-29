@@ -125,7 +125,7 @@ export default {
     let _this = this;
     let userId = sessionStorage.getItem("userId");
     if (!!userId) {
-      getUserInfo().then(function(userInfo){
+      getUserInfo().then((userInfo)=>{
         _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
       })
     }
