@@ -14,7 +14,6 @@
             <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
           </div>
           <input type="tel" v-model="postData.identifyCode" maxlength="6" placeholder="验证码">
-          <input type="tel" v-model="postData.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
           <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
         </div>
       </div>
@@ -43,25 +42,13 @@ export default {
       },
       postData: {
         phone: "",
-        identifyCode: "",
-        pwd: ""
+        identifyCode: ""
       }
     };
   },
   methods: {
-    back(){
+		back(){
       this.$router.go(-1);
-    },
-    // 下一步  输入手机验证码
-    nextStep() {
-      if (this.phone.length === 11) {
-        this.$router.push({
-          name: "identifyCodeInput",
-          params: {
-            phone: this.phone
-          }
-        });
-      }
     },
     //获取验证码
     getCode() {
@@ -114,16 +101,25 @@ export default {
         });
     },
     //点击下一步  注册成功
-    postUserInfo() {
+    nextStep() {
+			let _this = this;
       //let postRegisterInfoUrl = GLOBAL.interfacePath + '';
-      let postRegisterInfoUrl = "";
+      let postPhoneInfoUrl = "";
       axios
-        .get(postRegisterInfoUrl)
+        .get(postPhoneInfoUrl)
         .then(function(data) {
-          console.log("postRegisterInfoUrl|返回数据|" + JSON.stringify(data.data));
+					console.log("postPhoneInfoUrl|返回数据|" + JSON.stringify(data.data));
+					data.data = {
+						state:'success'
+					}
+					if(data.data.state === 'success'){
+						_this.$router.push({name:'setPwd'});
+					}else{
+						Toast('手机号或验证码有误！');
+					}
         })
         .catch(function(err) {
-          console.log({ url: postRegisterInfoUrl, err: JSON.stringify(err) });
+          console.log({ url: postPhoneInfoUrl, err: JSON.stringify(err) });
         });
     }
   },
@@ -134,8 +130,7 @@ export default {
         console.log(JSON.stringify(nv));
         if (
           regExp.phone.test(nv.phone) &&
-          regExp.identifyCode.test(nv.identifyCode) &&
-          regExp.pwd.test(nv.pwd)
+          regExp.identifyCode.test(nv.identifyCode)
         ) {
           this.allowNext = true;
         } else {

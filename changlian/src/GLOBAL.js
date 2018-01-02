@@ -11,8 +11,8 @@ export default {
     // interfacePath:'http://192.168.1.109:8080/eps-tkyc',   //文杰本机
     // interfacePath:'http://192.168.1.107:8081/eps-tkyc',   //王嫡本机
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
-    publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect'
-
+    publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
+    level:'2.2.1'
 
     //正式项目地址以及接口地址
     //公共账号及域名配置   64.11 64.12 64.13
@@ -94,7 +94,7 @@ export function getUserInfo() {
                 data.data = {
                     bindState: true,
                     balance: "100.00",
-                    loginState: false,
+                    loginState: true,
                     phone: '17777777777',
                     usualStationId: '009',
                     giveMoney: '20.00',

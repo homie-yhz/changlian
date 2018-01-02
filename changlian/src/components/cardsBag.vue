@@ -76,6 +76,11 @@
         rechargeCardsList: []
       };
     },
+    methods:{
+      back(){
+        this.$router.go(-1);
+      }
+    },
     created() {
       let _this = this;
       //let getRechargeCardsList = GLOBAL.interfacePath + '';

@@ -15,9 +15,12 @@ const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICC
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
 const register = r => require.ensure([], () => r(require('@/components/register.vue')), 'News');
+const getBackPwd = r => require.ensure([], () => r(require('@/components/getBackPwd.vue')), 'News');
+const setPwd = r => require.ensure([], () => r(require('@/components/setPwd.vue')), 'News');
 const rechargeAgreement = r => require.ensure([], () => r(require('@/components/rechargeAgreement.vue')), 'News');
 const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
 const personalCenter = r => require.ensure([], () => r(require('@/components/personalCenter.vue')), 'News');
+const settings = r => require.ensure([], () => r(require('@/components/settings.vue')), 'News');
 const phoneInput = r => require.ensure([], () => r(require('@/components/phoneInput.vue')), 'News');
 const pwdInput = r => require.ensure([], () => r(require('@/components/pwdInput.vue')), 'News');
 const recharge = r => require.ensure([], () => r(require('@/components/recharge.vue')), 'News');
@@ -100,6 +103,16 @@ export default new Router({
       component: register
     },
     {
+      path: '/getBackPwd',
+      name: 'getBackPwd',
+      component: getBackPwd
+    },
+    {
+      path: '/setPwd',
+      name: 'setPwd',
+      component: setPwd
+    },
+    {
       path: '/rechargeAgreement',
       name: 'rechargeAgreement',
       component: rechargeAgreement
@@ -120,9 +133,19 @@ export default new Router({
       component: personalCenter
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: settings
+    },
+    {
       path: '/phoneInput/:title',
       name: 'phoneInput',
       component: phoneInput
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
     },
     {
       path: '/identifyCodeInput/:title/:phone',

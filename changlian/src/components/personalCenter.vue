@@ -21,7 +21,7 @@
             <span class="icon-point-red"></span>
           </div>
           <span @click="routerTo('myNews','')">消息中心</span>
-          <div class="v-fcm">
+          <div class="v-fcm" @click="routerTo('settings','')">
             <i class="iconfont icon-ttpodicon" style="display:block;"></i>
           </div>
         </div>
@@ -36,7 +36,7 @@
           <p>充值</p>
         </div>
       </a>
-      <a @click="routerTo('rechargeLog')" class="v-fcm v-i1">
+      <a @click="routerTo('cardsBag')" class="v-fcm v-i1">
         <div class="tac">
           <i class="icon-cardBox"></i>
           <p>卡包</p>

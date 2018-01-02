@@ -130,16 +130,18 @@ export default {
       noDataText: "附近10公里范围内没有更多站点了",
       showUsuallyStation:false, //是否展示常用电站按钮
       postData: {
-        currentPage: 0,
-        searchMethod: "all",
-        searchInfo: ""
+        pageIndex: 0,
+        listLen:10,
+        searchInfo: "",
+        position:['000','000'],
+        userId:'002'
       }
     };
   },
   computed: {},
   methods: {
     getStationList(done) {
-      this.postData.currentPage++;
+      this.postData.pageIndex++;
       console.log(JSON.stringify(this.postData));
       let _this = this;
       let stationListUrl = "../../../../static/data/stationInfo.json";
@@ -192,8 +194,8 @@ export default {
       });
       let _this = this;
       this.refreshing = true;
-      this.postData.currentPage = 0;
-      this.postData.currentPage++;
+      this.postData.pageIndex = 0;
+      this.postData.pageIndex++;
       console.log(this.postData);
       let stationListUrl = "../../../../static/data/stationInfo.json";
       axios.get(stationListUrl).then(function(data) {

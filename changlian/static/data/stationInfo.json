@@ -17,13 +17,6 @@
             "operationTime": "00:00-24:00//运营时间",
             "operator": "运营商//运营商",
             "parkCost": "免费/2元/h//停车费用",
-            "chargePortsList": [
-                {
-                    "ID": "port1",
-                    "method": "AC//交流电AC、直流电DC",
-                    "state": "broken/charging/idle//损坏/充电中/闲置broken/charging/idle"
-                }
-            ],
             "showBindBtn":false
         }
     ]

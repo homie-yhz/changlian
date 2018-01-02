@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-          <span class="arrow-back"></span>
-        </div> -->
+            <span class="arrow-back"></span>
+          </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -32,23 +32,23 @@
         <!-- 冲电圈 -->
         <div class="charge-state por " style="overflow:hidden;">
           <!-- 正在充电 -->
-          <div class="circle opacity0" :class="{'opacity1':equipment.chargingState}">
+          <div class="circle opacity0" :class="{'opacity1':chargeInfo.chargingState}">
             <div class="percent">
-              <span>70%</span>
+              <span>{{chargeInfo.hasChargedPercent}}</span>
             </div>
             <div class="v-fcm" style="margin-top:1rem">
               ⚡️
             </div>
             <div>健康保养充电中...</div>
             <div class="v-fcm">
-              <p>已充时长 00小时10分</p>
+              <p>已充时长 {{chargeInfo.hasChargedTime|timestampToData}}</p>
             </div>
             <div class="v-fcm">
-              <p>当前功率 800瓦</p>
+              <p>当前功率 {{chargeInfo.currentW}}瓦</p>
             </div>
           </div>
           <!-- 请求充电中 -->
-          <div class="opacity0" :class="{'opacity1':!equipment.chargingState}" style="position:absolute;width:100%;top:0;">
+          <div class="opacity0" :class="{'opacity1':!chargeInfo.chargingState}" style="position:absolute;width:100%;top:0;">
             <div class="circle v-fcm">
               <div style="font-size:2rem;">⚡️</div>
               <div style="position:absolute;bottom:1rem;">请求充电中...</div>
@@ -56,25 +56,24 @@
           </div>
         </div>
         <!-- 收费方式 -->
-        <div class="cost-method-box opacity0" :class="{'opacity1':equipment.chargingState}">
+        <div class="cost-method-box opacity0" :class="{'opacity1':chargeInfo.chargingState}">
           <div class="v-fm v-fb" style="padding:.5rem .8rem;">
             <div class="v-fm">预设充电时长</div>
-            <div>2小时</div>
+            <div>{{chargeInfo.expectedChargeTime}} 小时</div>
           </div>
           <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
             <div class="mb-40">收费标准</div>
             <div class="v-fm v-fb">
               <div class="v-fm">
-                200
-                <功率≤500瓦 </div>
-                  <div>0.7元/小时</div>
+                {{chargeInfo.wRange}}</div>
+                  <div>{{chargeInfo.priceRate}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- 底部开始充电按钮 -->
-      <div class="v-fcm opacity0" :class="{'opacity1':equipment.chargingState}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
+      <div class="v-fcm opacity0" :class="{'opacity1':chargeInfo.chargingState}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
         <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
       </div>
     </div>
@@ -87,10 +86,12 @@
     Toast
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
+  import {timestampToData} from '../Filter';
   export default {
     data() {
       return {
         stationInfo: {},
+        chargeInfo: {},
         postData: {
           portId: "",
           stationId: "",
@@ -102,6 +103,9 @@
       };
     },
     methods: {
+      back() {
+        this.$router.go(-1);
+      },
       stopCharge() {
         let _this = this;
         //let stopChargeUrl = GLOBAL.interfacePath + '';
@@ -110,6 +114,10 @@
           .get(stopChargeUrl)
           .then(function(data) {
             console.log('stopChargeUrl|返回数据|' + JSON.stringify(data.data));
+            data.data = {
+              state:'success',
+              msg:''
+            }
             _this.$router.push({
               name: 'endCharge'
             });
@@ -123,6 +131,7 @@
       }
     },
     created() {
+      timestampToData();
       let _this = this;
       //let requestChargeUrl = GLOBAL.interfacePath + '';
       let requestChargeUrl = "";
@@ -134,10 +143,21 @@
             _this.equipment = {
               addr: "fdsafsa",
               num: "321321321",
-              index: "02",
-              chargingState: true
+              index: "02"
             };
-          }, 2000);
+            _this.chargeInfo = {
+              chargingState: true,
+              hasChargedPercent: "69%",
+              hasChargedTime: "58000",
+              currentW: "800",
+              expectedChargeTime: "2",
+              wRange: "200<功率≤500瓦",
+              priceRate: "0.7元/小时"
+            };
+          }, 1000);
+          setInterval(()=>{
+            _this.chargeInfo.hasChargedTime = (parseInt(_this.chargeInfo.hasChargedTime)+1000).toString();
+          },1000);
         })
         .catch(function(err) {
           console.log({

@@ -86,6 +86,9 @@
       }
     },
     methods:{
+      back(){
+        this.$router.go(-1);
+      },
       closeEndChargePage(){
         this.$router.replace();
       }

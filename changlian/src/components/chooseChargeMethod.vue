@@ -85,6 +85,9 @@
 			};
 		},
 		methods: {
+			back(){
+				this.$router.go(-1);
+			},
 			// 选择充电模式
 			chooseChargeMethod(method) {
 				console.log(method.ID);

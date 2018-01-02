@@ -17,11 +17,11 @@
         </div>
         <!-- 登录输入框 -->
         <div style="width:85%;" class="m-auto login-box">
-          <input type="text" v-model="loginInfo.phone" placeholder="手机号" maxlength="11">
-          <input type="text" v-model="loginInfo.pwd" placeholder="密码">
+          <input type="text" v-model="postData.phone" placeholder="手机号" maxlength="11">
+          <input type="text" v-model="postData.pwd" placeholder="密码" maxlength="16">
           <p class="v-fb register-or-backpwd">
-            <router-link :to="{name:'phoneInput',params:{title:'register'}}" class="v-fm">新用户注册</router-link>
-            <router-link :to="{name:'phoneInput',params:{title:'backPwd'}}" class="v-fm">找回密码?</router-link>
+            <router-link :to="{name:'register'}" class="v-fm">新用户注册</router-link>
+            <router-link :to="{name:'getBackPwd'}" class="v-fm">找回密码?</router-link>
           </p>
           <p @click="login" class="btn-login v-fcm">登录</p>
           <p class="tac agreement">登录即表示同意
@@ -42,29 +42,52 @@
 <script>
 import axios from "axios";
 import GLOBAL from "../GLOBAL";
+import regExp from "../RegExp";
+import { Toast } from "mint-ui";
+import "mint-ui/lib/toast/style.css";
 export default {
   data() {
     return {
-      loginInfo: {}
+      postData: {}
     };
   },
   methods: {
-    back(){
+    back() {
       this.$router.go(-1);
     },
     login() {
       let _this = this;
       console.log("提交登录信息");
-      let url = GLOBAL.interfacePath + "";
-      axios.get(loginUrl);
-      then(function(data) {
-        console.log("url|返回数据|" + JSON.stringify(data.data));
-      }).catch(function(err) {
-        console.log({
-          url: url,
-          err: JSON.stringify(err)
+      console.log(JSON.stringify(this.postData));
+      // let url = GLOBAL.interfacePath + "";
+      if (!regExp.phone.test(this.postData.phone)) {
+        Toast('手机号输入有误！')
+      }else if(!regExp.pwd.test(this.postData.pwd)){
+        Toast('密码格式有误！')
+      }else{
+        let _this = this;
+        let loginUrl = "";
+      axios
+        .get(loginUrl)
+        .then(function(data) {
+          console.log("url|返回数据|" + JSON.stringify(data.data));
+          data.data = {
+            state:'success',
+            loginState:true,
+            userId:'001111'
+          }
+          //设置userId 以及 登录状态 
+          sessionStorage.setItem('userId',data.data.userId);
+          sessionStorage.setItem('loginState',data.data.loginState);
+          _this.$router.replace({name:'personalCenter'});
+        })
+        .catch(function(err) {
+          console.log({
+            url: url,
+            err: JSON.stringify(err)
+          });
         });
-      });
+      }
     }
   }
 };
@@ -122,14 +145,14 @@ export default {
 .register-or-backpwd > a {
   margin-top: 0.4rem;
   color: #2eafed;
-  font-size:.55rem;
+  font-size: 0.55rem;
 }
 
 .agreement {
   color: #5c5c5c;
   font-size: 0.55rem;
-  a{
-    color:#2eafed;
+  a {
+    color: #2eafed;
   }
 }
 </style>
