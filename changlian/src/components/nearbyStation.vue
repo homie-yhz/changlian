@@ -4,9 +4,9 @@
       <!-- 头部:附近电站 -->
       <header class="header v-fcm por">
         <div class="v-fcm m-auto h-100" style="width:80%">附近电站</div>
-        <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
+        <!-- <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
           <span class="arrow-back"></span>
-        </div>
+        </div> -->
       </header>
       <!-- 搜索框 -->
       <div class="v-fm" style="height:2rem;color:black;">
@@ -140,6 +140,9 @@ export default {
   },
   computed: {},
   methods: {
+    back(){
+      this.$router.go(-1);
+    },
     getStationList(done) {
       this.postData.pageIndex++;
       console.log(JSON.stringify(this.postData));

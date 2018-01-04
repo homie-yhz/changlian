@@ -14,7 +14,7 @@
       <div>
         <!-- 设备信息 -->
         <div>
-          <div class="equitment-box v-fb v-fm">
+          <div class="equitment-box v-fb v-fm" style="background-color: #2daeec;">
             <div class="">
               <!-- 设备地址 -->
               <p>{{equipment.addr}}</p>
@@ -32,23 +32,23 @@
         <!-- 冲电圈 -->
         <div class="charge-state por " style="overflow:hidden;">
           <!-- 正在充电 -->
-          <div class="circle opacity0" :class="{'opacity1':chargeInfo.chargingState}">
+          <div class="circle opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}">
             <div class="percent">
-              <span>{{chargeInfo.hasChargedPercent}}</span>
+              <span>{{chargeLog.hasChargedPercent}}</span>
             </div>
             <div class="v-fcm" style="margin-top:1rem">
               ⚡️
             </div>
             <div>健康保养充电中...</div>
             <div class="v-fcm">
-              <p>已充时长 {{chargeInfo.hasChargedTime|timestampToData}}</p>
+              <p>已充时长 {{chargeLog.hasChargedTime|timestampToData}}</p>
             </div>
             <div class="v-fcm">
-              <p>当前功率 {{chargeInfo.currentW}}瓦</p>
+              <p>当前功率 {{chargeLog.currentW}}瓦</p>
             </div>
           </div>
           <!-- 请求充电中 -->
-          <div class="opacity0" :class="{'opacity1':!chargeInfo.chargingState}" style="position:absolute;width:100%;top:0;">
+          <div class="opacity0" :class="{'opacity1':chargeLog.chargeState==='startCharge'}" style="position:absolute;width:100%;top:0;">
             <div class="circle v-fcm">
               <div style="font-size:2rem;">⚡️</div>
               <div style="position:absolute;bottom:1rem;">请求充电中...</div>
@@ -56,24 +56,24 @@
           </div>
         </div>
         <!-- 收费方式 -->
-        <div class="cost-method-box opacity0" :class="{'opacity1':chargeInfo.chargingState}">
+        <div class="cost-method-box opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}">
           <div class="v-fm v-fb" style="padding:.5rem .8rem;">
             <div class="v-fm">预设充电时长</div>
-            <div>{{chargeInfo.expectedChargeTime}} 小时</div>
+            <div>{{chargeLog.expectedChargeTime}} 小时</div>
           </div>
           <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
             <div class="mb-40">收费标准</div>
             <div class="v-fm v-fb">
               <div class="v-fm">
-                {{chargeInfo.wRange}}</div>
-                  <div>{{chargeInfo.priceRate}}</div>
+                {{chargeLog.wRange}}</div>
+                  <div>{{chargeLog.priceRate}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- 底部开始充电按钮 -->
-      <div class="v-fcm opacity0" :class="{'opacity1':chargeInfo.chargingState}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
+      <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
         <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
       </div>
     </div>
@@ -90,8 +90,11 @@
   export default {
     data() {
       return {
-        stationInfo: {},
-        chargeInfo: {},
+        stationInfo: {
+        },
+        chargeLog: {
+          chargeState:'startCharge'
+        },
         postData: {
           portId: "",
           stationId: "",
@@ -99,7 +102,6 @@
         },
         chargeMethods: [],
         equipment: {},
-        chargingState: false
       };
     },
     methods: {
@@ -118,7 +120,7 @@
               state:'success',
               msg:''
             }
-            _this.$router.push({
+            _this.$router.replace({
               name: 'endCharge'
             });
           })
@@ -145,18 +147,23 @@
               num: "321321321",
               index: "02"
             };
-            _this.chargeInfo = {
-              chargingState: true,
+            _this.chargeLog = {
+              chargeState: 'charging',
               hasChargedPercent: "69%",
               hasChargedTime: "58000",
-              currentW: "800",
+              currentW: "800", //当前功率与实际功率
+              payMethod:"按时长收费",
               expectedChargeTime: "2",
+              actualChargeTime:"1小时28分",
               wRange: "200<功率≤500瓦",
-              priceRate: "0.7元/小时"
+              priceRate: "0.7元/小时",
+              costMoney:"1.80",
+              costDegree:"3",//使用的度数
+              chargeEndTime:"2017-11-10 20:00"
             };
           }, 1000);
           setInterval(()=>{
-            _this.chargeInfo.hasChargedTime = (parseInt(_this.chargeInfo.hasChargedTime)+1000).toString();
+            _this.chargeLog.hasChargedTime = (parseInt(_this.chargeLog.hasChargedTime)+1000).toString();
           },1000);
         })
         .catch(function(err) {

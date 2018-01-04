@@ -15,7 +15,7 @@
           <i class="icon-Settlement"></i>
           <div>
             <p class="tac" style="color:#10ad3c;font-size:.8rem;">结算成功</p>
-            <p class="tac" style="color:#e51c23;font-size:.7rem;">{{endChargeInfo.totalCost}} 元</p>
+            <p class="tac" style="color:#e51c23;font-size:.7rem;">{{chargeLog.costMoney}} 元</p>
           </div>
           </div>
         </div>
@@ -35,35 +35,35 @@
         <span class="v-fm">
             <span class="icon-point-gray"></span>收费方式
         </span>
-        <span>{{endChargeInfo.chargeMethod}}</span>
+        <span>{{chargeLog.payMethod}}</span>
       </p>
       <p class="v-fb v-fm">
         <span class="v-fm">
             <span class="icon-point-gray"></span>收费标准
         </span>
-        <span>{{endChargeInfo.chargeStander}}</span>
+        <span>{{chargeLog.wRange}}&nbsp;&nbsp;{{chargeLog.priceRate}}</span>
       </p>
       <p class="v-fb v-fm">
         <span class="v-fm">
             <span class="icon-point-gray"></span>实际功率
         </span>
-        <span>{{endChargeInfo.truePower}}瓦</span>
+        <span>{{chargeLog.currentW}}瓦</span>
       </p>
       <p class="v-fb v-fm">
         <span class="v-fm">
             <span class="icon-point-gray"></span>充电时长
         </span>
-        <span>{{endChargeInfo.chargeTime}}</span>
+        <span>{{chargeLog.actualChargeTime}}</span>
       </p>
       <p class="v-fb v-fm">
         <span class="v-fm">
             <span class="icon-point-gray"></span>使用度数
         </span>
-        <span>{{endChargeInfo.usedDegree}}度</span>
+        <span>{{chargeLog.costDegree}}度</span>
       </p>
       <p class="v-fb v-fm">
         <span></span>
-        <span>{{endChargeInfo.chargeEndTime}}</span>
+        <span>{{chargeLog.chargeEndTime}}</span>
       </p>
     </div>
     <router-link :to="{name:'nearbyStation'}" replace class="btn" style="height:1.8rem;width:90%;margin:0 auto;">关闭</router-link>
@@ -77,7 +77,7 @@
   export default {
     data() {
       return {
-        endChargeInfo: {},
+        chargeLog: {},
         equipment: {
           addr: "fdsafsa",
           num: "321321321",
@@ -90,31 +90,36 @@
         this.$router.go(-1);
       },
       closeEndChargePage(){
-        this.$router.replace();
+        this.$router.replace({name:'nearbyStation'});
       }
     },
     created() {
       let _this = this;
-      let endChargeInfoUrl = '';
-
+      let chargeLogUrl = '';
+      //充电记录
       axios
-        .get(endChargeInfoUrl)
+        .get(chargeLogUrl)
         .then(function(data) {
-          console.log('endChargeInfoUrl|返回数据|' + JSON.stringify(data.data));
+          console.log('chargeLogUrl|返回数据|' + JSON.stringify(data.data));
           data.data = {
-            'stationAddr': '充电站地址',
-            'portNum': '9889932819312',
-            'portIndex': '01',
-            'chargeHours':'21小时30分',
-            'chargeDegree':'1.2',
-            'totalCost':'1.80',
-            'chargeEndTime':'2017-11-10 09:09'
-          }
-          _this.endChargeInfo = data.data;
+              chargeState: 'charging',
+              hasChargedPercent: "69%",
+              hasChargedTime: "58000",
+              currentW: "800", //当前功率与实际功率
+              payMethod:"按时长收费",
+              expectedChargeTime: "2",
+              actualChargeTime:"1小时28分",
+              wRange: "200<功率≤500瓦",
+              priceRate: "0.7元/小时",
+              costMoney:"1.80",
+              costDegree:"3",//使用的度数
+              chargeEndTime:"2017-11-10 20:00"
+            };
+          _this.chargeLog = data.data;
         })
         .catch(function(err) {
           console.log({
-            'url': endChargeInfoUrl,
+            'url': chargeLogUrl,
             'err': JSON.stringify(err)
           });
         });

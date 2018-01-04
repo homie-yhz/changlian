@@ -10,7 +10,7 @@
     <!-- 充值模块 -->
     <div class="recharge-box">
       <div class="money-box">
-        <p class="v-fcm por" v-for="val in moneyList" @click="chooseCard(val)" :class="{'checked':postData.cardId===val.cardId}" :key="val.cardId">
+        <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.cardId===val.cardId}" :key="val.cardId">
           <span class="agent-name">{{val.agentName}}</span>
           <i class="icon-cl-log"></i>
           <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.money}}</span></span>
@@ -64,7 +64,7 @@ Vue.component('cl-alert',clAlert);
 export default {
   data() {
     return {
-      moneyList: [
+      rechargeCardsList: [
         {
           money: 20,
           giveMoney: 0,
