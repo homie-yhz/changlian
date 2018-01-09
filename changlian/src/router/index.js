@@ -49,8 +49,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
-      component: main
+      name: 'nearbyStation',
+      component: nearbyStation
     },
     {
       path: '/IDCardList',

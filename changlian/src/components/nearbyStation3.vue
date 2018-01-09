@@ -5,8 +5,8 @@
       <header class="header v-fcm por">
         <div class="v-fcm m-auto h-100" style="width:80%">附近电站</div>
         <!-- <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
-                        <span class="arrow-back"></span>
-                      </div> -->
+            <span class="arrow-back"></span>
+          </div> -->
       </header>
       <!-- 搜索框 -->
       <div class="v-fm" style="height:2rem;color:black;">
@@ -14,7 +14,7 @@
           <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
           <span class="iconfont icon-sousuo"></span>
         </div>
-        <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="showUsuallyStation" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
+        <router-link tag="div" :to="{name:'stationDetail',params:{stationId:stationList.stationId}}" v-show="showUsuallyStation" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
@@ -31,47 +31,45 @@
     <!-- 电站列表 -->
     <div class="scroll-box" style="padding-top:5.7rem!important;padding-bottom:2rem;">
       <div style="position:relative;height:100%;">
-        <div>
-          <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
-            <router-link v-for="stationInfo in stationList" :key="stationInfo.stationId" tag="div" :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" class="v-fm station-item" style="width:100%;">
-              <div class="ml-6 v-i1">
-                <!-- 地址 -->
-                <p class="fw-b">{{stationInfo.stationAddr}}</p>
-                <!-- 允许支付方式 -->
-                <p class="icon-label-box mt-2">
-                  <span>现金</span>
-                  <span>APP支付+</span>
-                </p>
-                <!-- 充电口情况 -->
-                <p class="v-fm mt-2">
-                  <span class="v-fm mr-6">
-                    <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
-                  </span>
-                  <span class="v-fm mr-6">
-                  <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
-                  </span>
-                </p>
-              </div>
-              <div class="">
-                <div class="v-f">
-                  <!-- 快慢充 -->
-                  <div v-if="stationInfo.chargeType==='fast'" class="v-fcm fast-charge">快充</div>
-                  <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
-                  <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
-                    <div>
-                      <i class="icon-distance" style="margin-top:.2rem;"></i>
-                      <!-- 据我多远 -->
-                      <span>{{stationInfo.distanceToMe}}</span>
-                    </div>
+        <scroller :on-refresh="refresh" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
+          <router-link v-for="stationInfo in stationList" :key="stationInfo.stationId" tag="div" :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" class="v-fm station-item" style="width:100%;">
+            <div class="ml-6 v-i1">
+              <!-- 地址 -->
+              <p class="fw-b">{{stationInfo.stationAddr}}</p>
+              <!-- 允许支付方式 -->
+              <p class="icon-label-box mt-2">
+                <span>现金</span>
+                <span>APP支付+</span>
+              </p>
+              <!-- 充电口情况 -->
+              <p class="v-fm mt-2">
+                <span class="v-fm mr-6">
+                          <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                </span>
+                <span class="v-fm mr-6">
+                          <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                </span>
+              </p>
+            </div>
+            <div class="">
+              <div class="v-f">
+                <!-- 快慢充 -->
+                <div v-if="stationInfo.chargeType==='fast'" class="v-fcm fast-charge">快充</div>
+                <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
+                <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
+                  <div>
+                    <i class="icon-distance" style="margin-top:.2rem;"></i>
+                    <!-- 据我多远 -->
+                    <span>{{stationInfo.distanceToMe}}</span>
                   </div>
                 </div>
-                <div class="btn-bind" v-if="stationInfo.showBindBtn" >
-                  绑定
-                </div>
               </div>
-            </router-link>
-          </scroller>
-        </div>
+              <div class="btn-bind" v-if="stationList.showBindBtn">
+                绑定
+              </div>
+            </div>
+          </router-link>
+        </scroller>
       </div>
     </div>
     <!-- 底部选项卡 -->
@@ -131,17 +129,10 @@
           pageIndex: 0,
           listLen: 10,
           searchInfo: "",
-          position: ["000", "000"],
-          userId: "002"
-        },
-        height: '100%',
-        scrollState: '', // refresh/infinite
-        tabState:1    //1:允许点击  0：不允许点击
+          position: ['000', '000'],
+          userId: '002'
+        }
       };
-    },
-    mounted() {
-      this.top = 1
-      this.bottom = 0
     },
     computed: {},
     methods: {
@@ -149,42 +140,28 @@
         this.$router.go(-1);
       },
       getStationList(done) {
-        setTimeout(() => {
-          this.postData.pageIndex++;
-          // console.log(JSON.stringify(this.postData));
-          let _this = this;
-          let stationListUrl = "../../../../static/data/stationInfo.json";
-          console.log(JSON.stringify(this.postData));
-          axios.get(stationListUrl).then(function(data) {
-            // console.log(data.data);
-            // console.log(JSON.stringify(data));
-            
-            if (_this.scrollState === 'refresh') {
-              _this.stationList = [];
-            }
+        this.postData.pageIndex++;
+        let _this = this;
+        let stationListUrl = "../../../../static/data/stationInfo.json";
+        axios.get(stationListUrl).then(function(data) {
+          setTimeout(function() {
             _this.stationList = _this.stationList.concat(data.data.stationList);
             _this.hasNext = data.data.hasNext;
-            _this.scrollState = '';
-
-            if(_this.stationList.length===0){
-              let noDataDom = document.getElementsByClassName('no-data-text')[0];
-              let noDataMsgHtml = '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
-              noDataDom.innerHTML = noDataMsgHtml;
-            }else{
-              _this.noDataText = '附近10公里范围内没有更多站点了！';
+            if (_this.stationList.length === 0) {
+              let noDataMsgHtml =
+                '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              $(".loading-layer>div").html(noDataMsgHtml);
+            } else {
+              _this.noDataText = "附近10公里范围内没有更多站点了";
             }
-            _this.$nextTick(function() {
-              _this.$refs.scrollDom.resize();
-            });
             done();
-          });
-        }, 1000);
+          }, 2000);
+        });
       },
       switchTabItem(index) {
         console.log("on-before-index-change", index);
         this.postData.searchMethod =
           index === 0 ? "all" : index === 1 ? "slow" : "fast";
-          this.postData.pageIndex = 0;
         // this.$vux.loading.show({
         //   text: 'loading'
         // })
@@ -193,29 +170,71 @@
         this.index01 = index;
         // }, 1000)
         console.log(this.postData.searchMethod);
-        this.$refs.scrollDom.triggerPullToRefresh();
+        this.refresh();
+      },
+      onItemClick(index, item) {
+        console.log(index);
       },
       refresh(done) {
-        console.log("refresh-1");
-        this.scrollState = 'refresh';
-        this.postData.pageIndex = 0;
-        this.hasNext = true;
+        console.log("refresh");
+        this.$nextTick(function() {
+          if (this.hasNext) {
+            $(".loading-layer")
+              .find(".spinner-holder")
+              .addClass("active");
+          } else {
+            $(".loading-layer")
+              .find(".spinner-holder")
+              .removeClass("active");
+          }
+        });
         let _this = this;
-        if (this.hasNext) {
-          _this.getStationList(done);
-        } else {
-          console.log(`没有更多数据`);
-          this.$refs.scrollDom.finishInfinite(true);
-        }
+        this.refreshing = true;
+        this.postData.pageIndex = 0;
+        this.postData.pageIndex++;
+        console.log(this.postData);
+        let stationListUrl = "../../../../static/data/stationInfo.json";
+        axios.get(stationListUrl).then(function(data) {
+          // console.log(data.data);
+          // console.log(JSON.stringify(data));
+          setTimeout(function() {
+            _this.stationList = [];
+            _this.stationList = _this.stationList.concat(data.data.stationList);
+            _this.hasNext = data.data.hasNext;
+            _this.$nextTick(function() {
+              if (this.hasNext) {
+                $(".loading-layer")
+                  .find(".spinner-holder")
+                  .addClass("active");
+              } else {
+                $(".loading-layer")
+                  .find(".spinner-holder")
+                  .removeClass("active");
+              }
+            });
+            if (_this.stationList.length === 0) {
+              let noDataMsgHtml =
+                '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              $(".loading-layer>div").html(noDataMsgHtml);
+            } else {
+              _this.noDataText = "附近10公里范围内没有更多站点了";
+            }
+  
+            _this.refreshing = false;
+            done();
+          }, 2000);
+        });
       },
       infinite(done) {
-        let _this = this;
-        if (this.hasNext && this.scrollState === '') {
-          console.log("loadmore-1");
-          _this.getStationList(done);
+        if (!this.refreshing) {
+          if (this.hasNext) {
+            console.log("infinite");
+            this.getStationList(done);
+          } else {
+            this.$refs.scrollDom.finishInfinite(true);
+          }
         } else {
-          console.log(`没有更多数据`);
-          this.$refs.scrollDom.finishInfinite(true);
+          done();
         }
       }
     },
@@ -225,14 +244,13 @@
       // this.getStationList();
       console.log(this.hasNext);
       //调用  是否登录接口
-      axios
-        .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
+      axios.all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
         .then(function() {
-          console.log("all");
+          console.log('all');
           axios.spread(function(acc, pers) {
             console.log(acc);
             console.log(pers);
-          });
+          })
         });
       // function judgeLoginFn(){
       //   return axios.get('');
@@ -249,17 +267,12 @@
       //     console.log(pers);
       //   });
       // })
-  
-  
-      var html = `
-  `;
-  
     },
     watch: {
       searchInfo: function(nv, ov) {
         console.log(nv, ov);
         this.postData.searchInfo = nv;
-        this.$refs.scrollDom.triggerPullToRefresh();
+        this.refresh();
       }
     }
   };
@@ -302,7 +315,7 @@
     border-radius: 3px;
     background-color: #f7f7f7;
     padding-right: 1.3rem;
-    margin: 0 0.6rem;
+    margin: 0 .6rem;
   }
   
   .fast-charge {
@@ -367,6 +380,6 @@
     @include fcm;
     border-radius: 5px;
     color: #2eafed;
-    margin: 0.2rem auto;
+    margin: .2rem auto;
   }
 </style>
