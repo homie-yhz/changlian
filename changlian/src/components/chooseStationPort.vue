@@ -6,9 +6,9 @@
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>
-      <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-        <span class="arrow-back"></span>
-      </div>
+      <a href="tel:111111111" class="poa rt-0 v-fcm h-100" style="width:10%;">
+        <span class="icon-phone"></span>
+      </a>
     </header>
     <div class="scroll-box">
       <div>

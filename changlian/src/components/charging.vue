@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      <!-- 底部开始充电按钮 -->
+      <!-- 底部停止充电按钮 -->
       <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
         <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
       </div>

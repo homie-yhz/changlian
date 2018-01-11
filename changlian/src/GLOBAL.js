@@ -6,10 +6,6 @@ import 'mint-ui/lib/message-box/style.css';
 export default {
     env: 'UAT',
     interfacePath: 'http://epsout.life.taikang.com/epstk',   //UAT 接口路径
-    // interfacePath:'http://192.168.1.107:8082/eps-tkyc',    //志鸿本机
-    // interfacePath:'http://172.20.10.5:8080/eps-tkyc',    //志鸿本机
-    // interfacePath:'http://192.168.1.109:8080/eps-tkyc',   //文杰本机
-    // interfacePath:'http://192.168.1.107:8081/eps-tkyc',   //王嫡本机
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level:'2.2.1'
@@ -93,13 +89,14 @@ export function getUserInfo() {
             .then(function (data) {
                 data.data = {
                     bindState: true,
-                    balance: "100.00",
+                    balance: "10",
                     loginState: true,
                     phone: '17777777777',
                     usualStationId: '009',
                     giveMoney: '20.00',
                     userId: 'userId001',
-                    hasNews: true
+                    hasNews: true,
+                    chargingMechineAmount:1
                 }
                 console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));
                 sessionStorage.setItem('loginState', data.data.loginState);

@@ -189,9 +189,10 @@
 
 /* 电话 */
 .icon-phone{
-  width:.7rem;
-  height: 0.7rem;
-  background:url('../../static/img/email-green.png') center center no-repeat;
+  width:1.2rem;
+  height: 1.2rem;
+  background:url('../../static/img/phone.png') center center no-repeat;
+  background-size:100% 100%;
 }
 
 /* 充电端口图标 */
