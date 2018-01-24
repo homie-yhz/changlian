@@ -11,10 +11,10 @@
 			<div class="settings-box">
 				<!-- 要设置的选项 -->
 				<div>
-					<div>
-						<router-link :to="{name:'modifyPwd'}">修改登录密码</router-link>
+					<router-link tag="div" :to="{name:'modifyPwd'}">
+						<span>修改登录密码</span>
 						<i class="icon-right"></i>
-					</div>
+					</router-link>
 					<p class="blank"></p>
 					<div>
 						<span>当前版本</span>

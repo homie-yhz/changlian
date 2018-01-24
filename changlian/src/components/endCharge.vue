@@ -12,7 +12,16 @@
         <!-- 结算头 -->
         <div class="v-fcm">
           <div class="v-fm" style="margin:2rem auto;">
-          <i class="icon-Settlement"></i>
+          <!-- 结算成功动画 -->
+          <div class="success-box" >
+            <!-- :class="{'shine':paySuccessState}" -->
+            <transition appear appear-class="shine1" appear-active-class="shine2">
+              <i class="icon-success-part1"></i>
+            </transition>
+            <transition appear appear-class="shine1" appear-active-class="shine3">
+              <i class="icon-success-part2"></i>
+            </transition>
+          </div>
           <div>
             <p class="tac" style="color:#10ad3c;font-size:.8rem;">结算成功</p>
             <p class="tac" style="color:#e51c23;font-size:.7rem;">{{chargeLog.costMoney}} 元</p>
@@ -20,7 +29,7 @@
           </div>
         </div>
         <!-- 充电设备详情 -->
-        <div class="equitment-box v-fb v-fm" style="background-color: #f2f2f2;">
+        <div class="equitment-box v-fb v-fm" style="background-color: #f2f2f2;padding:.5rem .8rem">
           <div class="">
             <!-- 设备地址 -->
             <p>{{equipment.addr}}</p>
@@ -73,90 +82,122 @@
 </template>
 
 <script>
-  import axios from "axios";
-  export default {
-    data() {
-      return {
-        chargeLog: {},
-        equipment: {
-          addr: "fdsafsa",
-          num: "321321321",
-          index: "02",
-        }
-      }
-    },
-    methods:{
-      back(){
-        this.$router.go(-1);
+import axios from "axios";
+export default {
+  data() {
+    return {
+      chargeLog: {},
+      equipment: {
+        addr: "fdsafsa",
+        num: "321321321",
+        index: "02"
       },
-      closeEndChargePage(){
-        this.$router.replace({name:'nearbyStation'});
-      }
+      paySuccessState: ""
+    };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
     },
-    created() {
-      let _this = this;
-      let chargeLogUrl = '';
-      //充电记录
-      axios
-        .get(chargeLogUrl)
-        .then(function(data) {
-          console.log('chargeLogUrl|返回数据|' + JSON.stringify(data.data));
-          data.data = {
-              chargeState: 'charging',
-              hasChargedPercent: "69%",
-              hasChargedTime: "58000",
-              currentW: "800", //当前功率与实际功率
-              payMethod:"按时长收费",
-              expectedChargeTime: "2",
-              actualChargeTime:"1小时28分",
-              wRange: "200<功率≤500瓦",
-              priceRate: "0.7元/小时",
-              costMoney:"1.80",
-              costDegree:"3",//使用的度数
-              chargeEndTime:"2017-11-10 20:00"
-            };
-          _this.chargeLog = data.data;
-        })
-        .catch(function(err) {
-          console.log({
-            'url': chargeLogUrl,
-            'err': JSON.stringify(err)
-          });
-        });
+    closeEndChargePage() {
+      this.$router.replace({ name: "nearbyStation" });
     }
+  },
+  mounted() {},
+  created() {
+    this.paySuccessState = false;
+    console.log("0" + this.paySuccessState);
+    let _this = this;
+    let chargeLogUrl = "";
+    //充电记录
+    axios
+      .get(chargeLogUrl)
+      .then(function(data) {
+        console.log("chargeLogUrl|返回数据|" + JSON.stringify(data.data));
+        data.data = {
+          chargeState: "charging",
+          hasChargedPercent: "69%",
+          hasChargedTime: "58000",
+          currentW: "800", //当前功率与实际功率
+          payMethod: "按时长收费",
+          expectedChargeTime: "2",
+          actualChargeTime: "1小时28分",
+          wRange: "200<功率≤500瓦",
+          priceRate: "0.7元/小时",
+          costMoney: "1.80",
+          costDegree: "3", //使用的度数
+          chargeEndTime: "2017-11-10 20:00"
+        };
+        _this.chargeLog = data.data;
+      })
+      .catch(function(err) {
+        console.log({
+          url: chargeLogUrl,
+          err: JSON.stringify(err)
+        });
+      });
+    setTimeout(() => {
+      _this.paySuccessState = true;
+      console.log("1" + this.paySuccessState);
+    }, 500);
   }
+};
 </script>
 
 <style lang="scss">
-  @import '../../static/css/common.scss';
-  .endCharge-station{
-    padding-top:.2rem;
-    padding-bottom:.2rem;
-    &>p{
-      margin-bottom:.1rem;
+@import "../../static/css/common.scss";
+.endCharge-station {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  & > p {
+    margin-bottom: 0.1rem;
+  }
+}
+.charge-info {
+  padding: 0.5rem 2rem;
+  font-size: 0.5rem;
+  & > p {
+    margin: 0.2rem 0;
+    & > span:last-child {
+      color: #666;
     }
   }
- .charge-info{
-   padding:.5rem 2rem;
-   font-size:.5rem;
-   &>p{
-     margin:.2rem 0;
-     &>span:last-child{
-       color:#666;
-     }
-   }
- }
- 
- .icon-Settlement{
-   display: block;
-   width:2rem;
-   margin-right:.5rem;
-   height: 2rem;
-   background:url('../../static/img/star.png') center center no-repeat;
-   background-size:100% 100%;
- }
- .equitment-box {
-  padding: 0.5rem 0.8rem;
+}
+
+.success-box {
+  width: 4rem;
+  height: 3rem;
+  position: relative;
+  .icon-success-part1 {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    background: url("../../static/img/pay-success.png") center center no-repeat;
+    background-size: 100%;
+    display: block;
+  }
+  .icon-success-part2 {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    right: 0;
+    background: url("../../static/img/location.png") center center no-repeat;
+    background-size: 100%;
+    display: block;
+  }
+}
+.shine1 {
+  opacity: 0!important;
+}
+.shine2 {
+  opacity: 1;
+  transition: opacity 1s!important;
+}
+.shine3{
+  opacity: 1;
+  transition: opacity 1s 500ms!important;
+}
+.equitment-box {
   background-color: #f2f2f2;
   & > div > p:first-child {
     margin-bottom: 0.4rem;
@@ -169,13 +210,13 @@
     color: #fff;
     font-size: 0.9rem;
   }
-  
 }
-.icon-point-gray{
-    margin-right:.5rem;
-    height: 4px;
-    width: 4px;
-    background-color: #bbbbbb;
-    display: block;
- }
+.icon-point-gray {
+  margin-right: 0.5rem;
+  height: 4px;
+  width: 4px;
+  background-color: #bbbbbb;
+  display: block;
+}
+
 </style>

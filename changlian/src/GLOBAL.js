@@ -96,7 +96,8 @@ export function getUserInfo() {
                     giveMoney: '20.00',
                     userId: 'userId001',
                     hasNews: true,
-                    chargingMechineAmount:1
+                    chargingMechineAmount:1,
+                    chargeSource:'IDCard'
                 }
                 console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));
                 sessionStorage.setItem('loginState', data.data.loginState);

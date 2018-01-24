@@ -21,6 +21,7 @@ const rechargeAgreement = r => require.ensure([], () => r(require('@/components/
 const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
 const personalCenter = r => require.ensure([], () => r(require('@/components/personalCenter.vue')), 'News');
 const settings = r => require.ensure([], () => r(require('@/components/settings.vue')), 'News');
+const modifyPwd = r => require.ensure([], () => r(require('@/components/modifyPwd.vue')), 'News');
 const phoneInput = r => require.ensure([], () => r(require('@/components/phoneInput.vue')), 'News');
 const pwdInput = r => require.ensure([], () => r(require('@/components/pwdInput.vue')), 'News');
 const recharge = r => require.ensure([], () => r(require('@/components/recharge.vue')), 'News');
@@ -111,6 +112,11 @@ export default new Router({
       path: '/setPwd',
       name: 'setPwd',
       component: setPwd
+    },
+    {
+      path: '/modifyPwd',
+      name: 'modifyPwd',
+      component: modifyPwd
     },
     {
       path: '/rechargeAgreement',

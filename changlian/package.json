@@ -19,6 +19,7 @@
     "vue-pull-to": "^0.1.6",
     "vue-router": "^3.0.1",
     "vue-scroller": "^2.2.4",
+    "vue2-touch": "^1.0.5",
     "vux": "^2.7.4",
     "weixin-js-sdk": "^1.2.0"
   },

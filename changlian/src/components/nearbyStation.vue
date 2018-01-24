@@ -11,8 +11,8 @@
       <!-- 搜索框 -->
       <div class="v-fm" style="height:2rem;color:black;">
         <div class="por v-fm v-i1">
-          <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
           <span class="iconfont icon-sousuo"></span>
+          <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
         </div>
         <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
@@ -297,11 +297,11 @@ export default {
 
 .search-station {
   border: 1px solid #dbdbdb;
-  padding-left: 0.2rem;
+  padding-left: 1.3rem;
   height: 1.3rem;
   border-radius: 3px;
   background-color: #f7f7f7;
-  padding-right: 1.3rem;
+  padding-right: .2rem;
   margin: 0 0.6rem;
 }
 

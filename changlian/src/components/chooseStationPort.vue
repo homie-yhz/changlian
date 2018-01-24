@@ -7,7 +7,7 @@
         <span class="arrow-back"></span>
       </div>
       <a href="tel:111111111" class="poa rt-0 v-fcm h-100" style="width:10%;">
-        <span class="icon-phone"></span>
+        <span class="icon-call"></span>
       </a>
     </header>
     <div class="scroll-box">
@@ -65,7 +65,7 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import GLOBAL,{getUserInfo} from "../GLOBAL";
+import GLOBAL, { getUserInfo } from "../GLOBAL";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 export default {
@@ -78,11 +78,11 @@ export default {
       },
       chargeMethods: [],
       stationDetail: {},
-      userInfo:{}
+      userInfo: {}
     };
   },
   methods: {
-    back(){
+    back() {
       this.$router.go(-1);
     },
     choosePort(port) {
@@ -91,14 +91,16 @@ export default {
       if (portState === "idle") {
         //增加样式
         this.postData.portId = port.ID;
-        this.$router.push({name:'chooseChargeMethod',params:{'portId':port.ID}})
+        this.$router.push({
+          name: "chooseChargeMethod",
+          params: { portId: port.ID }
+        });
       } else if (portState === "broken") {
         Toast("抱歉！该充电口暂时无法使用！");
       } else if (portState === "charging") {
         Toast("该端口正在使用！");
       }
-    },
-    
+    }
   },
   created() {
     let _this = this;
@@ -121,49 +123,49 @@ export default {
           parkCost: "免费/2元/h", //停车费用
           chargePortsList: [
             {
-              index:"1",
+              index: "1",
               ID: "port1",
               method: "AC", //交流电AC、直流电DC
               state: "broken" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"2",
+              index: "2",
               ID: "port2",
               method: "DC", //交流电AC、直流电DC
               state: "broken" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"3",
+              index: "3",
               ID: "port3",
               method: "AC", //交流电AC、直流电DC
               state: "charging" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"4",
+              index: "4",
               ID: "port4",
               method: "AC", //交流电AC、直流电DC
               state: "charging" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"5",
+              index: "5",
               ID: "port5",
               method: "AC", //交流电AC、直流电DC
               state: "idle" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"6",
+              index: "6",
               ID: "port6",
               method: "DC", //交流电AC、直流电DC
               state: "idle" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"7",
+              index: "7",
               ID: "port7",
               method: "AC", //交流电AC、直流电DC
               state: "idle" //损坏/充电中/闲置broken/charging/idle
             },
             {
-              index:"8",
+              index: "8",
               ID: "port8",
               method: "AC", //交流电AC、直流电DC
               state: "idle" //损坏/充电中/闲置broken/charging/idle
@@ -181,8 +183,6 @@ export default {
           err: JSON.stringify(err)
         });
       });
-
-    
   }
 };
 </script>
@@ -196,8 +196,6 @@ $cl-bgc: #ff9800;
   padding: 0.3rem 0 0.4rem 0.8rem;
   border-bottom: 1px solid #e6e6e6;
 }
-
-
 
 .ports-box {
   display: flex;
@@ -252,8 +250,8 @@ $cl-bgc: #ff9800;
         background-color: #19d64e;
         color: #fff;
         border-color: #19d64e;
-        box-shadow:0 0 4px #19d64e;
-        font-weight:bold;
+        box-shadow: 0 0 4px #19d64e;
+        font-weight: bold;
       }
     }
   }
@@ -322,8 +320,8 @@ $cl-bgc: #ff9800;
   bottom: 0;
   z-index: 2;
 }
-.balance{
-  width:3rem;
+.balance {
+  width: 3rem;
 }
 </style>
 

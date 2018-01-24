@@ -32,9 +32,10 @@
 /* 铃铛 */
 .icon-lingdang:before { content: "\e62c"; font-size:.8rem;}
 /* 搜索 */
-.icon-sousuo:after { content: "\E6D8";
+.icon-sousuo:after {     
+  content: "\E6D8";
   position: absolute;
-  right: .9rem;
+  /* right: .9rem; */
   display: block;
   top: 0;
   /* right: .5rem; */
@@ -43,7 +44,8 @@
   color: #bbb;
   display: block;
   height: 1.3rem;
-  line-height: 1.3rem;}
+  line-height: 1.3rem;
+  left: 1rem;}
 /* 星星 */
 .icon-star{
   background:url('../../static/img/star.png') center center no-repeat;
@@ -187,12 +189,20 @@
   font-size: 0.5rem;
 }
 
-/* 电话 */
-.icon-phone{
+/* 打电话图标 */
+.icon-call{
   width:1.2rem;
   height: 1.2rem;
   background:url('../../static/img/phone.png') center center no-repeat;
   background-size:100% 100%;
+}
+
+/* 手机图标 */
+
+.icon-phone{
+  width:.6rem;
+  height:.6rem;
+  
 }
 
 /* 充电端口图标 */
@@ -254,4 +264,35 @@
   background:url('../../static/img/wechat-logo.png') center center no-repeat;
   background-size: 100% 100%;
   margin:0 auto;
+}
+
+/* 付款方式 图标  手机图标 */
+.icon-app{
+  display: block;
+  width: .5rem;
+  height: .7rem;
+  background: url('../../static/img/app.png') center center no-repeat;
+  background-size: 100% 100%;
+  margin-right: .2rem;
+}
+/* 付款方式 图标  ID卡图标 */
+.icon-IDCard{
+  display: block;
+  width: .7rem;
+  height: .8rem;
+  background: url('../../static/img/IDCard.png') center center no-repeat;
+  background-size: 100% 100%;
+  margin-right: .2rem;
+}
+/* 闪电图标  */
+.icon-lightning{
+  display: block;
+  width:1rem;
+  height:1.3rem;
+  background:url('../../static/img/lightning.png') center center no-repeat;
+  background-size: 100% 100%;
+}
+.icon-lightning-big{
+  width:1.5rem;
+  height:1.7rem;
 }
