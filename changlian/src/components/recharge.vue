@@ -1,5 +1,5 @@
 <template>
-<!-- 充值页面 -->
+  <!-- 充值页面 -->
   <div>
     <header class="header-bg-fff v-fcm por">
       <div class="v-fcm m-auto h-100" style="width:80%">充值</div>
@@ -21,7 +21,7 @@
         </p>
       </div>
       <div class="mt-8 mb-5 fz-50">
-        <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span> 
+        <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span>
       </div>
       <div class="payMethod">
         <p style="margin:.5rem auto;">支付方式</p>
@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import { Toast } from "mint-ui";
-import axios from 'axios';
+import axios from "axios";
 import "mint-ui/lib/toast/style.css";
 import GLOBAL, { getUserInfo } from "../GLOBAL";
-import clAlert from './my-cpt/cl-alert.vue';
-Vue.component('cl-alert',clAlert);
+import clAlert from "./my-cpt/cl-alert.vue";
+Vue.component("cl-alert", clAlert);
 export default {
   data() {
     return {
@@ -68,30 +68,30 @@ export default {
         {
           money: 20,
           giveMoney: 0,
-          giveMoneyEndTime:"2017-01-01",
-          cardId:"a",
-          agentName:"代理商名称"
+          giveMoneyEndTime: "2017-01-01",
+          cardId: "a",
+          agentName: "代理商名称"
         },
         {
           money: 50,
           giveMoney: 5,
-          giveMoneyEndTime:"2017-01-01",
-          cardId:"b",
-          agentName:"代理商名称"
+          giveMoneyEndTime: "2017-01-01",
+          cardId: "b",
+          agentName: "代理商名称"
         },
         {
           money: 100,
-          giveMoneyEndTime:"2017-01-01",
+          giveMoneyEndTime: "2017-01-01",
           giveMoney: 10,
-          cardId:"c",
-          agentName:"代理商名称"
+          cardId: "c",
+          agentName: "代理商名称"
         },
         {
           money: 200,
-          giveMoneyEndTime:"2017-01-01",
+          giveMoneyEndTime: "2017-01-01",
           giveMoney: 15,
-          cardId:"d",
-          agentName:"代理商名称"
+          cardId: "d",
+          agentName: "代理商名称"
         }
       ],
       selectedMoney: "",
@@ -100,12 +100,12 @@ export default {
         cardId: "", //卡号
         payMethod: "" //支付方式：微信/支付宝
       },
-      showClAlert:false //展示 绑定弹出层
+      showClAlert: false //展示 绑定弹出层
     };
   },
   methods: {
     //监听子组件关闭事件
-    closeClAlert(state){
+    closeClAlert(state) {
       this.showClAlert = state;
     },
     // 选择卡片事件
@@ -128,12 +128,15 @@ export default {
           data.data = {
             state: "success"
           };
-          if(data.data.state === 'success'){
-            MessageBox.alert('充值成功！');
+          if (data.data.state === "success") {
+            MessageBox.alert("充值成功！");
           }
         })
         .catch(function(err) {
-          console.log({ url: rechargeUrl, err: JSON.stringify(err) });
+          console.log({
+            url: rechargeUrl,
+            err: JSON.stringify(err)
+          });
         });
     },
     // 立即充值
@@ -147,27 +150,24 @@ export default {
         console.log(JSON.stringify(this.postData));
         // 判断是否绑定过用户
         getUserInfo().then(function(userInfo) {
-          console.log('bind');
+          console.log("bind");
           console.log(userInfo);
           // 已绑定  调用充值接口
-          if(userInfo.bindState===true){
+          if (userInfo.bindState === true) {
             _this.rechargeInterface();
-          }
-          // 未绑定  弹框提示
-          else{
+          } else {
+            // 未绑定  弹框提示
             _this.showClAlert = true;
             console.log(_this.showClAlert);
           }
         });
       }
     },
-    back(){
+    back() {
       this.$router.go(-1);
     }
   },
-  created(){
-
-  }
+  created() {}
 };
 </script>
 
@@ -207,7 +207,7 @@ export default {
         padding: 0.1rem 0.4rem;
         background: #e51c23;
         color: #fff;
-        font-size:.55rem;
+        font-size: 0.55rem;
       }
       .icon-check-yes {
         position: absolute;
@@ -215,38 +215,40 @@ export default {
         right: 1px;
         width: 0.7rem;
         height: 0.7rem;
-        z-index:11;
+        z-index: 11;
       }
     }
-    .agent-name{
+    .agent-name {
       display: block;
-      color:#fff;
+      color: #fff;
       position: absolute;
-      width:100%;
+      width: 100%;
       left: 0;
-      top:0;
-      font-size:.4rem;
-      padding:.1rem 0 0 .2rem;
+      top: 0;
+      font-size: 0.4rem;
+      padding: 0.1rem 0 0 0.2rem;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .icon-cl-log{
-      background:url('../../static/img/changlian-logo-white.png') center center no-repeat;
-      background-size:140% 170%;
+    .icon-cl-log {
+      background: url("../../static/img/changlian-logo-white.png") center center
+        no-repeat;
+      background-size: 140% 170%;
       display: block;
-      width:1.6rem;
-      height:1.4rem;
+      width: 1.6rem;
+      height: 1.4rem;
       position: absolute;
-      left: 0;bottom:0;
-      opacity:.5;
+      left: 0;
+      bottom: 0;
+      opacity: 0.5;
     }
-    .give-money-end-time{
+    .give-money-end-time {
       position: absolute;
-      bottom:0;
-      right:0;
+      bottom: 0;
+      right: 0;
       display: block;
-      font-size:.4rem;
+      font-size: 0.4rem;
     }
   }
 }
@@ -257,10 +259,12 @@ export default {
     border: none;
   }
 }
+
 .agreement > a {
   color: #2eafed;
   font-size: 0.55rem;
 }
+
 .icon-wx {
   width: 0.8rem;
   height: 0.8rem;
@@ -293,7 +297,7 @@ export default {
   position: absolute;
   right: -1.4rem;
   bottom: -1px;
-  z-index:2;
+  z-index: 2;
 }
 
 .recharge-bottom-box {

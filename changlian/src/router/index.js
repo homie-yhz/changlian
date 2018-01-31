@@ -6,6 +6,7 @@ Vue.use(Router)
 const IDCardList = r => require.ensure([], () => r(require('@/components/IDCardList.vue')), 'News');
 const chargeElecLog = r => require.ensure([], () => r(require('@/components/chargeElecLog.vue')), 'News');
 const charging = r => require.ensure([], () => r(require('@/components/charging.vue')), 'News');
+const chargingList = r => require.ensure([], () => r(require('@/components/chargingList.vue')), 'News');
 const endCharge = r => require.ensure([], () => r(require('@/components/endCharge.vue')), 'News');
 const ICInfo = r => require.ensure([], () => r(require('@/components/ICInfo.vue')), 'News');
 const ICRecharge = r => require.ensure([], () => r(require('@/components/ICRecharge.vue')), 'News');
@@ -67,6 +68,11 @@ export default new Router({
       path: '/charging',
       name: 'charging',
       component: charging
+    },
+    {
+      path: '/chargingList',
+      name: 'chargingList',
+      component: chargingList
     },
     {
       path: '/endCharge',
@@ -134,7 +140,7 @@ export default new Router({
       component: nearbyStation
     },
     {
-      path: '/personalCenter',
+      path: '/personalCenter/:bindState',
       name: 'personalCenter',
       component: personalCenter
     },

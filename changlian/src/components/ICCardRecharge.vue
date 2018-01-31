@@ -35,11 +35,12 @@
 </template>
 
 <script>
-  import GLOBAL from '../GLOBAL';
+  import GLOBAL,{getUserInfo} from '../GLOBAL';
   import axios from 'axios';
   export default {
     data() {
       return {
+        userInfo:{},
         moneyList: [{
             'money': 20
           },
@@ -67,13 +68,18 @@
         this.selectedMoney = money;
       },
       rechargeNow() {
-  
+        // if(this.userInfo.bindState === false){
+        //   console.log('未绑定');
+        // }else{
+          
+        // }
       },
       payMethods(method) {
   
       }
     },
     created() {
+      let _this = this;
       let ICCardInfoUrl = GLOBAL.interfacePath + '';
       axios
         .get(ICCardInfoUrl)
@@ -86,6 +92,10 @@
             'url': ICCardInfoUrl,
             'err': JSON.stringify(err)
           });
+        });
+
+        getUserInfo().then(function(userInfo){
+          _this.userInfo = userInfo;
         });
     }
   };

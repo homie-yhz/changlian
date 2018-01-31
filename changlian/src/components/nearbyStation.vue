@@ -145,21 +145,22 @@ export default {
       this.$router.go(-1);
     },
     getStationList(done) {
+        let _this = this;
       setTimeout(() => {
         this.postData.pageIndex++;
         // console.log(JSON.stringify(this.postData));
-        let _this = this;
-        let stationListUrl = "../../../../static/data/stationInfo.json";
+        // let stationListUrl = "../../../../static/data/stationInfo.json";
+        let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
         console.log(JSON.stringify(this.postData));
         axios.get(stationListUrl).then(function(data) {
-          // console.log(data.data);
+          console.log(data.data);
           // console.log(JSON.stringify(data));
-
+          let request = data.data;
           if (_this.scrollState === "refresh") {
             _this.stationList = [];
           }
-          _this.stationList = _this.stationList.concat(data.data.stationList);
-          _this.hasNext = data.data.hasNext;
+          _this.stationList = _this.stationList.concat(request.body.stationList);
+          _this.hasNext = request.body.hasNext;
           _this.scrollState = "";
 
           if (_this.stationList.length === 0) {

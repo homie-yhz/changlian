@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-touch:rotate="moveCircle"
+    v-hammer:swipe.left="swiper"
 		tag="div"
 		class="circle-box" 
 		:class="{'circle-box-shine':shine}"
@@ -11,11 +11,11 @@
 	</div>
 </template>
 <script>
-		
-// :to="{name:'charging'}" 
+
 import Vue from 'vue';
+import {VueHammer} from 'vue2-hammer';
 import Vue2Touch from 'vue2-touch'
-Vue.use(Vue2Touch);
+Vue.use(VueHammer)
 export default {
   data() {
     return {
@@ -24,9 +24,9 @@ export default {
   },
 	props: ["num", "show"],
 	methods:{
-		moveCircle(swipeleft,fun1){
-			console.log(swipeleft);
-			console.log(fun1);
+		swiper(obj){
+      console.log('1');
+			console.log(obj);
 		}
 	},
   created() {

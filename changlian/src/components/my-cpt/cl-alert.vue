@@ -8,7 +8,7 @@
 			<div class="content">
 				&nbsp;&nbsp;&nbsp;&nbsp;需要先绑定任意一个电站后方可充值充电。
 			</div>
-			<router-link tag="div" :to="{name:'nearbyStation'}" class="btn-box">
+			<router-link tag="div" :to="{name:'nearbyStation',params:{bindState:'hasBind'}}" class="btn-box">
 				马上绑定
 			</router-link>
 		</div>
@@ -59,7 +59,7 @@ export default {
 		right: 0;
 		height: 1rem;
 		@include fcm;
-		background:url('../../../static/img/star.png') center center no-repeat;
+		background:url('../../../static/img/close.png') center center no-repeat;
 		background-size:100% 100%;
 	}
 	.content{
