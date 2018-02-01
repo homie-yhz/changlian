@@ -29,8 +29,8 @@
 
 <script>
 	import axios from "axios";
-	import GLOBAL from '../GLOBAL';
-	import RegExp from "../RegExp";
+	import GLOBAL from '../../GLOBAL';
+	import RegExp from "../../RegExp";
 	import {
 		Toast
 	} from 'mint-ui'
@@ -48,7 +48,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
+	@import "../../../static/css/common.scss";
 	.operator-main-box {
 		background-color: #f7f7f7;
 		a {

@@ -34,7 +34,7 @@
 
 <script>
   import Vue from 'vue';
-  import GLOBAL from '../GLOBAL';
+  import GLOBAL from '../../GLOBAL';
   import axios from 'axios';
   import {
     InfiniteScroll
@@ -137,7 +137,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
+  @import "../../../static/css/common.scss";
   .tab-box {
     padding: 0 .8rem;
     z-index: 2;

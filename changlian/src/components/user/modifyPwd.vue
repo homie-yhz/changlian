@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import GLOBAL from "../GLOBAL";
+import GLOBAL from "../../GLOBAL";
 import axios from "axios";
-import regExp from "../RegExp";
+import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 const leftTime = 60;
@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .setPwd-box {
   margin: 0.5rem auto 0;
   & > div {

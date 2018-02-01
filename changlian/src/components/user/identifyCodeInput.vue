@@ -25,7 +25,7 @@
 <script>
 import $ from "jquery";
 import axios from 'axios';
-import GLOBAL from '../GLOBAL';
+import GLOBAL from '../../GLOBAL';
 //倒计时时间设定
 const leftTime = 60;
 export default {
@@ -128,7 +128,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .identifycode-box {
   & > input {
     width: 1rem;

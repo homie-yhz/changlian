@@ -58,8 +58,8 @@ import Vue from "vue";
 import { Toast } from "mint-ui";
 import axios from "axios";
 import "mint-ui/lib/toast/style.css";
-import GLOBAL, { getUserInfo } from "../GLOBAL";
-import clAlert from "./my-cpt/cl-alert.vue";
+import GLOBAL, { getUserInfo } from "../../GLOBAL";
+import clAlert from "../my-cpt/cl-alert.vue";
 Vue.component("cl-alert", clAlert);
 export default {
   data() {
@@ -172,8 +172,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 .recharge-box {
   padding: 0 0.7rem;
   & > .money-box {
@@ -187,7 +187,7 @@ export default {
       border-radius: 4px;
       margin-top: 0.5rem;
       margin-top: 0.5rem;
-      background: url("../../static/img/recharge-card-bg-blue.jpg") center
+      background: url("../../../static/img/recharge-card-bg-blue.jpg") center
         center no-repeat;
       background-size: 100%;
       &.checked {
@@ -232,7 +232,7 @@ export default {
       white-space: nowrap;
     }
     .icon-cl-log {
-      background: url("../../static/img/changlian-logo-white.png") center center
+      background: url("../../../static/img/changlian-logo-white.png") center center
         no-repeat;
       background-size: 140% 170%;
       display: block;
@@ -269,7 +269,7 @@ export default {
   width: 0.8rem;
   height: 0.8rem;
   display: block;
-  background: url("../../static/img/logo-wx.png");
+  background: url("../../../static/img/logo-wx.png");
   background-size: 100% 100%;
   margin-right: 0.5rem;
 }
@@ -278,7 +278,7 @@ export default {
   width: 0.8rem;
   height: 0.8rem;
   display: block;
-  background: url("../../static/img/logo-zfb.png");
+  background: url("../../../static/img/logo-zfb.png");
   background-size: 100% 100%;
   margin-right: 0.5rem;
 }

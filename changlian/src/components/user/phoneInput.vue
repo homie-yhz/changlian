@@ -38,7 +38,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .login-box {
   & > input {
     height: 1.8rem;

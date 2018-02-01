@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import GLOBAL,{getUserInfo} from '../GLOBAL';
+  import GLOBAL,{getUserInfo} from '../../GLOBAL';
   import axios from 'axios';
   export default {
     data() {
@@ -102,7 +102,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
+  @import "../../../static/css/common.scss";
   .ICRecharge-box {
     padding: 0.5rem 0.7rem 0;
     &>.money-box {
@@ -134,7 +134,7 @@
     width: .8rem;
     height: .8rem;
     display: block;
-    background: url('../../static/img/logo-wx.png');
+    background: url('../../../static/img/logo-wx.png');
     background-size: 100% 100%;
     margin-right: .5rem;
   }
@@ -143,7 +143,7 @@
     width: .8rem;
     height: .8rem;
     display: block;
-    background: url('../../static/img/logo-zfb.png');
+    background: url('../../../static/img/logo-zfb.png');
     background-size: 100% 100%;
     margin-right: .5rem;
   }

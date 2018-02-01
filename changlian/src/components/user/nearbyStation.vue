@@ -100,11 +100,11 @@
 import Vue from "vue";
 import axios from "axios";
 import VueScroller from "vue-scroller";
-import FloatCircle from "./my-cpt/float-circle.vue";
+import FloatCircle from "../my-cpt/float-circle.vue";
 import $ from "jquery";
 Vue.use(VueScroller);
 import { Tab, TabItem } from "vux";
-import GLOBAL, {getUserInfo, judgeLoginObj, hasChargingMechineObj } from "../GLOBAL";
+import GLOBAL, {getUserInfo, judgeLoginObj, hasChargingMechineObj } from "../../GLOBAL";
 export default {
   components: {
     Tab,
@@ -149,7 +149,7 @@ export default {
       setTimeout(() => {
         this.postData.pageIndex++;
         // console.log(JSON.stringify(this.postData));
-        // let stationListUrl = "../../../../static/data/stationInfo.json";
+        // let stationListUrl = "../../../../../../static/data/stationInfo.json";
         let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
         console.log(JSON.stringify(this.postData));
         axios.get(stationListUrl).then(function(data) {
@@ -166,7 +166,7 @@ export default {
           if (_this.stationList.length === 0) {
             let noDataDom = document.getElementsByClassName("no-data-text")[0];
             let noDataMsgHtml =
-              '<img src="../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
             noDataDom.innerHTML = noDataMsgHtml;
           } else {
             _this.noDataText = "附近10公里范围内没有更多站点了！";
@@ -272,8 +272,8 @@ export default {
 </style>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 //重置tabs样式
 .vux-tab .vux-tab-item.vux-tab-selected {
   color: rgb(46, 175, 237) !important;
@@ -343,17 +343,17 @@ export default {
     &.checked {
       color: #2eafed;
       & > .icon-elec {
-        background: url("../../static/img/bolt-blue.png") center center
+        background: url("../../../static/img/bolt-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }
       & > .icon-scan {
-        background: url("../../static/img/bolt-blue.png") center center
+        background: url("../../../static/img/bolt-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }
       & > .icon-me {
-        background: url("../../static/img/person-blue.png") center center
+        background: url("../../../static/img/person-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }

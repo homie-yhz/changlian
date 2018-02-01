@@ -52,7 +52,7 @@
 </script>
 
 <style lang="scss">
-	@import '../../static/css/common.scss';
+	@import '../../../static/css/common.scss';
 	.equitment-box {
 		padding: 0.5rem 0.8rem 0.2rem;
 		background-color: #2daeec;

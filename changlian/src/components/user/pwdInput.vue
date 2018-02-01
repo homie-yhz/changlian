@@ -60,7 +60,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .pwd-box {
   & > p {
     border-bottom: 1px solid #bbb;

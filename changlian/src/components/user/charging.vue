@@ -88,10 +88,10 @@
 
 <script>
 import axios from "axios";
-import GLOBAL,{getUserInfo} from "../GLOBAL";
+import GLOBAL,{getUserInfo} from "../../GLOBAL";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
-import { timestampToData } from "../Filter";
+import { timestampToData } from "../../Filter";
 export default {
   data() {
     return {
@@ -189,8 +189,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 .bgc-2e {
   background-color: #2e2e2e;
 }

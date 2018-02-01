@@ -14,6 +14,7 @@
             <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
           </div>
           <input type="tel" v-model="postData.identifyCode" maxlength="6" placeholder="验证码">
+          <input type="tel" v-model="postData.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
           <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
         </div>
       </div>
@@ -22,9 +23,9 @@
 </template>
 
 <script>
-import GLOBAL from "../GLOBAL";
+import GLOBAL from "../../GLOBAL";
 import axios from "axios";
-import regExp from "../RegExp";
+import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 const leftTime = 60;
@@ -42,13 +43,25 @@ export default {
       },
       postData: {
         phone: "",
-        identifyCode: ""
+        identifyCode: "",
+        pwd: ""
       }
     };
   },
   methods: {
-		back(){
+    back(){
       this.$router.go(-1);
+    },
+    // 下一步  输入手机验证码
+    nextStep() {
+      if (this.phone.length === 11) {
+        this.$router.push({
+          name: "identifyCodeInput",
+          params: {
+            phone: this.phone
+          }
+        });
+      }
     },
     //获取验证码
     getCode() {
@@ -101,25 +114,16 @@ export default {
         });
     },
     //点击下一步  注册成功
-    nextStep() {
-			let _this = this;
+    postUserInfo() {
       //let postRegisterInfoUrl = GLOBAL.interfacePath + '';
-      let postPhoneInfoUrl = "";
+      let postRegisterInfoUrl = "";
       axios
-        .get(postPhoneInfoUrl)
+        .get(postRegisterInfoUrl)
         .then(function(data) {
-					console.log("postPhoneInfoUrl|返回数据|" + JSON.stringify(data.data));
-					data.data = {
-						state:'success'
-					}
-					if(data.data.state === 'success'){
-						_this.$router.push({name:'setPwd'});
-					}else{
-						Toast('手机号或验证码有误！');
-					}
+          console.log("postRegisterInfoUrl|返回数据|" + JSON.stringify(data.data));
         })
         .catch(function(err) {
-          console.log({ url: postPhoneInfoUrl, err: JSON.stringify(err) });
+          console.log({ url: postRegisterInfoUrl, err: JSON.stringify(err) });
         });
     }
   },
@@ -130,7 +134,8 @@ export default {
         console.log(JSON.stringify(nv));
         if (
           regExp.phone.test(nv.phone) &&
-          regExp.identifyCode.test(nv.identifyCode)
+          regExp.identifyCode.test(nv.identifyCode) &&
+          regExp.pwd.test(nv.pwd)
         ) {
           this.allowNext = true;
         } else {
@@ -144,7 +149,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .register-box {
   margin: 0.5rem auto 0;
   & > div {

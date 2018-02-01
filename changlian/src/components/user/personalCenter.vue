@@ -4,7 +4,7 @@
     <div class="center-header">
       <div class="por">
         <div class="v-fm">
-          <img src="../../static/img/head-pic-blue.png" alt="">
+          <img src="../../../static/img/head-pic-blue.png" alt="">
           <div v-if="!userInfo.loginState" class="v-fcm">
             <p @click="routerTo('login')">登录</p>
             <p style="margin:0 .2rem;">|</p>
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import GLOBAL, { getUserInfo } from "../GLOBAL";
+import GLOBAL, { getUserInfo } from "../../GLOBAL";
 export default {
   data() {
     return {
@@ -134,13 +134,13 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 .center-header {
   overflow: hidden;
   height: 8.5rem;
   color: #fff;
-  background: url("../../static/img/personal-bg.png") top center no-repeat;
+  background: url("../../../static/img/personal-bg.png") top center no-repeat;
   background-size: 100%;
   & img {
     width: 3.2rem;
@@ -210,17 +210,17 @@ export default {
     &.checked {
       color: #2eafed;
       & > .icon-elec {
-        background: url("../../static/img/bolt-blue.png") center center
+        background: url("../../../static/img/bolt-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }
       & > .icon-scan {
-        background: url("../../static/img/bolt-blue.png") center center
+        background: url("../../../static/img/bolt-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }
       & > .icon-me {
-        background: url("../../static/img/person-blue.png") center center
+        background: url("../../../static/img/person-blue.png") center center
           no-repeat;
         background-size: 100% 100%;
       }

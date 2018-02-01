@@ -36,8 +36,8 @@
 
 <script>
 	import axios from "axios";
-	import GLOBAL from '../GLOBAL';
-	import RegExp from "../RegExp";
+	import GLOBAL from '../../GLOBAL';
+	import RegExp from "../../RegExp";
 	import {
 		Toast
 	} from 'mint-ui'
@@ -83,8 +83,8 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
-	@import "../../static/css/iconfont.css";
+	@import "../../../static/css/common.scss";
+	@import "../../../static/css/iconfont.css";
 	.header {
 		height: 2rem;
 		border-bottom: 1px solid #d9d9d9;

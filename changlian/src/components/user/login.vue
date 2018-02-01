@@ -41,8 +41,8 @@
 
 <script>
 import axios from "axios";
-import GLOBAL from "../GLOBAL";
-import regExp from "../RegExp";
+import GLOBAL from "../../GLOBAL";
+import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 export default {
@@ -94,8 +94,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 .header {
   height: 2rem;
   border-bottom: 1px solid #d9d9d9;

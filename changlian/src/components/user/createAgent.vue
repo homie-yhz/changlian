@@ -57,7 +57,7 @@
 </template>
 
 <script>
-	import GLOBAL from '../GLOBAL';
+	import GLOBAL from '../../GLOBAL';
 	import axios from 'axios';
 	export default {
 		data() {
@@ -119,13 +119,13 @@
 					console.log('agentListUrl|返回数据|' + JSON.stringify(data.data));
 					data.data = [{
 							"agentName": "和被告石家庄代理商",
-							"agentImg": "../../static/img/book.png",
+							"agentImg": "../../../static/img/book.png",
 							"agentAddr": "fdsafdsafdsafsad",
 							"agentId": "1321312321"
 						},
 						{
 							"agentName": "和被告石家庄代理商2",
-							"agentImg": "../../static/img/book.png",
+							"agentImg": "../../../static/img/book.png",
 							"agentAddr": "1231321321312",
 							"agentId": "321312321312"
 						}
@@ -143,7 +143,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
+	@import "../../../static/css/common.scss";
 	.addEquipment-btn-box {
 		height: 4rem;
 		&>p:first-child {

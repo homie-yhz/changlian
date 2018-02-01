@@ -31,7 +31,7 @@
 <script>
 	import GLOBAL, {
 		getUserInfo
-	} from '../GLOBAL';
+	} from '../../GLOBAL';
 	export default {
 		data() {
 			return {
@@ -50,7 +50,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
-	@import "../../static/css/iconfont.css";
+	@import "../../../static/css/common.scss";
+	@import "../../../static/css/iconfont.css";
 </style>
 

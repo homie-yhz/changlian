@@ -65,7 +65,7 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import GLOBAL, { getUserInfo } from "../GLOBAL";
+import GLOBAL, { getUserInfo } from "../../GLOBAL";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 export default {
@@ -188,8 +188,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
-@import "../../static/css/iconfont.css";
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
 $cl-c: #ff9800;
 $cl-bgc: #ff9800;
 .station-box {

@@ -66,7 +66,7 @@
 <script>
   import GLOBAL, {
     getUserInfo
-  } from '../GLOBAL';
+  } from '../../GLOBAL';
   import axios from 'axios';
   
   export default {
@@ -127,7 +127,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
+  @import "../../../static/css/common.scss";
   .cards-list {
     padding: 0rem .8rem;
     &>li {

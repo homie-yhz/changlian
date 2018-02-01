@@ -3,49 +3,49 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 // 用户页面
-const IDCardList = r => require.ensure([], () => r(require('@/components/IDCardList.vue')), 'News');
-const chargeElecLog = r => require.ensure([], () => r(require('@/components/chargeElecLog.vue')), 'News');
-const charging = r => require.ensure([], () => r(require('@/components/charging.vue')), 'News');
-const chargingList = r => require.ensure([], () => r(require('@/components/chargingList.vue')), 'News');
-const endCharge = r => require.ensure([], () => r(require('@/components/endCharge.vue')), 'News');
-const ICInfo = r => require.ensure([], () => r(require('@/components/ICInfo.vue')), 'News');
-const ICRecharge = r => require.ensure([], () => r(require('@/components/ICRecharge.vue')), 'News');
-// const ICCardList = r => require.ensure([], () => r(require('@/components/ICCardList.vue')), 'News');
-const cardsBag = r => require.ensure([], () => r(require('@/components/cardsBag.vue')), 'News');
-const ICCardRecharge = r => require.ensure([], () => r(require('@/components/ICCardRecharge.vue')), 'News');
-const identifyCodeInput = r => require.ensure([], () => r(require('@/components/identifyCodeInput.vue')), 'News');
-const login = r => require.ensure([], () => r(require('@/components/login.vue')), 'News');
-const register = r => require.ensure([], () => r(require('@/components/register.vue')), 'News');
-const getBackPwd = r => require.ensure([], () => r(require('@/components/getBackPwd.vue')), 'News');
-const setPwd = r => require.ensure([], () => r(require('@/components/setPwd.vue')), 'News');
-const rechargeAgreement = r => require.ensure([], () => r(require('@/components/rechargeAgreement.vue')), 'News');
-const main = r => require.ensure([], () => r(require('@/components/main.vue')), 'News');
-const personalCenter = r => require.ensure([], () => r(require('@/components/personalCenter.vue')), 'News');
-const settings = r => require.ensure([], () => r(require('@/components/settings.vue')), 'News');
-const modifyPwd = r => require.ensure([], () => r(require('@/components/modifyPwd.vue')), 'News');
-const phoneInput = r => require.ensure([], () => r(require('@/components/phoneInput.vue')), 'News');
-const pwdInput = r => require.ensure([], () => r(require('@/components/pwdInput.vue')), 'News');
-const recharge = r => require.ensure([], () => r(require('@/components/recharge.vue')), 'News');
-const rechargeLog = r => require.ensure([], () => r(require('@/components/rechargeLog.vue')), 'News');
-const showIC = r => require.ensure([], () => r(require('@/components/showIC.vue')), 'News');
-const startElec = r => require.ensure([], () => r(require('@/components/startElec.vue')), 'News');
-const chooseStationPort = r => require.ensure([], () => r(require('@/components/chooseStationPort.vue')), 'News');
-const chooseChargeMethod = r => require.ensure([], () => r(require('@/components/chooseChargeMethod.vue')), 'News');
-const usuallyStation = r => require.ensure([], () => r(require('@/components/usuallyStation.vue')), 'News');
-const nearbyStation = r => require.ensure([], () => r(require('@/components/nearbyStation.vue')), 'News');
-const bindStation = r => require.ensure([], () => r(require('@/components/bindStation.vue')), 'News');
-const myNews = r => require.ensure([], () => r(require('@/components/myNews.vue')), 'News');
-const operatorPlatform = r => require.ensure([], () => r(require('@/components/operatorPlatform.vue')), 'News');
-const aboutUs = r => require.ensure([], () => r(require('@/components/aboutUs.vue')), 'News');
-const chooseToCharge = r => require.ensure([], () => r(require('@/components/chooseToCharge.vue')), 'News');
-const userAgreement = r => require.ensure([], () => r(require('@/components/userAgreement.vue')), 'News');
+const IDCardList = r => require.ensure([], () => r(require('@/components/user/IDCardList.vue')), 'News');
+const chargeElecLog = r => require.ensure([], () => r(require('@/components/user/chargeElecLog.vue')), 'News');
+const charging = r => require.ensure([], () => r(require('@/components/user/charging.vue')), 'News');
+const chargingList = r => require.ensure([], () => r(require('@/components/user/chargingList.vue')), 'News');
+const endCharge = r => require.ensure([], () => r(require('@/components/user/endCharge.vue')), 'News');
+const ICInfo = r => require.ensure([], () => r(require('@/components/user/ICInfo.vue')), 'News');
+const ICRecharge = r => require.ensure([], () => r(require('@/components/user/ICRecharge.vue')), 'News');
+// const ICCardList = r => require.ensure([], () => r(require('@/components/user/ICCardList.vue')), 'News');
+const cardsBag = r => require.ensure([], () => r(require('@/components/user/cardsBag.vue')), 'News');
+const ICCardRecharge = r => require.ensure([], () => r(require('@/components/user/ICCardRecharge.vue')), 'News');
+const identifyCodeInput = r => require.ensure([], () => r(require('@/components/user/identifyCodeInput.vue')), 'News');
+const login = r => require.ensure([], () => r(require('@/components/user/login.vue')), 'News');
+const register = r => require.ensure([], () => r(require('@/components/user/register.vue')), 'News');
+const getBackPwd = r => require.ensure([], () => r(require('@/components/user/getBackPwd.vue')), 'News');
+const setPwd = r => require.ensure([], () => r(require('@/components/user/setPwd.vue')), 'News');
+const rechargeAgreement = r => require.ensure([], () => r(require('@/components/user/rechargeAgreement.vue')), 'News');
+const main = r => require.ensure([], () => r(require('@/components/user/main.vue')), 'News');
+const personalCenter = r => require.ensure([], () => r(require('@/components/user/personalCenter.vue')), 'News');
+const settings = r => require.ensure([], () => r(require('@/components/user/settings.vue')), 'News');
+const modifyPwd = r => require.ensure([], () => r(require('@/components/user/modifyPwd.vue')), 'News');
+const phoneInput = r => require.ensure([], () => r(require('@/components/user/phoneInput.vue')), 'News');
+const pwdInput = r => require.ensure([], () => r(require('@/components/user/pwdInput.vue')), 'News');
+const recharge = r => require.ensure([], () => r(require('@/components/user/recharge.vue')), 'News');
+const rechargeLog = r => require.ensure([], () => r(require('@/components/user/rechargeLog.vue')), 'News');
+const showIC = r => require.ensure([], () => r(require('@/components/user/showIC.vue')), 'News');
+const startElec = r => require.ensure([], () => r(require('@/components/user/startElec.vue')), 'News');
+const chooseStationPort = r => require.ensure([], () => r(require('@/components/user/chooseStationPort.vue')), 'News');
+const chooseChargeMethod = r => require.ensure([], () => r(require('@/components/user/chooseChargeMethod.vue')), 'News');
+const usuallyStation = r => require.ensure([], () => r(require('@/components/user/usuallyStation.vue')), 'News');
+const nearbyStation = r => require.ensure([], () => r(require('@/components/user/nearbyStation.vue')), 'News');
+const bindStation = r => require.ensure([], () => r(require('@/components/user/bindStation.vue')), 'News');
+const myNews = r => require.ensure([], () => r(require('@/components/user/myNews.vue')), 'News');
+const operatorPlatform = r => require.ensure([], () => r(require('@/components/user/operatorPlatform.vue')), 'News');
+const aboutUs = r => require.ensure([], () => r(require('@/components/user/aboutUs.vue')), 'News');
+const chooseToCharge = r => require.ensure([], () => r(require('@/components/user/chooseToCharge.vue')), 'News');
+const userAgreement = r => require.ensure([], () => r(require('@/components/user/userAgreement.vue')), 'News');
 // 运营商管理平台页面
-const operatorLogin = r => require.ensure([], () => r(require('@/components/operatorLogin.vue')), 'News');
-const operatorMain = r => require.ensure([], () => r(require('@/components/operatorMain.vue')), 'News');
-const agentList = r => require.ensure([], () => r(require('@/components/agentList.vue')), 'News'); //代理商列表
-const createAgent = r => require.ensure([], () => r(require('@/components/createAgent.vue')), 'News'); //创建代理商
-const updateAgent = r => require.ensure([], () => r(require('@/components/updateAgent.vue')), 'News'); //修改更新代理商信息
-const scroller = r => require.ensure([], () => r(require('@/components/vueScroller.vue')), 'News'); //修改更新代理商信息
+const operatorLogin = r => require.ensure([], () => r(require('@/components/user/operatorLogin.vue')), 'News');
+const operatorMain = r => require.ensure([], () => r(require('@/components/user/operatorMain.vue')), 'News');
+const agentList = r => require.ensure([], () => r(require('@/components/user/agentList.vue')), 'News'); //代理商列表
+const createAgent = r => require.ensure([], () => r(require('@/components/user/createAgent.vue')), 'News'); //创建代理商
+const updateAgent = r => require.ensure([], () => r(require('@/components/user/updateAgent.vue')), 'News'); //修改更新代理商信息
+const scroller = r => require.ensure([], () => r(require('@/components/user/vueScroller.vue')), 'News'); //修改更新代理商信息
 
 export default new Router({
   routes: [

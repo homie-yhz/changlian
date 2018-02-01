@@ -40,7 +40,7 @@
 </template>
 
 <script>
-	import GLOBAL from '../GLOBAL';
+	import GLOBAL from '../../GLOBAL';
 	import axios from 'axios';
 	import {
 		Toast
@@ -176,8 +176,8 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
-	@import "../../static/css/iconfont.css";
+	@import "../../../static/css/common.scss";
+	@import "../../../static/css/iconfont.css";
 	.IDCard-charge {
 		padding: 0.7rem 1rem;
 		&>ul>li {

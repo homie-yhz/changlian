@@ -145,7 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .endCharge-station {
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
@@ -172,7 +172,7 @@ export default {
     position: absolute;
     width: 3rem;
     height: 3rem;
-    background: url("../../static/img/pay-success.png") center center no-repeat;
+    background: url("../../../static/img/pay-success.png") center center no-repeat;
     background-size: 100%;
     display: block;
   }
@@ -181,7 +181,7 @@ export default {
     width: 2rem;
     height: 2rem;
     right: 0;
-    background: url("../../static/img/location.png") center center no-repeat;
+    background: url("../../../static/img/location.png") center center no-repeat;
     background-size: 100%;
     display: block;
   }

@@ -66,7 +66,7 @@
   import axios from "axios";
   import GLOBAL, {
     getUserInfo
-  } from "../GLOBAL";
+  } from "../../GLOBAL";
   import {
     Toast
   } from "mint-ui";
@@ -192,7 +192,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
+  @import "../../../static/css/common.scss";
   .equitment-box {
     padding: 0.5rem 0.8rem;
     background-color: #2daeec;
@@ -243,7 +243,7 @@
         width: 0.6rem;
         height: 0.6rem;
         z-index: 2;
-        background: url("../../static/img/yes-white.png") top right no-repeat;
+        background: url("../../../static/img/yes-white.png") top right no-repeat;
         background-size: 100% 100%;
       }
     }

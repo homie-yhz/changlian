@@ -47,72 +47,12 @@
 export default {
   data(){
       return {
-          stationList:[1,2,3,4]
+          
       }
   }
 }
 </script>
 <style lang="scss">
-@import '../../static/css/common.scss';
-.search-station {
-  border: 1px solid #e3e3e3;
-  padding-left: 0.2rem;
-  height: 1.3rem;
-  border-radius: 3px;
-}
-.fast-charge {
-  width: 2rem;
-  background-color: $cl-color;
-  color: #fff;
-  margin: auto 0.2rem;
-  border-radius: 3px;
-}
-.slow-charge {
-  width: 2rem;
-  background-color: #fff;
-  color: $cl-color;
-  border: 1px solid $cl-color;
-  margin: auto 0.2rem;
-  border-radius: 3px;
-}
-.icon-star {
-  display: block;
-  width: 1rem;
-  height: 1rem;
-  background: url("../assets/logo.png") center center no-repeat;
-  background-size: 100% 100%;
-  margin: 0 auto;
-}
-.station-list > li {
-  padding: 0.3rem 0;
-  border-bottom: 1px solid #e3e3e3;
-  &:last-child {
-    border-bottom: none;
-  }
-}
-.icon-total {
-  background-color: $cl-color;
-  font-size: 0.45rem;
-  width: 0.8rem;
-  height: 0.8rem;
-  margin-right: 0.2rem;
-  border-radius: 3px;
-  color: #fff;
-}
-/* 剩余的 */
-.icon-idle {
-  background-color: #00d94a;
-  color: #fff;
-  width: 0.8rem;
-  height: 0.8rem;
-  font-size: 0.45rem;
-  margin-right: 0.2rem;
-  border-radius: 3px;
-}
-.icon-label-box > span {
-  padding: 0 0.3rem;
-  border: 1px solid #e3e3e3;
-  border-radius: 10rem;
-  font-size: 0.5rem;
-}
+@import '../../../static/css/common.scss';
+
 </style>

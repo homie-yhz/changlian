@@ -35,7 +35,7 @@
 	</div>
 </template>
 <script>
-import GLOBAL from "../GLOBAL";
+import GLOBAL from "../../GLOBAL";
 import axios from "axios";
 import { Toast } from 'mint-ui'
 import 'mint-ui/lib/toast/style.css';
@@ -109,7 +109,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../static/css/common.scss";
+@import "../../../static/css/common.scss";
 .method-box {
   display: flex;
   flex-wrap: wrap;

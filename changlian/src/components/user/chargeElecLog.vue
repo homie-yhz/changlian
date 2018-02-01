@@ -36,7 +36,7 @@
 
 <script>
   import Vue from 'vue';
-  import GLOBAL from '../GLOBAL';
+  import GLOBAL from '../../GLOBAL';
   import axios from 'axios';
   import {
     InfiniteScroll
@@ -120,7 +120,7 @@
 </script>
 
 <style lang="scss">
-  @import "../../static/css/common.scss";
+  @import "../../../static/css/common.scss";
   .chargeElecLog-list {
     padding: 0 .8rem;
     &>ul>li {
@@ -139,7 +139,7 @@
     display: block;
     width: .9rem;
     height: .9rem;
-    background: url('../../static/img/clock-blue.png') center center no-repeat;
+    background: url('../../../static/img/clock-blue.png') center center no-repeat;
     background-size: 100% 100%;
   }
   
@@ -147,7 +147,7 @@
     display: block;
     width: .9rem;
     height: .9rem;
-    background: url('../../static/img/money.png') center center no-repeat;
+    background: url('../../../static/img/money.png') center center no-repeat;
     background-size: 100% 100%;
   }
 </style>

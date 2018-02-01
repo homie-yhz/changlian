@@ -13,7 +13,7 @@
 		<ul class="scroll-box agentList" style="padding-top:2rem;">
 			<li class="v-f" v-for="agent in agentList">
 				<router-link :to="{name:'',params:{agentId:agent.agentId}}" class="v-f">
-					<img src="../../static/img/book.png" alt="">
+					<img src="../../../static/img/book.png" alt="">
 					<div class="v-i1">
 						<p>{{agent.agentName}}</p>
 						<p>{{agent.agentAddr}}</p>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import GLOBAL from '../GLOBAL';
+	import GLOBAL from '../../GLOBAL';
 	import axios from 'axios';
 	export default {
 		data() {
@@ -46,13 +46,13 @@
 					console.log('agentListUrl|返回数据|' + JSON.stringify(data.data));
 					data.data = [{
 							"agentName": "和被告石家庄代理商",
-							"agentImg": "../../static/img/book.png",
+							"agentImg": "../../../static/img/book.png",
 							"agentAddr": "fdsafdsafdsafsad",
 							"agentId":"1321312321"
 						},
 						{
 							"agentName": "和被告石家庄代理商2",
-							"agentImg": "../../static/img/book.png",
+							"agentImg": "../../../static/img/book.png",
 							"agentAddr": "1231321321312",
 							"agentId":"321312321312"
 						}
@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
+	@import "../../../static/css/common.scss";
 	.addAgent {
 		position: absolute;
 		right: .5rem;

@@ -38,7 +38,7 @@
 	</div>
 </template>
 <script>
-	import GLOBAL from "../GLOBAL";
+	import GLOBAL from "../../GLOBAL";
 	import axios from 'axios';
 	export default {
 		data() {
@@ -79,8 +79,8 @@
 </script>
 
 <style lang="scss">
-	@import "../../static/css/common.scss";
-	@import "../../static/css/iconfont.css";
+	@import "../../../static/css/common.scss";
+	@import "../../../static/css/iconfont.css";
 	.btn-loginOut {
 		@include fcm;
 		width: 100%;
