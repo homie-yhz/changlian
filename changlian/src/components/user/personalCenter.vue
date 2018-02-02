@@ -83,7 +83,7 @@
     </div>
     <!-- 底部导航栏 -->
     <div class="footer v-f">
-      <router-link class="v-i1" :to="{name:'nearbyStation'}">
+      <router-link class="v-i1" :to="{name:'nearbyStation',params:{listType:'normalList'}}">
         <i class="icon-elec m-auto"></i>
         <p class="tac">电站</p>
       </router-link>

@@ -1,4 +1,7 @@
 {
+    "code":200,
+    "message":"充电站接口",
+    "body":{
     "hasNext": false,
     "stationList": [
         {
@@ -110,4 +113,5 @@
             "showBindBtn":false
         }
     ]
+}
 }

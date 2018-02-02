@@ -22,14 +22,14 @@
         </router-link>
       </div>
       <!-- 搜索列表 -->
-      <tab v-model="index01" prevent-default @on-before-index-change="switchTabItem">
+      <tab v-if="postData.listType==='normalList'" v-model="index01" prevent-default @on-before-index-change="switchTabItem">
         <tab-item selected>全部</tab-item>
         <tab-item>慢充</tab-item>
         <tab-item>快充</tab-item>
       </tab>
     </div>
     <!-- 电站列表 -->
-    <div class="scroll-box" style="padding-top:5.7rem!important;padding-bottom:2rem;">
+    <div class="scroll-box" :class="{pt1:postData.listType==='bindList',pt2:postData.listType === 'normalList'}" style="padding-bottom:2rem;">
       <div style="position:relative;height:100%;">
         <div>
           <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
@@ -45,10 +45,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                        <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                          <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                      <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                        <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -104,7 +104,11 @@ import FloatCircle from "../my-cpt/float-circle.vue";
 import $ from "jquery";
 Vue.use(VueScroller);
 import { Tab, TabItem } from "vux";
-import GLOBAL, {getUserInfo, judgeLoginObj, hasChargingMechineObj } from "../../GLOBAL";
+import GLOBAL, {
+  getUserInfo,
+  judgeLoginObj,
+  hasChargingMechineObj
+} from "../../GLOBAL";
 export default {
   components: {
     Tab,
@@ -128,7 +132,8 @@ export default {
         listLen: 10,
         searchInfo: "",
         position: ["000", "000"],
-        userId: "002"
+        userId: "002",
+        listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List; 
       },
       height: "100%",
       scrollState: "", // refresh/infinite
@@ -145,12 +150,12 @@ export default {
       this.$router.go(-1);
     },
     getStationList(done) {
-        let _this = this;
+      let _this = this;
       setTimeout(() => {
         this.postData.pageIndex++;
         // console.log(JSON.stringify(this.postData));
-        // let stationListUrl = "../../../../../../static/data/stationInfo.json";
-        let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
+        let stationListUrl = "../../../../static/data/stationInfo.json";
+        // let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
         console.log(JSON.stringify(this.postData));
         axios.get(stationListUrl).then(function(data) {
           console.log(data.data);
@@ -159,7 +164,9 @@ export default {
           if (_this.scrollState === "refresh") {
             _this.stationList = [];
           }
-          _this.stationList = _this.stationList.concat(request.body.stationList);
+          _this.stationList = _this.stationList.concat(
+            request.body.stationList
+          );
           _this.hasNext = request.body.hasNext;
           _this.scrollState = "";
 
@@ -220,6 +227,8 @@ export default {
   mounted() {},
   created() {
     let _this = this;
+    console.log("if绑定电站列表：" + this.$route.params.listType);
+    this.postData.listType = this.$route.params.listType;
     //获取附近电站信息列表
     // this.getStationList();
     console.log(this.hasNext);
@@ -254,7 +263,7 @@ export default {
     // })
 
     var html = `
-      `;
+        `;
   },
   watch: {
     searchInfo: function(nv, ov) {
@@ -302,7 +311,7 @@ export default {
   height: 1.3rem;
   border-radius: 3px;
   background-color: #f7f7f7;
-  padding-right: .2rem;
+  padding-right: 0.2rem;
   margin: 0 0.6rem;
 }
 
@@ -372,5 +381,11 @@ export default {
   border-radius: 5px;
   color: #2eafed;
   margin: 0.2rem auto;
+}
+.pt1{
+  padding-top:3.5rem!important;
+}
+.pt2{
+  padding-top:5.5rem!important;
 }
 </style>

@@ -39,6 +39,8 @@ const operatorPlatform = r => require.ensure([], () => r(require('@/components/u
 const aboutUs = r => require.ensure([], () => r(require('@/components/user/aboutUs.vue')), 'News');
 const chooseToCharge = r => require.ensure([], () => r(require('@/components/user/chooseToCharge.vue')), 'News');
 const userAgreement = r => require.ensure([], () => r(require('@/components/user/userAgreement.vue')), 'News');
+//errorPage
+const errorPage = r => require.ensure([], () => r(require('@/components/user/errorPage.vue')), 'News');
 // 运营商管理平台页面
 const operatorLogin = r => require.ensure([], () => r(require('@/components/user/operatorLogin.vue')), 'News');
 const operatorMain = r => require.ensure([], () => r(require('@/components/user/operatorMain.vue')), 'News');
@@ -50,7 +52,11 @@ const scroller = r => require.ensure([], () => r(require('@/components/user/vueS
 export default new Router({
   routes: [
     {
-      path: '/',
+      path:'/',
+      redirect:'nearbyStation/normalList',
+    },
+    {
+      path: '/nearbyStation/:listType',
       name: 'nearbyStation',
       component: nearbyStation
     },
@@ -140,7 +146,7 @@ export default new Router({
       component: nearbyStation
     },
     {
-      path: '/personalCenter/:bindState',
+      path: '/personalCenter',
       name: 'personalCenter',
       component: personalCenter
     },
@@ -265,6 +271,11 @@ export default new Router({
       path: '/scroller',
       name: 'scroller',
       component: scroller
+    },
+    {
+      path: '*',   // 错误路由
+      name: 'errorPage',   //重定向
+      component:errorPage
     }
   ]
 })
