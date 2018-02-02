@@ -6,13 +6,13 @@
 				<span class="arrow-back"></span>
 			</div>
 			<!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-				<span class="arrow-back"></span>
-			</div> -->
+						<span class="arrow-back"></span>
+					</div> -->
 		</header>
 		<div class="scroll-box" style="padding-bottom:2rem">
-			<ul>
-				<router-link tag="li" :to="{name:'charging',params:{chargingId:'001'}}">
-					<div class="equitment-box v-fb v-fm" style="background-color: #2daeec;">
+			<ul class="charging-equipment-list">
+				<router-link tag="li" v-for="equipment in chargingEquipmentList" :key="equipment.chargingId" :to="{name:'charging',params:{chargingId:'001'}}">
+					<div class="equitment-box v-fb v-fm">
 						<div class="">
 							<!-- 设备地址 -->
 							<p>{{equipment.addr}}</p>
@@ -22,13 +22,13 @@
 						<div class="v-fcm icon-equipment-num">{{equipment.index}}</div>
 					</div>
 					<div class="v-fm handle-method">
-						<div v-if="userInfo.chargeSource === 'APP'" class="v-fm">
-							<i class="icon-app"></i>APP
+							<div v-if="equipment.chargeSource === 'APP'" class="v-fm">
+								<i class="icon-app"></i>APP
+							</div>
+							<div v-if="equipment.chargeSource === 'IDCard'" class="v-fm">
+								<i class="icon-IDCard"></i>ID卡
+							</div>
 						</div>
-						<div v-if="userInfo.chargeSource === 'IDCard'" class="v-fm">
-							<i class="icon-IDCard"></i>ID卡
-						</div>
-					</div>
 				</router-link>
 			</ul>
 		</div>
@@ -36,37 +36,55 @@
 </template>
 
 <script>
+	import Vue from "vue";
+	import GLOBAL, {
+		getUserInfo
+	} from "../../GLOBAL";
 	export default {
 		data() {
 			return {
-				equipment: {},
-				userInfo: {},
-			}
+				chargingEquipmentList: [],
+				userInfo: {}
+			};
 		},
-		methods:{
-			back(){
+		methods: {
+			back() {
 				this.$router.go(-1);
 			}
+		},
+		created() {
+			let _this = this;
+			getUserInfo().then(function(userInfo) {
+				_this.chargingEquipmentList = userInfo.chargingEquipmentList;
+				console.log(_this.equipmentList);
+			});
 		}
-	}
+	};
 </script>
 
 <style lang="scss">
-	@import '../../../static/css/common.scss';
-	.equitment-box {
-		padding: 0.5rem 0.8rem 0.2rem;
-		background-color: #2daeec;
-		&>div>p:first-child {
-			margin-bottom: 0.2rem;
-			min-height: 0.5rem;
-		}
-		.icon-equipment-num {
-			border-radius: 100rem;
-			height: 2rem;
-			width: 2rem;
-			background-color: #ff9800;
-			color: #fff;
-			font-size: 0.9rem;
+	@import "../../../static/css/common.scss";
+	@import "../../../static/css/iconfont.css";
+	.charging-equipment-list {
+		li {
+			border-bottom: 1px solid #d9d9d9;
+			background: #f5f5f5;
+			.equitment-box {
+			background: #f5f5f5;
+				padding: 0.5rem 0.8rem 0.2rem;
+				&>div>p:first-child {
+					margin-bottom: 0.2rem;
+					min-height: 0.5rem;
+				}
+				.icon-equipment-num {
+					border-radius: 100rem;
+					height: 2rem;
+					width: 2rem;
+					background-color: #ff9800;
+					color: #fff;
+					font-size: 0.9rem;
+				}
+			}
 		}
 	}
 	
@@ -75,7 +93,7 @@
 		font-size: 0.5rem;
 		&>div {
 			@include fm;
-			background: rgba(255, 255, 255, 0.7);
+			// background: rgba(255, 255, 255, 0.7);
 			color: #666;
 			border-radius: 3px;
 			padding: 0.1rem 0.2rem;

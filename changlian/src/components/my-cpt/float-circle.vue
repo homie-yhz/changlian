@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link tag="div" :to="{name:'nearbyStation',params:{listType:'bindList'}}" v-tap class="circle-box" :class="{'circle-box-shine':shine}" v-if='show' ref="circleDom">
+    <router-link tag="div" :to="{name:'chargingList'}" v-tap class="circle-box" :class="{'circle-box-shine':shine}" v-if='show' ref="circleDom">
       <p class="v-fcm">{{num}}</p>
       <p>充电中</p>
     </router-link>

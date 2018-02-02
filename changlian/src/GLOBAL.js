@@ -97,6 +97,22 @@ export function getUserInfo() {
                     userId: 'userId001',
                     hasNews: true,
                     chargingMechineAmount:1,
+                    chargingEquipmentList:[
+                        {
+                            addr:'昌平回龙观',
+                            num:'132313213123123',
+                            index:'1',
+                            chargingId:'001',
+                            chargeSource:'APP'
+                        },
+                        {
+                            addr:'沙河北大桥',
+                            num:'4324321431243214',
+                            index:'3',
+                            chargingId:'003',
+                            chargeSource:'IDCard'
+                        }
+                    ],
                     chargeSource:'IDCard'
                 }
                 console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));

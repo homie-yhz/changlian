@@ -6,6 +6,7 @@ Vue.directive('tap', {
 			console.log('move');
 			el.style.left = event.touches[0].pageX+'px';
 			el.style.top = event.touches[0].pageY+'px';
+			event.stopPropagation();
 		});
 	}
 })
