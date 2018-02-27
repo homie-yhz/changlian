@@ -45,10 +45,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                          <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                            <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                        <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                          <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -65,6 +65,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- 绑定按钮 -->
                 <div class="btn-bind" v-if="stationInfo.showBindBtn">
                   绑定
                 </div>
@@ -97,295 +98,297 @@
 </template>
 
 <script>
-import Vue from "vue";
-import axios from "axios";
-import VueScroller from "vue-scroller";
-import FloatCircle from "../my-cpt/float-circle.vue";
-import $ from "jquery";
-Vue.use(VueScroller);
-import { Tab, TabItem } from "vux";
-import GLOBAL, {
-  getUserInfo,
-  judgeLoginObj,
-  hasChargingMechineObj
-} from "../../GLOBAL";
-export default {
-  components: {
+  import Vue from "vue";
+  import axios from "axios";
+  import VueScroller from "vue-scroller";
+  import FloatCircle from "../my-cpt/float-circle.vue";
+  import $ from "jquery";
+  Vue.use(VueScroller);
+  import {
     Tab,
-    TabItem,
-    FloatCircle
-  },
-  data() {
-    return {
-      userInfo: {},
-      searchInfo: "",
-      stationList: [],
-      index01: 0,
-      refreshing: false,
-      chargingNum: 0,
-      showFloatCircle: false, //是否展示悬浮球。
-      hasNext: true,
-      noDataText: "附近10公里范围内没有更多站点了",
-      showUsuallyStation: false, //是否展示常用电站按钮
-      postData: {
-        pageIndex: 0,
-        listLen: 10,
+    TabItem
+  } from "vux";
+  import GLOBAL, {
+    getUserInfo,
+    judgeLoginObj,
+    hasChargingMechineObj
+  } from "../../GLOBAL";
+  export default {
+    components: {
+      Tab,
+      TabItem,
+      FloatCircle
+    },
+    data() {
+      return {
+        userInfo: {},
         searchInfo: "",
-        position: ["000", "000"],
-        userId: "002",
-        listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List; 
+        stationList: [],
+        index01: 0,
+        refreshing: false,
+        chargingNum: 0,
+        showFloatCircle: false, //是否展示悬浮球。
+        hasNext: true,
+        noDataText: "附近10公里范围内没有更多站点了",
+        showUsuallyStation: false, //是否展示常用电站按钮
+        postData: {
+          pageIndex: 0,
+          listLen: 10,
+          searchInfo: "",
+          position: ["000", "000"],
+          userId: "002",
+          listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
+        },
+        height: "100%",
+        scrollState: "", // refresh/infinite
+        tabState: 1 //1:允许点击  0：不允许点击
+      };
+    },
+    mounted() {
+      this.top = 1;
+      this.bottom = 0;
+    },
+    computed: {},
+    methods: {
+      back() {
+        this.$router.go(-1);
       },
-      height: "100%",
-      scrollState: "", // refresh/infinite
-      tabState: 1 //1:允许点击  0：不允许点击
-    };
-  },
-  mounted() {
-    this.top = 1;
-    this.bottom = 0;
-  },
-  computed: {},
-  methods: {
-    back() {
-      this.$router.go(-1);
-    },
-    getStationList(done) {
-      let _this = this;
-      setTimeout(() => {
-        this.postData.pageIndex++;
-        // console.log(JSON.stringify(this.postData));
-        let stationListUrl = "../../../../static/data/stationInfo.json";
-        // let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
-        console.log(JSON.stringify(this.postData));
-        axios.get(stationListUrl).then(function(data) {
-          console.log(data.data);
-          // console.log(JSON.stringify(data));
-          let request = data.data;
-          if (_this.scrollState === "refresh") {
-            _this.stationList = [];
-          }
-          _this.stationList = _this.stationList.concat(
-            request.body.stationList
-          );
-          _this.hasNext = request.body.hasNext;
-          _this.scrollState = "";
-
-          if (_this.stationList.length === 0) {
-            let noDataDom = document.getElementsByClassName("no-data-text")[0];
-            let noDataMsgHtml =
-              '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
-            noDataDom.innerHTML = noDataMsgHtml;
-          } else {
-            _this.noDataText = "附近10公里范围内没有更多站点了！";
-          }
-          _this.$nextTick(function() {
-            _this.$refs.scrollDom.resize();
+      getStationList(done) {
+        let _this = this;
+        setTimeout(() => {
+          this.postData.pageIndex++;
+          // console.log(JSON.stringify(this.postData));
+          let stationListUrl = "../../../../static/data/stationInfo.json";
+          // let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
+          console.log(JSON.stringify(this.postData));
+          axios.get(stationListUrl).then(function(data) {
+            console.log(data.data);
+            // console.log(JSON.stringify(data));
+            let request = data.data;
+            if (_this.scrollState === "refresh") {
+              _this.stationList = [];
+            }
+            _this.stationList = _this.stationList.concat(
+              request.body.stationList
+            );
+            _this.hasNext = request.body.hasNext;
+            _this.scrollState = "";
+  
+            if (_this.stationList.length === 0) {
+              let noDataDom = document.getElementsByClassName("no-data-text")[0];
+              let noDataMsgHtml =
+                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              noDataDom.innerHTML = noDataMsgHtml;
+            } else {
+              _this.noDataText = "附近10公里范围内没有更多站点了！";
+            }
+            _this.$nextTick(function() {
+              _this.$refs.scrollDom.resize();
+            });
+            done();
           });
-          done();
-        });
-      }, 1000);
-    },
-    switchTabItem(index) {
-      console.log("on-before-index-change", index);
-      this.postData.searchMethod =
-        index === 0 ? "all" : index === 1 ? "slow" : "fast";
-      this.postData.pageIndex = 0;
-      // this.$vux.loading.show({
-      //   text: 'loading'
-      // })
-      // setTimeout(() => {
-      // this.$vux.loading.hide()
-      this.index01 = index;
-      // }, 1000)
-      console.log(this.postData.searchMethod);
-      this.$refs.scrollDom.triggerPullToRefresh();
-    },
-    refresh(done) {
-      console.log("refresh-1");
-      this.scrollState = "refresh";
-      this.postData.pageIndex = 0;
-      this.hasNext = true;
-      let _this = this;
-      if (this.hasNext) {
-        _this.getStationList(done);
-      } else {
-        console.log(`没有更多数据`);
-        this.$refs.scrollDom.finishInfinite(true);
+        }, 1000);
+      },
+      switchTabItem(index) {
+        console.log("on-before-index-change", index);
+        this.postData.searchMethod =
+          index === 0 ? "all" : index === 1 ? "slow" : "fast";
+        this.postData.pageIndex = 0;
+        // this.$vux.loading.show({
+        //   text: 'loading'
+        // })
+        // setTimeout(() => {
+        // this.$vux.loading.hide()
+        this.index01 = index;
+        // }, 1000)
+        console.log(this.postData.searchMethod);
+        this.$refs.scrollDom.triggerPullToRefresh();
+      },
+      refresh(done) {
+        console.log("refresh-1");
+        this.scrollState = "refresh";
+        this.postData.pageIndex = 0;
+        this.hasNext = true;
+        let _this = this;
+        if (this.hasNext) {
+          _this.getStationList(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
+        }
+      },
+      infinite(done) {
+        let _this = this;
+        if (this.hasNext && this.scrollState === "") {
+          console.log("loadmore-1");
+          _this.getStationList(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
+        }
       }
     },
-    infinite(done) {
+    mounted() {},
+    created() {
       let _this = this;
-      if (this.hasNext && this.scrollState === "") {
-        console.log("loadmore-1");
-        _this.getStationList(done);
-      } else {
-        console.log(`没有更多数据`);
-        this.$refs.scrollDom.finishInfinite(true);
-      }
-    }
-  },
-  mounted() {},
-  created() {
-    let _this = this;
-    console.log("if绑定电站列表：" + this.$route.params.listType);
-    this.postData.listType = this.$route.params.listType;
-    //获取附近电站信息列表
-    // this.getStationList();
-    console.log(this.hasNext);
-    //调用  是否登录接口
-    axios
-      .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
-      .then(function() {
-        console.log("all");
-        axios.spread(function(acc, pers) {
-          console.log(acc);
-          console.log(pers);
+      console.log("if绑定电站列表：" + this.$route.params.listType);
+      this.postData.listType = this.$route.params.listType;
+      //获取附近电站信息列表
+      // this.getStationList();
+      console.log(this.hasNext);
+      //调用  是否登录接口
+      axios
+        .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
+        .then(function() {
+          console.log("all");
+          axios.spread(function(acc, pers) {
+            console.log(acc);
+            console.log(pers);
+          });
         });
+  
+      getUserInfo().then(function(userInfo) {
+        _this.userInfo = userInfo;
       });
-
-    getUserInfo().then(function(userInfo) {
-      _this.userInfo = userInfo;
-    });
-    // function judgeLoginFn(){
-    //   return axios.get('');
-    // }
-    // function hasChargingMechineFn(){
-    //   return axios.get('');
-    // }
-    // axios.all([judgeLoginFn(),hasChargingMechineFn()]).then(function(){
-    //   console.log('2222');
-
-    //   axios.spread(function(acc,pers){
-    //     console.log(222);
-    //     console.log(acc);
-    //     console.log(pers);
-    //   });
-    // })
-
-    var html = `
-        `;
-  },
-  watch: {
-    searchInfo: function(nv, ov) {
-      console.log(nv, ov);
-      this.postData.searchInfo = nv;
-      this.$refs.scrollDom.triggerPullToRefresh();
+      // function judgeLoginFn(){
+      //   return axios.get('');
+      // }
+      // function hasChargingMechineFn(){
+      //   return axios.get('');
+      // }
+      // axios.all([judgeLoginFn(),hasChargingMechineFn()]).then(function(){
+      //   console.log('2222');
+  
+      //   axios.spread(function(acc,pers){
+      //     console.log(222);
+      //     console.log(acc);
+      //     console.log(pers);
+      //   });
+      // })
+  
+      var html = `
+          `;
+    },
+    watch: {
+      searchInfo: function(nv, ov) {
+        console.log(nv, ov);
+        this.postData.searchInfo = nv;
+        this.$refs.scrollDom.triggerPullToRefresh();
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="less">
-@import "~vux/src/styles/1px.less";
-@import "~vux/src/styles/center.less";
+  @import "~vux/src/styles/1px.less";
+  @import "~vux/src/styles/center.less";
 </style>
 
 <style lang="scss">
-@import "../../../static/css/common.scss";
-@import "../../../static/css/iconfont.css";
-//重置tabs样式
-.vux-tab .vux-tab-item.vux-tab-selected {
-  color: rgb(46, 175, 237) !important;
-}
-
-.search1:after {
-  content: "\e6d8";
-}
-
-.vux-tab-ink-bar {
-  background-color: rgb(46, 175, 237) !important;
-}
-
-.vux-tab .vux-tab-item {
-  height: 1.7rem !important;
-  line-height: 1.7rem !important;
-}
-
-.vux-tab {
-  height: 1.7rem !important;
-}
-
-.search-station {
-  border: 1px solid #dbdbdb;
-  padding-left: 1.3rem;
-  height: 1.3rem;
-  border-radius: 3px;
-  background-color: #f7f7f7;
-  padding-right: 0.2rem;
-  margin: 0 0.6rem;
-}
-
-.fast-charge {
-  width: 2rem;
-  background-color: $cl-c;
-  color: #fff;
-  margin: auto 0.5rem;
-  border-radius: 3px;
-  height: 1rem;
-}
-
-.slow-charge {
-  width: 2rem;
-  background-color: #fff;
-  color: $cl-c;
-  border: 1px solid $cl-c;
-  margin: auto 0.2rem;
-  border-radius: 3px;
-}
-
-.station-item {
-  border-bottom: 1px solid #bbb;
-  padding: 0.5rem 0;
-}
-
-// 底部
-.footer {
-  border-top: 1px solid #eee;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 2;
-  background: #f8f8f8;
-  border-top: 1px solid #d0d0d0;
-  & > div {
-    height: 2rem;
-    &.checked {
-      color: #2eafed;
-      & > .icon-elec {
-        background: url("../../../static/img/bolt-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > .icon-scan {
-        background: url("../../../static/img/bolt-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > .icon-me {
-        background: url("../../../static/img/person-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > p {
-        text-align: center;
+  @import "../../../static/css/common.scss";
+  @import "../../../static/css/iconfont.css";
+  //重置tabs样式
+  .vux-tab .vux-tab-item.vux-tab-selected {
+    color: rgb(46, 175, 237) !important;
+  }
+  
+  .search1:after {
+    content: "\e6d8";
+  }
+  
+  .vux-tab-ink-bar {
+    background-color: rgb(46, 175, 237) !important;
+  }
+  
+  .vux-tab .vux-tab-item {
+    height: 1.7rem !important;
+    line-height: 1.7rem !important;
+  }
+  
+  .vux-tab {
+    height: 1.7rem !important;
+  }
+  
+  .search-station {
+    border: 1px solid #dbdbdb;
+    padding-left: 1.3rem;
+    height: 1.3rem;
+    border-radius: 3px;
+    background-color: #f7f7f7;
+    padding-right: 0.2rem;
+    margin: 0 0.6rem;
+  }
+  
+  .fast-charge {
+    width: 2rem;
+    background-color: $cl-c;
+    color: #fff;
+    margin: auto 0.5rem;
+    border-radius: 3px;
+    height: 1rem;
+  }
+  
+  .slow-charge {
+    width: 2rem;
+    background-color: #fff;
+    color: $cl-c;
+    border: 1px solid $cl-c;
+    margin: auto 0.2rem;
+    border-radius: 3px;
+  }
+  
+  .station-item {
+    border-bottom: 1px solid #bbb;
+    padding: 0.5rem 0;
+  }
+  
+  // 底部
+  .footer {
+    border-top: 1px solid #eee;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    background: #f8f8f8;
+    border-top: 1px solid #d0d0d0;
+    &>div {
+      height: 2rem;
+      &.checked {
+        color: #2eafed;
+        &>.icon-elec {
+          background: url("../../../static/img/bolt-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-scan {
+          background: url("../../../static/img/bolt-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-me {
+          background: url("../../../static/img/person-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>p {
+          text-align: center;
+        }
       }
     }
   }
-}
-
-.btn-bind {
-  width: 80%;
-  border: 1px solid #2eafed;
-  height: 1.2rem;
-  @include fcm;
-  border-radius: 5px;
-  color: #2eafed;
-  margin: 0.2rem auto;
-}
-.pt1{
-  padding-top:3.5rem!important;
-}
-.pt2{
-  padding-top:5.5rem!important;
-}
+  
+  .btn-bind {
+    width: 80%;
+    border: 1px solid #2eafed;
+    height: 1.2rem;
+    @include fcm;
+    border-radius: 5px;
+    color: #2eafed;
+    margin: 0.2rem auto;
+  }
+  
+  .pt1 {
+    padding-top: 3.5rem !important;
+  }
+  
+  .pt2 {
+    padding-top: 5.5rem !important;
+  }
 </style>

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+Router.prototype.goBack = function () {
+  this.isBack = true
+  window.history.go(-1)
+}
 Vue.use(Router)
 // 用户页面
 const IDCardList = r => require.ensure([], () => r(require('@/components/user/IDCardList.vue')), 'News');
@@ -27,7 +30,6 @@ const phoneInput = r => require.ensure([], () => r(require('@/components/user/ph
 const pwdInput = r => require.ensure([], () => r(require('@/components/user/pwdInput.vue')), 'News');
 const recharge = r => require.ensure([], () => r(require('@/components/user/recharge.vue')), 'News');
 const rechargeLog = r => require.ensure([], () => r(require('@/components/user/rechargeLog.vue')), 'News');
-const showIC = r => require.ensure([], () => r(require('@/components/user/showIC.vue')), 'News');
 const startElec = r => require.ensure([], () => r(require('@/components/user/startElec.vue')), 'News');
 const chooseStationPort = r => require.ensure([], () => r(require('@/components/user/chooseStationPort.vue')), 'News');
 const chooseChargeMethod = r => require.ensure([], () => r(require('@/components/user/chooseChargeMethod.vue')), 'News');
@@ -186,11 +188,6 @@ export default new Router({
       component: rechargeLog
     },
     {
-      path: '/showIC',
-      name: 'showIC',
-      component: showIC
-    },
-    {
       path: '/startElec',
       name: 'startElec',
       component: startElec
@@ -279,8 +276,3 @@ export default new Router({
     }
   ]
 })
-// this.a.beforeEach(function(to,from,next){
-//   next();
-// });
-// this.a.afterEach(function(to,from){
-// });

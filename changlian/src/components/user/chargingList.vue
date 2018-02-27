@@ -37,6 +37,7 @@
 
 <script>
 	import Vue from "vue";
+	import axios from 'axios';
 	import GLOBAL, {
 		getUserInfo
 	} from "../../GLOBAL";
@@ -54,10 +55,38 @@
 		},
 		created() {
 			let _this = this;
-			getUserInfo().then(function(userInfo) {
-				_this.chargingEquipmentList = userInfo.chargingEquipmentList;
-				console.log(_this.equipmentList);
-			});
+			//let chargingEquipmentList = GLOBAL.interfacePath + '';
+			let chargingEquipmentList = '';
+			axios
+				.get(chargingEquipmentList)
+				.then(function(data){
+					console.log('chargingEquipmentList|返回数据|'+JSON.stringify(data.data));
+					data.data = [
+                        {
+                            addr:'昌平回龙观',
+                            num:'132313213123123',
+                            index:'1',
+                            chargingId:'001',
+                            chargeSource:'APP'
+                        },
+                        {
+                            addr:'沙河北大桥',
+                            num:'4324321431243214',
+                            index:'3',
+                            chargingId:'003',
+                            chargeSource:'IDCard'
+                        }
+										]
+										console.log(data.data);
+					_this.chargingEquipmentList = data.data;
+				})
+				.catch(function(err){
+					console.log({'url':chargingEquipmentList,'err':JSON.stringify(err)});
+				});
+			// getUserInfo().then(function(userInfo) {
+			// 	_this.chargingEquipmentList = userInfo.chargingEquipmentList;
+			// 	console.log(_this.equipmentList);
+			// });
 		}
 	};
 </script>

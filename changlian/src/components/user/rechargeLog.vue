@@ -54,7 +54,8 @@
         hasNext: true,
         postData: {
           currentPage: 1,
-          stationId: '0032013213'
+          userId: '0032013213',
+          listLen:10
         },
         loadingState:true
       };

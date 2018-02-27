@@ -4,7 +4,7 @@ export default function(){
 				测试文字
 		</div>`,
 		show:function(){
-			
+			document.body.appendChild(html);
 		}
-	}
+	};
 }
