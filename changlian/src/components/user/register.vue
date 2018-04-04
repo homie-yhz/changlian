@@ -14,8 +14,8 @@
             <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
           </div>
           <input type="tel" v-model="postData.identifyCode" maxlength="6" placeholder="验证码">
-          <input type="tel" v-model="postData.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
-          <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
+          <input type="password" v-model="postData.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
+          <p @click="postUserInfo" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
         </div>
       </div>
     </div>
@@ -23,10 +23,13 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import GLOBAL from "../../GLOBAL";
 import axios from "axios";
 import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
+import VueJsonp from "vue-jsonp";
+Vue.use(VueJsonp);
 import "mint-ui/lib/toast/style.css";
 const leftTime = 60;
 
@@ -44,7 +47,8 @@ export default {
       postData: {
         phone: "",
         identifyCode: "",
-        pwd: ""
+        pwd: "",
+        smsId:"",
       }
     };
   },
@@ -93,17 +97,18 @@ export default {
     //获取验证码接口
     getIndentifyCode_IF() {
       //params:phone
-      // let getIndentifyCodeUrl = GLOBAL.interfacePath + '';
-      let getIndentifyCodeUrl = "";
+      let getIndentifyCodeUrl = GLOBAL.interfacePath + '/getIndentifyCodeUrl?phone='+this.postData.phone;
+      // let getIndentifyCodeUrl = "";
+      let _this = this;
       axios
         .get(getIndentifyCodeUrl)
         .then(function(data) {
           console.log("getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data));
-          data.data = {
-            identifyCode: "2014"
-          };
+          let body = JSON.parse(data.data.body);
           if (!!data.data) {
-            alert("验证码" + data.data.identifyCode);
+            sessionStorage.setItem('smsId',body.smsId);
+            _this.postData.smsId = body.smsId;
+            alert("验证码" + body.code);
           }
         })
         .catch(function(err) {
@@ -115,10 +120,16 @@ export default {
     },
     //点击下一步  注册成功
     postUserInfo() {
-      //let postRegisterInfoUrl = GLOBAL.interfacePath + '';
-      let postRegisterInfoUrl = "";
+      let postRegisterInfoUrl = (GLOBAL.env==='UAT'?'/api':GLOBAL.interfacePath)+'/postRegisterInfoUrl';
+      //let postRegisterInfoUrl = "";
+      let _this = this;
       axios
-        .get(postRegisterInfoUrl)
+        .post(postRegisterInfoUrl,{
+        phone: "17777777777",
+        identifyCode: "111111",
+        pwd: "afdsa123213",
+        smsId:"28",
+      })
         .then(function(data) {
           console.log("postRegisterInfoUrl|返回数据|" + JSON.stringify(data.data));
         })
