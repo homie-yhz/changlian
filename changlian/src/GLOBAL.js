@@ -6,7 +6,7 @@ import 'mint-ui/lib/message-box/style.css';
 export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
-    interfacePath: 'http://192.168.1.109:8080/v1/api0/clyun',
+    interfacePath: 'http://192.168.1.103:8080/v1/api0/clyun',
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level:'2.2.1'
@@ -18,7 +18,6 @@ export default {
     appPath:'http://tkyc.eps.group.taikang.com/tkyc/tkgq/#',    //前台应用路径
     publicAccountAddress:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNjk1OTQ2NQ==&scene=124#wechat_redirect'*/
 }
-
 //判断是否登录模块
 export let judgeLoginObj = {
     url: '',//let judgeLoginUrl = GLOBAL.interfacePath + '';

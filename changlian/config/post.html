@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+	<button id="post">click to post</button>
+</body>
+<script>
+	var url=''; //url地址：
+	$('#post').click(function(){
+		$.post(url,
+  {
+    name:"Donald Duck",
+    city:"Duckburg"
+  },
+  function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+	});
+</script>
+</html>
