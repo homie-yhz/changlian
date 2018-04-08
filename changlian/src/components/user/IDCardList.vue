@@ -120,10 +120,10 @@
 					Toast('请输入ID卡卡号！');
 				}else{
 					let _this = this;
-					//let postBindIDCardNum = GLOBAL.interfacePath + '';
-					let postBindIDCardNum = '';
+					//let bindIDCardUrl = GLOBAL.interfacePath + '';
+					let bindIDCardUrl = '';
 					axios
-						.get(postBindIDCardNum)
+						.get(bindIDCardUrl)
 						.then(function(data){
 							console.log('postBindIDCardNum|返回数据|'+JSON.stringify(data.data));
 							data.data = {
@@ -138,7 +138,7 @@
 							}
 						})
 						.catch(function(err){
-							console.log({'url':postBindIDCardNum,'err':JSON.stringify(err)});
+							console.log({'url':bindIDCardUrl,'err':JSON.stringify(err)});
 						});
 				}
 			},

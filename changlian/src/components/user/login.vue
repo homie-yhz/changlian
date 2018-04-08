@@ -32,7 +32,7 @@
             <p>其它方式登录</p>
             <p class="v-i1"></p>
           </div>
-          <div class="icon-wx-logo" style="margin-top:.3rem;"></div>
+          <div class="icon-wx-logo" @click="showLoading" style="margin-top:.3rem;"></div>
         </div>
       </div>
     </div>
@@ -44,6 +44,7 @@ import axios from "axios";
 import GLOBAL from "../../GLOBAL";
 import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
+import loader from '../../loading';
 import "mint-ui/lib/toast/style.css";
 export default {
   data() {
@@ -52,6 +53,9 @@ export default {
     };
   },
   methods: {
+    showLoading(){
+      console.log(loader.show());
+    },
     back() {
       this.$router.go(-1);
     },

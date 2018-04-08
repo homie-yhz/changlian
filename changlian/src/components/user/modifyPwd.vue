@@ -36,8 +36,8 @@ export default {
     return {
       allowNext: false,
       postData: {
-        pwd: "",
-        repeatPwd: ""
+        oldPwd: "",
+        newPwd: ""
       }
     };
   },
@@ -75,7 +75,7 @@ export default {
     postData: {
       handler(nv) {
         console.log(JSON.stringify(nv));
-        if (regExp.pwd.test(nv.pwd) && nv.pwd === nv.repeatPwd) {
+        if (regExp.pwd.test(nv.oldPwd) && nv.pwd === nv.newPwd) {
           this.allowNext = true;
         } else {
           this.allowNext = false;

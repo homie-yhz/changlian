@@ -158,11 +158,129 @@
         setTimeout(() => {
           this.postData.pageIndex++;
           // console.log(JSON.stringify(this.postData));
-          let stationListUrl = "../../../../static/data/stationInfo.json";
+          // let stationListUrl = "../../../../static/data/stationInfo.json";
+          let stationListUrl = "";
           // let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
           console.log(JSON.stringify(this.postData));
           axios.get(stationListUrl).then(function(data) {
             console.log(data.data);
+            data.data = {
+    "code":200,
+    "message":"充电站接口",
+    "body":{
+    "hasNext": false,
+    "stationList": [
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":true
+        },
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":false
+        },
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":false
+        },
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":false
+        },
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":false
+        },
+        {
+            "stationName": "龙锦苑东五区充电站//充电站名称",
+            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+            "stationId": "001",
+            "stationNum": "9803213213213//充电站编号",
+            "payMethods": [
+                "刷卡",
+                "APP支付//支持的支付方式"
+            ],
+            "totalChargePortsNum": 3,
+            "idleChargePortsNum": 2,
+            "chargeType": "fast",
+            "distanceToMe": "200m",
+            "operationTime": "00:00-24:00//运营时间",
+            "operator": "运营商//运营商",
+            "parkCost": "免费/2元/h//停车费用",
+            "showBindBtn":false
+        }
+    ]
+}
+}
             // console.log(JSON.stringify(data));
             let request = data.data;
             if (_this.scrollState === "refresh") {

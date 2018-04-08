@@ -69,7 +69,7 @@
         if (this.hasNext) {
           this.hasNext = false;
           this.loading = true;
-          //let getRechargeLogListUrl = GLOBAL.interfacePath + '';
+          //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
           let getChargeElecLogListUrl = '';
           axios
             .get(getChargeElecLogListUrl)
