@@ -14,7 +14,7 @@
           <!-- :class="{}" -->
         </div>
         <div class="v-f identifycode-box" refs="inputBox">
-          <input v-for="index in [0,1,2,3]" type="tel" class="v-i1" maxlength="1" v-model="inputs[index]">
+          <input v-for="index in [0,1,2,3]" type="tel" class="v-i1" maxlength="1" v-model="inputs[index]" :key="input[index]">
         </div>
       </div>
       <!-- 下一步按钮 -->
@@ -81,7 +81,7 @@ export default {
     //获取验证码接口
     getIndentifyCode_IF(){
         //params:phone
-        let getIndentifyCodeUrl = GLOBAL.interfacePath + '';
+        let getIndentifyCodeUrl = GLOBAL.interfacePath + 'getIndentifyCodeUrl?phone=';
         axios
           .get(getIndentifyCodeUrl)
           .then(function(data){

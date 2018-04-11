@@ -7,6 +7,9 @@ export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
     interfacePath: 'http://192.168.1.103:8080/v1/api0/clyun',
+    //interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
+    //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
+
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level:'2.2.1'

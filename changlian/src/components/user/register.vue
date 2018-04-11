@@ -11,11 +11,12 @@
         <div style="width:85%;" class="register-box">
           <div>
             <input type="tel" v-model="body.phone" maxlength="11" placeholder="手机号">
-            <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
+            <span @click="getCode" v-bind:style="{color:getCodeBtn.state===2?'#bbbbbb':'#2eafed'}" style="color:#2eafed">{{getCodeBtn.text}}</span>
           </div>
           <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码">
           <input type="tel" v-model="body.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
-          <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
+          <!-- <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p> -->
+          <p @click="nextStep" class="btn btn-login v-fcm">下一步</p>
         </div>
       </div>
     </div>
@@ -30,7 +31,7 @@
     Toast
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
-  const leftTime = 60;
+  const leftTime = 5;
   
   export default {
     data() {
@@ -48,7 +49,7 @@
           identifyCode: "",
           pwd: ""
         }
-      };
+      }
     },
     methods: {
       back() {
@@ -56,14 +57,26 @@
       },
       // 下一步  输入手机验证码
       nextStep() {
-        if (this.phone.length === 11) {
-          this.$router.push({
-            name: "identifyCodeInput",
-            params: {
-              phone: this.phone
-            }
-          });
-        }
+        console.log(1);
+        let url = GLOBAL.interfacePath + '/postRegisterInfoUrl';
+        axios.post(url, {
+          firstName: 'Fred',
+          lastName: 'Flintstone'
+        }, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then(function(data) {
+          console.log(data);
+        });
+        // if (this.phone.length === 11) {
+        //   this.$router.push({
+        //     name: "identifyCodeInput",
+        //     params: {
+        //       phone: this.phone
+        //     }
+        //   });
+        // }
       },
       //获取验证码
       getCode() {
@@ -95,17 +108,18 @@
       //获取验证码接口
       getIndentifyCode_IF() {
         //params:phone
-        // let getIndentifyCodeUrl = GLOBAL.interfacePath + '/getIndentifyCodeUrl?phone='+this.body.phone;
-        let getIndentifyCodeUrl = "";
+        let getIndentifyCodeUrl = GLOBAL.interfacePath + '/getIndentifyCodeUrl?phone=' + this.body.phone;
+        // let getIndentifyCodeUrl = "";
+        let _this = this;
         axios
           .get(getIndentifyCodeUrl)
           .then(function(data) {
             console.log("getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data));
-            data.data = {
-              identifyCode: "2014"
-            };
+            let body = JSON.parse(data.data.body);
             if (!!data.data) {
-              alert("验证码" + data.data.identifyCode);
+              sessionStorage.setItem('smsId', body.smsId);
+              _this.postData.smsId = body.smsId;
+              alert("验证码" + body.code);
             }
           })
           .catch(function(err) {
@@ -117,10 +131,16 @@
       },
       //点击下一步  注册成功
       postUserInfo() {
-        //let postRegisterInfoUrl = GLOBAL.interfacePath + '';
-        let postRegisterInfoUrl = "";
+        let postRegisterInfoUrl = (GLOBAL.env === 'UAT' ? '/api' : GLOBAL.interfacePath) + '/postRegisterInfoUrl';
+        //let postRegisterInfoUrl = "";
+        let _this = this;
         axios
-          .get(postRegisterInfoUrl)
+          .post(postRegisterInfoUrl, {
+            phone: "17777777777",
+            identifyCode: "111111",
+            pwd: "afdsa123213",
+            smsId: "28",
+          })
           .then(function(data) {
             console.log("postRegisterInfoUrl|返回数据|" + JSON.stringify(data.data));
           })
@@ -132,9 +152,8 @@
           });
       }
     },
-    created() {},
     watch: {
-      body: {
+      postData: {
         handler(nv) {
           console.log(JSON.stringify(nv));
           if (
@@ -146,13 +165,11 @@
           } else {
             this.allowNext = false;
           }
-        },
-        deep: true
+        }
       }
     }
-  };
+  }
 </script>
-
 <style lang="scss">
   @import "../../../static/css/common.scss";
   .register-box {
