@@ -6,9 +6,9 @@
         <div class="v-fm">
           <img src="../../../static/img/head-pic-blue.png" alt="">
           <div v-if="!userInfo.loginState" class="v-fcm">
-            <p @click="routerTo('login')">登录</p>
+            <router-link :to="{name:'login'}" tag="p">登录</router-link>
             <p style="margin:0 .2rem;">|</p>
-            <p @click="routerTo('login')">注册</p>
+            <router-link :to="{name:'register'}" tag="p">注册</router-link>
           </div>
           <div v-else>
             <span>{{userInfo.phone}}</span>
