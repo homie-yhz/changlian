@@ -11,12 +11,12 @@
         <div style="width:85%;" class="register-box">
           <div>
             <input type="tel" v-model="body.phone" maxlength="11" placeholder="手机号">
-            <span @click="getCode" v-bind:style="{color:getCodeBtn.state===2?'#bbbbbb':'#2eafed'}" style="color:#2eafed">{{getCodeBtn.text}}</span>
+            <span @click="getCode" v-bind:style="{color:getCodeBtn.state===1?'#2eafed':'#bbbbbb'}">{{getCodeBtn.text}}</span>
           </div>
           <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码">
           <input type="tel" v-model="body.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
-          <!-- <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p> -->
-          <p @click="nextStep" class="btn btn-login v-fcm">下一步</p>
+          <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
+          <!-- <p @click="nextStep" class="btn btn-login v-fcm">下一步</p> -->
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
         title: "",
         allowNext: false,
         getCodeBtn: {
-          state: 1, //0:不可以点击  1：允许点击  2：倒计时
+          state: 0, //0:不可以点击  1：允许点击  2：倒计时
           leftTime: leftTime,
           text: "发送验证码" //倒计时剩余时间,
         },
@@ -57,26 +57,14 @@
       },
       // 下一步  输入手机验证码
       nextStep() {
-        console.log(1);
-        let url = GLOBAL.interfacePath + '/postRegisterInfoUrl';
-        axios.post(url, {
-          firstName: 'Fred',
-          lastName: 'Flintstone'
-        }, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then(function(data) {
-          console.log(data);
-        });
-        // if (this.phone.length === 11) {
-        //   this.$router.push({
-        //     name: "identifyCodeInput",
-        //     params: {
-        //       phone: this.phone
-        //     }
-        //   });
-        // }
+        if(this.allowNext){
+          let url = GLOBAL.interfacePath + '/postRegisterInfoUrl';
+          let params = new URLSearchParams();
+          params.append('body',JSON.stringify(this.body));
+          axios.post(url, params).then(function(data) {
+            console.log(data);
+          });
+        }
       },
       //获取验证码
       getCode() {
@@ -97,11 +85,13 @@
             _this.countDown();
           } else {
             // 重置数据
-            _this.getCodeBtn = {
-              state: 1, //0:不可以点击  1：允许点击  2：倒计时
-              leftTime: leftTime,
-              text: "重新获取" //倒计时剩余时间,
-            };
+            _this.getCodeBtn.leftTime = leftTime;
+            _this.getCodeBtn.text= "重新获取" ;
+            if(_this.body.phone.length===11){
+              _this.getCodeBtn.state=1;
+            }else{
+              _this.getCodeBtn.state=0;
+            }
           }
         }, 1000);
       },
@@ -109,16 +99,17 @@
       getIndentifyCode_IF() {
         //params:phone
         let getIndentifyCodeUrl = GLOBAL.interfacePath + '/getIndentifyCodeUrl?phone=' + this.body.phone;
-        // let getIndentifyCodeUrl = "";
         let _this = this;
         axios
           .get(getIndentifyCodeUrl)
           .then(function(data) {
             console.log("getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data));
-            let body = JSON.parse(data.data.body);
-            if (!!data.data) {
+            let res = data.data;
+            let body = JSON.parse(res.body);
+            if (res.code===200) {
+              console.log(body);
               sessionStorage.setItem('smsId', body.smsId);
-              _this.postData.smsId = body.smsId;
+              _this.body.smsId = body.smsId;
               alert("验证码" + body.code);
             }
           })
@@ -129,33 +120,19 @@
             });
           });
       },
-      //点击下一步  注册成功
-      postUserInfo() {
-        let postRegisterInfoUrl = (GLOBAL.env === 'UAT' ? '/api' : GLOBAL.interfacePath) + '/postRegisterInfoUrl';
-        //let postRegisterInfoUrl = "";
-        let _this = this;
-        axios
-          .post(postRegisterInfoUrl, {
-            phone: "17777777777",
-            identifyCode: "111111",
-            pwd: "afdsa123213",
-            smsId: "28",
-          })
-          .then(function(data) {
-            console.log("postRegisterInfoUrl|返回数据|" + JSON.stringify(data.data));
-          })
-          .catch(function(err) {
-            console.log({
-              url: postRegisterInfoUrl,
-              err: JSON.stringify(err)
-            });
-          });
-      }
     },
     watch: {
-      postData: {
+      body: {
         handler(nv) {
           console.log(JSON.stringify(nv));
+          if(this.getCodeBtn.state!==2){
+            if(nv.phone.length===11){
+              this.getCodeBtn.state = 1;
+              console.log('长度11 允许点击');
+            }else{
+              this.getCodeBtn.state = 0;
+            }
+          }
           if (
             regExp.phone.test(nv.phone) &&
             regExp.identifyCode.test(nv.identifyCode) &&
@@ -165,7 +142,8 @@
           } else {
             this.allowNext = false;
           }
-        }
+        },
+        deep:true
       }
     }
   }

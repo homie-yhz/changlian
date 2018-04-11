@@ -6,7 +6,7 @@ import 'mint-ui/lib/message-box/style.css';
 export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
-    interfacePath: 'http://192.168.1.103:8080/v1/api0/clyun',
+    interfacePath: 'http://localhost:8080/v1/api0/clyun',
     //interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
     //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
 
