@@ -1,5 +1,5 @@
 export default{
-		html:'<img src="./static/img/bolt-green.png" />',
+		html:'<img src="./static/img/loading.gif" />',
 		show:function(){
 			let loader = document.createElement('div');
 			loader.className = 'loader';

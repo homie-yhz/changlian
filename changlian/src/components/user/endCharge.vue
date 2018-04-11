@@ -172,16 +172,16 @@ export default {
     position: absolute;
     width: 3rem;
     height: 3rem;
-    background: url("../../../static/img/pay-success.png") center center no-repeat;
+    background: url("../../../static/img/pay-success-1.png") center center no-repeat;
     background-size: 100%;
     display: block;
   }
   .icon-success-part2 {
     position: absolute;
-    width: 2rem;
+    width: 3rem;
     height: 2rem;
-    right: 0;
-    background: url("../../../static/img/location.png") center center no-repeat;
+    top:.4rem;
+    background: url("../../../static/img/pay-success-2.png") center center no-repeat;
     background-size: 100%;
     display: block;
   }

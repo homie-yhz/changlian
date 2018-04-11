@@ -27,6 +27,7 @@
   import GLOBAL from "../../GLOBAL";
   import axios from "axios";
   import regExp from "../../RegExp";
+  import loader from "../../loading";
   import {
     Toast
   } from "mint-ui";
@@ -55,14 +56,18 @@
       back() {
         this.$router.go(-1);
       },
-      // 下一步  输入手机验证码
       nextStep() {
         if(this.allowNext){
+          loader.show();
           let url = GLOBAL.interfacePath + '/postRegisterInfoUrl';
           let params = new URLSearchParams();
           params.append('body',JSON.stringify(this.body));
           axios.post(url, params).then(function(data) {
+            loader.hide();
             console.log(data);
+          }).catch(function(err){
+            loader.hide();
+            console.log(err);
           });
         }
       },
@@ -100,10 +105,12 @@
         //params:phone
         let getIndentifyCodeUrl = GLOBAL.interfacePath + '/getIndentifyCodeUrl?phone=' + this.body.phone;
         let _this = this;
+        loader.show();
         axios
           .get(getIndentifyCodeUrl)
           .then(function(data) {
             console.log("getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data));
+            loader.hide();
             let res = data.data;
             let body = JSON.parse(res.body);
             if (res.code===200) {
@@ -114,6 +121,7 @@
             }
           })
           .catch(function(err) {
+            loader.hide();
             console.log({
               url: getIndentifyCodeUrl,
               err: JSON.stringify(err)
