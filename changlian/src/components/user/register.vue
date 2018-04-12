@@ -56,13 +56,12 @@ export default {
     },
     nextStep() {
       if (this.allowNext) {
-        
+
         loader.show();
         let _this = this;
         let url = GLOBAL.interfacePath + "/postRegisterInfoUrl";
         let params = new URLSearchParams();
         params.append("body", JSON.stringify(this.body));
-
         axios
           .post(url, params)
           .then(function(data) {

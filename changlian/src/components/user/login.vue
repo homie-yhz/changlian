@@ -17,8 +17,8 @@
         </div>
         <!-- 登录输入框 -->
         <div style="width:85%;" class="m-auto login-box">
-          <input type="text" v-model="postData.phone" placeholder="手机号" maxlength="11">
-          <input type="text" v-model="postData.pwd" placeholder="密码" maxlength="16">
+          <input type="text" v-model="body.phone" placeholder="手机号" maxlength="11">
+          <input type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
           <p class="v-fb register-or-backpwd">
             <router-link :to="{name:'register'}" class="v-fm">新用户注册</router-link>
             <router-link :to="{name:'getBackPwd'}" class="v-fm">找回密码?</router-link>
@@ -43,13 +43,13 @@
 import axios from "axios";
 import GLOBAL from "../../GLOBAL";
 import regExp from "../../RegExp";
-import { Toast } from "mint-ui";
+import { Toast,MessageBox } from "mint-ui";
 import loader from '../../loading';
 import "mint-ui/lib/toast/style.css";
 export default {
   data() {
     return {
-      postData: {}
+      body: {}
     };
   },
   methods: {
@@ -62,30 +62,38 @@ export default {
     login() {
       let _this = this;
       console.log("提交登录信息");
-      console.log(JSON.stringify(this.postData));
+      console.log(JSON.stringify(this.body));
       // let url = GLOBAL.interfacePath + "";
-      if (!regExp.phone.test(this.postData.phone)) {
+      if (!regExp.phone.test(this.body.phone)) {
         Toast('手机号输入有误！')
-      }else if(!regExp.pwd.test(this.postData.pwd)){
+      }else if(!regExp.pwd.test(this.body.pwd)){
         Toast('密码格式有误！')
       }else{
+        loader.show();
         let _this = this;
-        let loginUrl = "";
+        let url = GLOBAL.interfacePath + '/postUserLoginUrl';
+        let params = new URLSearchParams();
+        params.append("body",JSON.stringify(this.body));
       axios
-        .get(loginUrl)
+        .post(url,params)
         .then(function(data) {
+          loader.hide();
           console.log("url|返回数据|" + JSON.stringify(data.data));
-          data.data = {
-            state:'success',
-            loginState:true,
-            userId:'001111'
-          }
-          //设置userId 以及 登录状态 
-          sessionStorage.setItem('userId',data.data.userId);
-          sessionStorage.setItem('loginState',data.data.loginState);
-          _this.$router.replace({name:'personalCenter'});
+          let res = data.data;
+          if (res.code === 200) {
+              MessageBox.alert("登录成功！").then(action => {
+                //设置userId 以及 登录状态 
+                sessionStorage.setItem('userId',res.userId);
+                sessionStorage.setItem('loginState',res.loginState);
+                _this.$router.replace({name:'personalCenter'});
+              });
+            } else {
+              MessageBox.alert(res.msg);
+            }
         })
         .catch(function(err) {
+          loader.hide();
+          MessageBox.alert('接口异常！');
           console.log({
             url: url,
             err: JSON.stringify(err)
