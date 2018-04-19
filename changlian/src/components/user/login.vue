@@ -49,7 +49,7 @@ import "mint-ui/lib/toast/style.css";
 export default {
   data() {
     return {
-      body: {}
+      body: {},
     };
   },
   methods: {
@@ -77,17 +77,24 @@ export default {
       axios
         .post(url,params)
         .then(function(data) {
+          console.log('2');
+          alert(2);
           loader.hide();
           console.log("url|返回数据|" + JSON.stringify(data.data));
           let res = data.data;
           if (res.code === 200) {
               MessageBox.alert("登录成功！").then(action => {
                 //设置userId 以及 登录状态 
-                sessionStorage.setItem('userId',res.userId);
-                sessionStorage.setItem('loginState',res.loginState);
+                sessionStorage.setItem('userId',res.body.userId||'');
+                sessionStorage.setItem('loginState',res.body.loginState||'');
                 _this.$router.replace({name:'personalCenter'});
               });
-            } else {
+              //用户不存在，前去注册？
+            } else if(res.code === 607){  
+              MessageBox.confirm('用户不存在，前去注册？').then(action=>{
+						    _this.$router.push({name:'register'});
+              });
+            }else {
               MessageBox.alert(res.msg);
             }
         })

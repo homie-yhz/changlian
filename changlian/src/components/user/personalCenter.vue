@@ -102,132 +102,147 @@
 </template>
 
 <script>
-import GLOBAL, { getUserInfo } from "../../GLOBAL";
-export default {
-  data() {
-    return {
-      userInfo: {}
-    };
-  },
-  methods: {
-    login() {},
-    register() {},
-    // 跳到到相关页面
-    routerTo(name, params) {
-      if(this.userInfo.loginState){
-        this.$router.push({name:name,params:params});
-      }else{
-        this.$router.push({name:'login'});
+  import GLOBAL, {
+    getUserInfo
+  } from "../../GLOBAL";
+  export default {
+    data() {
+      return {
+        userInfo: {}
+      };
+    },
+    methods: {
+      login() {},
+      register() {},
+      // 跳到到相关页面
+      routerTo(name, params) {
+        if (this.userInfo.loginState) {
+          this.$router.push({
+            name: name,
+            params: params
+          });
+        } else {
+          this.$router.push({
+            name: 'login'
+          });
+        }
+      }
+    },
+    created() {
+      let _this = this;
+      let userId = sessionStorage.getItem("userId");
+      console.log('login');
+      if (!!userId) {
+        getUserInfo()
+          .then((userInfo) => {
+            console.log(userInfo);
+            _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
+          })
+          .catch(function(err) {
+            loader.hide();
+            MessageBox.alert('接口异常！');
+            console.log({
+              url: url,
+              err: JSON.stringify(err)
+            });
+          })
       }
     }
-  },
-  created() {
-    let _this = this;
-    let userId = sessionStorage.getItem("userId");
-    if (!!userId) {
-      getUserInfo().then((userInfo)=>{
-        _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
-      })
-    }
-  }
-};
+  };
 </script>
 
 <style lang="scss">
-@import "../../../static/css/common.scss";
-@import "../../../static/css/iconfont.css";
-.center-header {
-  overflow: hidden;
-  height: 8.5rem;
-  color: #fff;
-  background: url("../../../static/img/personal-bg.png") top center no-repeat;
-  background-size: 100%;
-  & img {
-    width: 3.2rem;
-    height: 3.2rem;
-    display: block;
-    margin: 0 0.5rem 0.2rem 0;
+  @import "../../../static/css/common.scss";
+  @import "../../../static/css/iconfont.css";
+  .center-header {
+    overflow: hidden;
+    height: 8.5rem;
+    color: #fff;
+    background: url("../../../static/img/personal-bg.png") top center no-repeat;
+    background-size: 100%;
+    & img {
+      width: 3.2rem;
+      height: 3.2rem;
+      display: block;
+      margin: 0 0.5rem 0.2rem 0;
+    }
+    &>div {
+      margin: 1rem 0 0 1rem;
+    }
+    & .setting-message {
+      position: absolute;
+      right: 0.5rem;
+      top: 0;
+      .icon-point-red {
+        width: 5px;
+        height: 5px;
+        display: block;
+        border-radius: 50%;
+        background-color: #e51c23;
+        margin-right: 0.2rem;
+      }
+    }
   }
-  & > div {
-    margin: 1rem 0 0 1rem;
+  
+  .center-handle {
+    height: 3.5rem;
+    &>a {
+      border-right: 1px solid #e6e6e6;
+      &:last-child {
+        border: none;
+      }
+      i {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 0 auto 0.2rem;
+        display: block;
+        background-size: 100% 100%;
+      }
+    }
   }
-  & .setting-message {
+  
+  .center-list {
+    &>a {
+      height: 1.8rem;
+      border-bottom: 1px solid #e6e6e6;
+      &>i {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 1rem 0;
+        display: block;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  
+  .footer {
+    border-top: 1px solid #eee;
     position: absolute;
-    right: 0.5rem;
-    top: 0;
-    .icon-point-red {
-      width: 5px;
-      height: 5px;
-      display: block;
-      border-radius: 50%;
-      background-color: #e51c23;
-      margin-right: 0.2rem;
-    }
-  }
-}
-
-.center-handle {
-  height: 3.5rem;
-  & > a {
-    border-right: 1px solid #e6e6e6;
-    &:last-child {
-      border: none;
-    }
-    i {
-      width: 1.5rem;
-      height: 1.5rem;
-      margin: 0 auto 0.2rem;
-      display: block;
-      background-size: 100% 100%;
-    }
-  }
-}
-
-.center-list {
-  & > a {
-    height: 1.8rem;
-    border-bottom: 1px solid #e6e6e6;
-    & > i {
-      width: 1rem;
-      height: 1rem;
-      margin: 0 1rem 0;
-      display: block;
-      background-size: 100% 100%;
-    }
-  }
-}
-
-.footer {
-  border-top: 1px solid #eee;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 2;
-  background: #f8f8f8;
-  border-top: 1px solid #d0d0d0;
-  & > div {
-    height: 2rem;
-    &.checked {
-      color: #2eafed;
-      & > .icon-elec {
-        background: url("../../../static/img/bolt-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > .icon-scan {
-        background: url("../../../static/img/bolt-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > .icon-me {
-        background: url("../../../static/img/person-blue.png") center center
-          no-repeat;
-        background-size: 100% 100%;
-      }
-      & > p {
-        text-align: center;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    background: #f8f8f8;
+    border-top: 1px solid #d0d0d0;
+    &>div {
+      height: 2rem;
+      &.checked {
+        color: #2eafed;
+        &>.icon-elec {
+          background: url("../../../static/img/bolt-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-scan {
+          background: url("../../../static/img/bolt-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>.icon-me {
+          background: url("../../../static/img/person-blue.png") center center no-repeat;
+          background-size: 100% 100%;
+        }
+        &>p {
+          text-align: center;
+        }
       }
     }
   }
-}
 </style>

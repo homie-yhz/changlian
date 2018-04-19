@@ -2,12 +2,12 @@ import Vue from 'vue';
 import axios from 'axios';
 import { MessageBox } from 'mint-ui';
 import 'mint-ui/lib/message-box/style.css';
-
+import GLOBAL from './GLOBAL';
 export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
     // interfacePath: 'http://localhost:8080/v1/api0/clyun',
-    interfacePath: 'http://192.168.1.112:8080/v1/api0/clyun',   //UAT 接口路径
+    interfacePath: 'http://192.168.31.23:8080/v1/api0/clyun',   //UAT 接口路径
     //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
 
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
@@ -85,42 +85,46 @@ export let hasChargingMechineObj = {
  */
 export function getUserInfo() {
     return new Promise(function (resolve, reject) {
-        //let userInfoUrl = GLOBAL.interfacePath + '';
-        let getUserInfoUrl = '';
+        let getUserInfoUrl = GLOBAL.interfacePath + '/getUserInfo?userId='+sessionStorage.getItem('userId');
         axios
             .get(getUserInfoUrl)
             .then(function (data) {
-                data.data = {
-                    bindState: false,
-                    balance: "10",
-                    loginState: true,
-                    phone: '17777777777',
-                    usualStationId: '009',
-                    giveMoney: '20.00',
-                    userId: 'userId001',
-                    hasNews: true,
-                    chargingMechineAmount:1,
-                    chargingEquipmentList:[
-                        {
-                            addr:'昌平回龙观',
-                            num:'132313213123123',
-                            index:'1',
-                            chargingId:'001',
-                            chargeSource:'APP'
-                        },
-                        {
-                            addr:'沙河北大桥',
-                            num:'4324321431243214',
-                            index:'3',
-                            chargingId:'003',
-                            chargeSource:'IDCard'
-                        }
-                    ],
-                    chargeSource:'IDCard'
+                let res = data.data;
+                if (res.code === 200) {
+
+                    console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));
+                    sessionStorage.setItem('loginState', res.body.loginState);
+                    resolve(res.body);
                 }
-                console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));
-                sessionStorage.setItem('loginState', data.data.loginState);
-                resolve(data.data);
+                // data.data = {
+                //     bindState: false,
+                //     balance: "10",
+                //     loginState: true,
+                //     phone: '17777777777',
+                //     usualStationId: '009',
+                //     giveMoney: '20.00',
+                //     userId: 'userId001',
+                //     hasNews: true,
+                //     chargingMechineAmount:1,
+                //     chargingEquipmentList:[
+                //         {
+                //             addr:'昌平回龙观',
+                //             num:'132313213123123',
+                //             index:'1',
+                //             chargingId:'001',
+                //             chargeSource:'APP'
+                //         },
+                //         {
+                //             addr:'沙河北大桥',
+                //             num:'4324321431243214',
+                //             index:'3',
+                //             chargingId:'003',
+                //             chargeSource:'IDCard'
+                //         }
+                //     ],
+                //     chargeSource:'IDCard'
+                // }
+                
             })
             .catch(function (err) {
                 console.log({ 'url': getUserInfoUrl, 'err': JSON.stringify(err) });
