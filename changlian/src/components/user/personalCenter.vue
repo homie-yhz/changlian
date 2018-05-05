@@ -116,16 +116,17 @@
       register() {},
       // 跳到到相关页面
       routerTo(name, params) {
-        if (this.userInfo.loginState) {
-          this.$router.push({
-            name: name,
-            params: params
-          });
-        } else {
-          this.$router.push({
-            name: 'login'
-          });
-        }
+        this.$router.push({name:name});
+        // if (this.userInfo.loginState) {
+        //   this.$router.push({
+        //     name: name,
+        //     params: params
+        //   });
+        // } else {
+        //   this.$router.push({
+        //     name: 'login'
+        //   });
+        // }
       }
     },
     created() {

@@ -9,10 +9,10 @@
 		<div class="scroll-box">
 			<div class="IDCard-charge">
 				<ul>
-					<li v-for="IDCard in IDCardList" :key="IDCard.ID">
+					<li v-for="IDCard in IDCardList" :key="IDCard.id">
 						<span>ID卡</span><span class="v-i1">{{IDCard.num}}</span>
 						<!-- 解绑选项 -->
-						<div class="icon-shenglve1" @click="showUnbindBtn(IDCard.ID)">
+						<div class="icon-shenglve1" @click="showUnbindBtn(IDCard.id)">
 							<div>
 								<span></span>
 								<span></span>
@@ -20,7 +20,7 @@
 							</div>
 						</div>
 						<!-- 解绑按钮 -->
-						<div @click="unbind(IDCard.ID)" :class="{'slide':IDCard.choosed}" class="btn-unbind">解绑</div>
+						<div @click="unbind(IDCard.num)" :class="{'slide':IDCard.choosed}" class="btn-unbind">解绑</div>
 					</li>
 					<li @click="addIDCard()" class="add-IDCard v-fm">
 						<span>＋</span>
@@ -30,7 +30,7 @@
 				</ul>
 				<div v-if="showCardNumBox">
 					<div class="cardNum-Ipt">
-						<span>卡号</span> <input type="text" v-model="bindIDCardNum" placeholder="请输入卡号">
+						<span>卡号</span> <input type="tel" v-model="bindIDCardNum" placeholder="请输入卡号">
 					</div>
 					<div @click="bindIDCard" class="btn-bind">立即绑定</div>
 				</div>
@@ -46,20 +46,13 @@
 		Toast
 	} from "mint-ui";
 	import "mint-ui/lib/toast/style.css";
+import RegExp from '../../RegExp';
 	export default {
 		data() {
 			return {
-				IDCardList: [{
-						num: "1231232131",
-						ID: "fdsafadsf"
-					},
-					{
-						num: "2",
-						ID: "111111"
-					}
-				],
+				IDCardList: [],
 				showCardNumBox: false,
-				bindIDCardNum:''
+				bindIDCardNum: ''
 			};
 		},
 		methods: {
@@ -70,7 +63,7 @@
 				let IDCardListlen = this.IDCardList.length;
 				console.log(cardId);
 				for (var i = 0; i < IDCardListlen; i++) {
-					if (this.IDCardList[i].ID === cardId) {
+					if (this.IDCardList[i].id === cardId) {
 						if (!this.IDCardList[i].choosed) {
 							for (var j = 0; j < IDCardListlen; j++) {
 								this.$set(this.IDCardList[j], 'choosed', false);
@@ -88,21 +81,20 @@
 				//解绑ID卡地址   将ID卡的 ID发送后台
 				//let unbindIDCardUrl = GLOBAL.interfacePath + '';
 				//params:   cardId='';
-				let unbindIDCardUrl = '';
+				let unbindIDCardUrl = GLOBAL.interfacePath + '/unbindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+cardId;
+				console.log(unbindIDCardUrl);
 				axios
 					.get(unbindIDCardUrl)
 					.then(function(data) {
 						console.log('unbindIDCardUrl|返回数据|' + JSON.stringify(data.data));
-						data.data = {
-							state: 'success'
-						}
-						if (data.data.state === 'success') {
-							console.log('解绑成功！');
-							Toast('解绑失败！');
+						let res = data.data;
+						if (res.code===200) {
+							Toast('解绑成功！');
 							_this.getIDCardList();
 						} else {
 							console.log('解绑失败！');
-							Toast('解绑失败！');
+							Toast(res.msg);
+							_this.getIDCardList();
 						}
 					})
 					.catch(function(err) {
@@ -115,51 +107,48 @@
 			addIDCard() {
 				this.showCardNumBox = true;
 			},
-			bindIDCard(){
-				if(!this.bindIDCardNum){
-					Toast('请输入ID卡卡号！');
-				}else{
+			bindIDCard() {
+				if (!this.bindIDCardNum || !RegExp.num.test(this.bindIDCardNum)){
+					Toast('请输入正确的ID卡卡号！');
+				} else {
 					let _this = this;
-					//let bindIDCardUrl = GLOBAL.interfacePath + '';
-					let bindIDCardUrl = '';
+					let bindIDCardUrl = GLOBAL.interfacePath + '/bindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+this.bindIDCardNum;
 					axios
 						.get(bindIDCardUrl)
-						.then(function(data){
-							console.log('postBindIDCardNum|返回数据|'+JSON.stringify(data.data));
-							data.data = {
-								state:'success'
-							}
-							if(data.data.state === 'success'){
+						.then(function(data) {
+							let res = data.data;
+							console.log('code'+res.code);
+							if (res.code === 200) {
 								Toast('绑定成功！');
 								_this.bindIDCardNum = '';
 								_this.showCardNumBox = false;
-							}else{
-								Toast('绑定失败！');
+								_this.getIDCardList();
+							} else {
+								Toast(res.msg);
 							}
 						})
-						.catch(function(err){
-							console.log({'url':bindIDCardUrl,'err':JSON.stringify(err)});
+						.catch(function(err) {
+							console.log({
+								'url': bindIDCardUrl,
+								'err': JSON.stringify(err)
+							});
 						});
 				}
 			},
 			//获取ID卡片列表
 			getIDCardList() {
-				// let IDCardListUrl = GLOBAL.interfacePath + "";
-				let IDCardListUrl = "";
+				let _this = this;
+				// let IDCardListUrl = "";
+				let IDCardListUrl = GLOBAL.interfacePath + '/IDCardListUrl?userId=' + sessionStorage.getItem('userId');
 				axios
 					.get(IDCardListUrl)
 					.then(function(data) {
-						console.log("IDCardListUrl|返回数据|" + JSON.stringify(data.data));
-						data.data = [{
-								num: "1231232131",
-								ID: "fdsafadsf"
-							},
-							{
-								num: "2",
-								ID: "111111"
-							}
-						];
-						_this.IDCardList = data.data;
+						console.log(data);
+						let res = data.data;
+						if (res.code === 200) {
+							console.log('getRechargeCardsList/IDCardListUrl|返回数据|' + JSON.stringify(res));
+							_this.IDCardList = res.body;
+						}
 					})
 					.catch(function(err) {
 						console.log({

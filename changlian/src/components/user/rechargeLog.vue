@@ -54,8 +54,7 @@
         hasNext: true,
         postData: {
           currentPage: 1,
-          userId: '0032013213',
-          listLen:10
+          listLen:1
         },
         loadingState:true
       };
@@ -70,11 +69,20 @@
           this.hasNext = false;
           this.loading = true;
           //let getRechargeLogListUrl = GLOBAL.interfacePath + '';
-          let getRechargeLogListUrl = '';
+          // let getRechargeLogListUrl = '';
+          let getRechargeLogListUrl = GLOBAL.interfacePath + '/getRechargeLogListUrl?'+
+          'userId=' + sessionStorage.getItem('userId')+'&currentPage='+this.postData.currentPage+'&listLen='+this.postData.listLen;
           axios
             .get(getRechargeLogListUrl)
             .then(function(data) {
-              data.data = {
+              let res = data.data;
+              if(res.code === 200){
+                _this.rechargeLogList = _this.rechargeLogList.concat(res.body.rechargeLogList);
+                _this.loading = false;
+                _this.hasNext = res.body.hasNext;
+                !_this.hasNext && (_this.loadingState = false);
+              }
+              /*data.data = {
                 'hasNext': false,
                 'rechargeLogList': [{
                   "state": "微信支付成功",
@@ -102,12 +110,10 @@
                   "money": "20.00"
                 }]
               }
+              */
               console.log('getRechargeLogListUrl|返回数据|' + JSON.stringify(data.data));
               setTimeout(() => {
-                _this.rechargeLogList = _this.rechargeLogList.concat(data.data.rechargeLogList);
-                _this.loading = false;
-                _this.hasNext = data.data.hasNext;
-                !_this.hasNext && (_this.loadingState = false);
+                
               }, 2500);
             })
             .catch(function(err) {

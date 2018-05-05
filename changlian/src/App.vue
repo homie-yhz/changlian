@@ -32,6 +32,9 @@
       }
       this.$router.isBack = false
       next()
+    },
+    created(){
+      console.log(321312321312);
     }
   }
 </script>

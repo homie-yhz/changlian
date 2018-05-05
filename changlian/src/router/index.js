@@ -183,7 +183,7 @@ export default new Router({
       component: recharge
     },
     {
-      path: '/rechargeLog/:userId',
+      path: '/rechargeLog',
       name: 'rechargeLog',
       component: rechargeLog
     },

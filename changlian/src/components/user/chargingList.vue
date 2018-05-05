@@ -11,7 +11,7 @@
 		</header>
 		<div class="scroll-box" style="padding-bottom:2rem">
 			<ul class="charging-equipment-list">
-				<router-link tag="li" v-for="equipment in chargingEquipmentList" :key="equipment.chargingId" :to="{name:'charging',params:{chargingId:'001'}}">
+				<router-link tag="li" v-for="equipment in chargingList" :key="equipment.chargingId" :to="{name:'charging',params:{chargingId:'001'}}">
 					<div class="equitment-box v-fb v-fm">
 						<div class="">
 							<!-- 设备地址 -->
@@ -36,97 +36,105 @@
 </template>
 
 <script>
-	import Vue from "vue";
-	import axios from 'axios';
-	import GLOBAL, {
-		getUserInfo
-	} from "../../GLOBAL";
-	export default {
-		data() {
-			return {
-				chargingEquipmentList: [],
-				userInfo: {}
-			};
-		},
-		methods: {
-			back() {
-				this.$router.go(-1);
-			}
-		},
-		created() {
-			let _this = this;
-			//let chargingEquipmentList = GLOBAL.interfacePath + '';
-			let chargingEquipmentList = '';
-			axios
-				.get(chargingEquipmentList)
-				.then(function(data){
-					console.log('chargingEquipmentList|返回数据|'+JSON.stringify(data.data));
-					data.data = [
-                        {
-                            addr:'昌平回龙观',
-                            num:'132313213123123',
-                            index:'1',
-                            chargingId:'001',
-                            chargeSource:'APP'
-                        },
-                        {
-                            addr:'沙河北大桥',
-                            num:'4324321431243214',
-                            index:'3',
-                            chargingId:'003',
-                            chargeSource:'IDCard'
-                        }
-										]
-										console.log(data.data);
-					_this.chargingEquipmentList = data.data;
-				})
-				.catch(function(err){
-					console.log({'url':chargingEquipmentList,'err':JSON.stringify(err)});
-				});
-			// getUserInfo().then(function(userInfo) {
-			// 	_this.chargingEquipmentList = userInfo.chargingEquipmentList;
-			// 	console.log(_this.equipmentList);
-			// });
-		}
-	};
+import Vue from "vue";
+import axios from "axios";
+import GLOBAL, { getUserInfo } from "../../GLOBAL";
+export default {
+  data() {
+    return {
+      chargingList: [],
+      userInfo: {}
+    };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
+  },
+  created() {
+    let _this = this;
+    //let chargingList = GLOBAL.interfacePath + '';
+    let chargingList =
+      GLOBAL.interfacePath +
+      "/chargingList?" +
+      "userId=" +
+      sessionStorage.getItem("userId")+'&chargeLogId='+'2';
+    axios
+      .get(chargingList)
+      .then(function(data) {
+        console.log(
+          "chargingList|返回数据|" + JSON.stringify(data.data)
+        );
+        let res = data.data;
+        if (res.code === 200) {
+          _this.chargingList = JSON.parse(res.body);
+        }else{
+					alert(res.msg);
+				}
+        // data.data = [
+        //   {
+        //     addr: "昌平回龙观",
+        //     num: "132313213123123",
+        //     index: "1",
+        //     chargingId: "001",
+        //     chargeSource: "APP"
+        //   },
+        //   {
+        //     addr: "沙河北大桥",
+        //     num: "4324321431243214",
+        //     index: "3",
+        //     chargingId: "003",
+        //     chargeSource: "IDCard"
+        //   }
+        // ];
+      })
+      .catch(function(err) {
+        console.log({ url: chargingList, err: JSON.stringify(err) });
+      });
+    // getUserInfo().then(function(userInfo) {
+    // 	_this.chargingList = userInfo.chargingList;
+    // 	console.log(_this.equipmentList);
+    // });
+  }
+};
 </script>
 
 <style lang="scss">
-	@import "../../../static/css/common.scss";
-	@import "../../../static/css/iconfont.css";
-	.charging-equipment-list {
-		li {
-			border-bottom: 1px solid #d9d9d9;
-			background: #f5f5f5;
-			.equitment-box {
-			background: #f5f5f5;
-				padding: 0.5rem 0.8rem 0.2rem;
-				&>div>p:first-child {
-					margin-bottom: 0.2rem;
-					min-height: 0.5rem;
-				}
-				.icon-equipment-num {
-					border-radius: 100rem;
-					height: 2rem;
-					width: 2rem;
-					background-color: #ff9800;
-					color: #fff;
-					font-size: 0.9rem;
-				}
-			}
-		}
-	}
-	
-	.handle-method {
-		margin: 0 0 0.5rem 0.8rem;
-		font-size: 0.5rem;
-		&>div {
-			@include fm;
-			// background: rgba(255, 255, 255, 0.7);
-			color: #666;
-			border-radius: 3px;
-			padding: 0.1rem 0.2rem;
-		}
-	}
+@import "../../../static/css/common.scss";
+@import "../../../static/css/iconfont.css";
+.charging-equipment-list {
+  li {
+    border-bottom: 1px solid #d9d9d9;
+    background: #f5f5f5;
+    .equitment-box {
+      background: #f5f5f5;
+      padding: 0.5rem 0.8rem 0.2rem;
+      & > div > p:first-child {
+        margin-bottom: 0.2rem;
+        min-height: 0.5rem;
+      }
+      .icon-equipment-num {
+        border-radius: 100rem;
+        height: 2rem;
+        width: 2rem;
+        background-color: #ff9800;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.handle-method {
+  margin: 0 0 0.5rem 0.8rem;
+  font-size: 0.5rem;
+  & > div {
+    @include fm;
+    // background: rgba(255, 255, 255, 0.7);
+    color: #666;
+    border-radius: 3px;
+    padding: 0.1rem 0.2rem;
+  }
+}
 </style>
 

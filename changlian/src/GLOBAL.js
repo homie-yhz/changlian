@@ -91,7 +91,6 @@ export function getUserInfo() {
             .then(function (data) {
                 let res = data.data;
                 if (res.code === 200) {
-
                     console.log('getUserInfoUrl|返回数据|' + JSON.stringify(data.data));
                     sessionStorage.setItem('loginState', res.body.loginState);
                     resolve(res.body);

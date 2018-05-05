@@ -13,13 +13,13 @@
     <div class="scroll-box">
       <div class="chargeElecLog-list">
         <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-          <li class="" v-for="chargeElecLog in chargeElecLogList">
-            <div>{{chargeElecLog.time}}</div>
-            <div>{{chargeElecLog.addr}}</div>
+          <li v-if="chargeElecLogList.length>0" class="" v-for="chargeElecLog in chargeElecLogList" :key="chargeElecLog.id">
+            <div>{{chargeElecLog.time||''}}</div>
+            <div>{{chargeElecLog.addr||''}}</div>
             <div>设备：{{chargeElecLog.equipmentNum}}</div>
             <div class="v-fb">
-              <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.chargeTime}}</p>
-              <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast}} 元</p>
+              <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.chargeTime||''}}</p>
+              <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||''}} 元</p>
             </div>
           </li>
         </ul>
@@ -55,7 +55,7 @@
         hasNext: true,
         postData: {
           currentPage: 1,
-          stationId: '0032013213'
+          listLen: 1
         },
         loadingState: true
       };
@@ -70,27 +70,30 @@
           this.hasNext = false;
           this.loading = true;
           //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
-          let getChargeElecLogListUrl = '';
+          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/getChargeElecLogListUrl?'+
+          'userId=' + sessionStorage.getItem('userId')+'&currentPage='+this.postData.currentPage+'&listLen='+this.postData.listLen;
           axios
             .get(getChargeElecLogListUrl)
             .then(function(data) {
-              data.data = {
-                'hasNext': false,
-                'chargeElecLogList': [{
-                  "time": "2017-11-10 09:09",
-                  "addr": "龙井大事",
-                  "equipmentNum": "3213213213",
-                  "chargeTime": "2小时12分钟",
-                  "coast": "22"
-                }]
-              }
-              console.log('getChargeElecLogListUrl|返回数据|' + JSON.stringify(data.data));
-              setTimeout(() => {
-                _this.chargeElecLogList = _this.chargeElecLogList.concat(data.data.chargeElecLogList);
+              let res = data.data;
+              if(res.code === 200){
+                _this.chargeElecLogList = _this.chargeElecLogList.concat(res.body.chargeElecLogList);
+                console.log(_this.chargeElecLogList);
                 _this.loading = false;
-                _this.hasNext = data.data.hasNext;
+                _this.hasNext = res.body.hasNext;
                 !_this.hasNext && (_this.loadingState = false);
-              }, 2500);
+              }
+              // data.data = {
+              //   'hasNext': false,
+              //   'chargeElecLogList': [{
+              //     "time": "2017-11-10 09:09",
+              //     "addr": "龙井大事",
+              //     "equipmentNum": "3213213213",
+              //     "chargeTime": "2小时12分钟",
+              //     "coast": "22"
+              //   }]
+              // }
+              console.log('getChargeElecLogListUrl|返回数据|' + JSON.stringify(data.data));
             })
             .catch(function(err) {
               console.log({

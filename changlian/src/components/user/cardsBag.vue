@@ -82,35 +82,40 @@
       }
     },
     created() {
+
       let _this = this;
-      //let getRechargeCardsList = GLOBAL.interfacePath + '';
-      let getRechargeCardsList = '';
+			let getRechargeCardsList = GLOBAL.interfacePath + '/getRechargeCardsList?userId=' + sessionStorage.getItem('userId');
       axios
         .get(getRechargeCardsList)
         .then(function(data) {
-          console.log('getRechargeCardsList|返回数据|' + JSON.stringify(data.data));
-          data.data = [{
-              ID: '001',
-              buyCardTime: '2017-01-02 10:30',
-              cardPrice: '100.00',
-              cardBalance: '100.00',
-              cardGiveMoney: '20.00',
-              cardGiveMoneyBalance: '11.11',
-              allowUseAddr: '石家庄天天家园小区',
-              giveMoneyEndTime: '2017-01-01'
-            },
-            {
-              ID: '001',
-              buyCardTime: '2017-01-02 10:30',
-              cardPrice: '100.00',
-              cardBalance: '100.00',
-              cardGiveMoney: '20.00',
-              cardGiveMoneyBalance: '11.11',
-              allowUseAddr: '石家庄天天家园小区',
-              giveMoneyEndTime: '2017-01-01'
-            }
-          ];
-          _this.rechargeCardsList = data.data;
+          let res = data.data;
+          if(res.code===200){
+            console.log('getRechargeCardsList|返回数据|' + JSON.stringify(res.body));
+						_this.rechargeCardsList = JSON.parse(res.body);
+          }else{
+            console.log(res.msg);
+          }
+          // data.data = [{
+          //     ID: '001',
+          //     buyCardTime: '2017-01-02 10:30',
+          //     cardPrice: '100.00',
+          //     cardBalance: '100.00',
+          //     cardGiveMoney: '20.00',
+          //     cardGiveMoneyBalance: '11.11',
+          //     allowUseAddr: '石家庄天天家园小区',
+          //     giveMoneyEndTime: '2017-01-01'
+          //   },
+          //   {
+          //     ID: '001',
+          //     buyCardTime: '2017-01-02 10:30',
+          //     cardPrice: '100.00',
+          //     cardBalance: '100.00',
+          //     cardGiveMoney: '20.00',
+          //     cardGiveMoneyBalance: '11.11',
+          //     allowUseAddr: '石家庄天天家园小区',
+          //     giveMoneyEndTime: '2017-01-01'
+          //   }
+          // ];
         })
         .catch(function(err) {
           console.log({
