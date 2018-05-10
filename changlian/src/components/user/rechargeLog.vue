@@ -8,25 +8,27 @@
       </div>
     </header>
     <div class="scroll-box">
-      <div class="rechargeLog-list">
-        <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-          <!-- <li v-for="item in list">{{ item }}</li> -->
-          <li class="v-fb v-fm" v-for="rechargeLog in rechargeLogList" :key="rechargeLog.ID">
-            <div>
-              <p class="">{{rechargeLog.state}}</p>
-              <p style="color:#969696;">{{rechargeLog.time}}</p>
+      <div class="rechargeLog-list" style="position:relative;height:100%;">
+          <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
+            <ul>
+              <!-- <li v-for="item in list">{{ item }}</li> -->
+              <li class="v-fb v-fm" v-for="rechargeLog in rechargeLogList" :key="rechargeLog.ID">
+                <div>
+                  <p class="">{{rechargeLog.state}}</p>
+                  <p style="color:#969696;">{{rechargeLog.time}}</p>
+                </div>
+                <div style="color:#e51c23;">
+                  {{rechargeLog.money}}元
+                </div>
+              </li>
+            </ul>
+            <!-- <div class="v-fcm">
+            <div v-if="loadingState" class="v-fm" style="padding:.5rem 0;">
+              <mt-spinner type="fading-circle" style="margin-right:.5rem;"></mt-spinner> 加载中...
             </div>
-            <div style="color:#e51c23;">
-              {{rechargeLog.money}}元
-            </div>
-          </li>
-        </ul>
-        <div class="v-fcm">
-          <div v-if="loadingState" class="v-fm" style="padding:.5rem 0;">
-            <mt-spinner type="fading-circle" style="margin-right:.5rem;"></mt-spinner> 加载中...
-          </div>
-          <div v-if="!loadingState" class="v-fm" style="padding:.5rem 0;">没有更多数据</div>
-        </div>
+            <div v-if="!loadingState" class="v-fm" style="padding:.5rem 0;">没有更多数据</div>
+          </div> -->
+          </scroller>
       </div>
     </div>
   </div>
@@ -43,7 +45,8 @@
   import {
     Spinner
   } from 'mint-ui';
-  
+  import VueScroller from "vue-scroller";
+  Vue.use(VueScroller);
   Vue.component('mt-spinner', Spinner);
   Vue.use(InfiniteScroll);
   export default {
@@ -53,76 +56,110 @@
         checkedTab: 'accountRechargeLog',
         hasNext: true,
         postData: {
-          currentPage: 1,
-          listLen:1
+          currentPage: 0,
+          listLen: 3
         },
-        loadingState:true
+        loadingState: true,
+        scrollState: '',
+        height: '100%',
+        noDataText: '没有更多数据！'
       };
     },
     methods: {
       back() {
         this.$router.go(-1);
       },
-      loadMore() {
+      refresh(done) {
+        console.log("refresh-1");
+        this.scrollState = "refresh";
+        this.postData.currentPage = 0;
+        this.hasNext = true;
         let _this = this;
         if (this.hasNext) {
-          this.hasNext = false;
-          this.loading = true;
-          //let getRechargeLogListUrl = GLOBAL.interfacePath + '';
-          // let getRechargeLogListUrl = '';
-          let getRechargeLogListUrl = GLOBAL.interfacePath + '/getRechargeLogListUrl?'+
-          'userId=' + sessionStorage.getItem('userId')+'&currentPage='+this.postData.currentPage+'&listLen='+this.postData.listLen;
-          axios
-            .get(getRechargeLogListUrl)
-            .then(function(data) {
-              let res = data.data;
-              if(res.code === 200){
-                _this.rechargeLogList = _this.rechargeLogList.concat(res.body.rechargeLogList);
-                _this.loading = false;
-                _this.hasNext = res.body.hasNext;
-                !_this.hasNext && (_this.loadingState = false);
-              }
-              /*data.data = {
-                'hasNext': false,
-                'rechargeLogList': [{
-                  "state": "微信支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }, {
-                  "state": "微信支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }, {
-                  "state": "微信支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }, {
-                  "state": "微信支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }, {
-                  "state": "支付宝支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }, {
-                  "state": "支付宝支付成功",
-                  "time": "2017-09-08 08:04",
-                  "money": "20.00"
-                }]
-              }
-              */
-              console.log('getRechargeLogListUrl|返回数据|' + JSON.stringify(data.data));
-              setTimeout(() => {
-                
-              }, 2500);
-            })
-            .catch(function(err) {
-              console.log({
-                'url': getRechargeLogListUrl,
-                'err': JSON.stringify(err)
-              });
-            });
+          _this.loadMore(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
         }
+      },
+      infinite(done) {
+        let _this = this;
+        if (this.hasNext && this.scrollState === "") {
+          console.log("loadmore-1");
+          _this.loadMore(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
+        }
+      },
+      loadMore(done) {
+        let _this = this;
+        setTimeout(() => {
+          this.postData.currentPage++;
+          // let getRechargeLogListUrl = "../../../../static/data/stationInfo.json";
+          let getRechargeLogListUrl = GLOBAL.interfacePath + '/getRechargeLogListUrl?' +
+            'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + this.postData.currentPage + '&listLen=' + this.postData.listLen;
+          // let getRechargeLogListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
+          getRechargeLogListUrl = '';
+          console.log(JSON.stringify(this.postData));
+          axios.get(getRechargeLogListUrl).then(function(data) {
+            data = {
+              data: {
+                body: {
+                  'hasNext': true,
+                  'rechargeLogList': [{
+                    "state": "微信支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }, {
+                    "state": "微信支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }, {
+                    "state": "微信支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }, {
+                    "state": "微信支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }, {
+                    "state": "支付宝支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }, {
+                    "state": "支付宝支付成功",
+                    "time": "2017-09-08 08:04",
+                    "money": "20.00"
+                  }]
+                }
+              }
+            }
+            // console.log(JSON.stringify(data));
+            let res = data.data;
+            if (_this.scrollState === "refresh") {
+              _this.rechargeLogList = [];
+            }
+            _this.rechargeLogList = _this.rechargeLogList.concat(
+              res.body.rechargeLogList
+            );
+            _this.hasNext = res.body.hasNext;
+            _this.scrollState = "";
+  
+            if (_this.rechargeLogList.length === 0) {
+              let noDataDom = document.getElementsByClassName("no-data-text")[0];
+              let noDataMsgHtml =
+                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              noDataDom.innerHTML = noDataMsgHtml;
+            } else {
+              _this.noDataText = "附近10公里范围内没有更多站点了！";
+            }
+            _this.$nextTick(function() {
+              _this.$refs.scrollDom.resize();
+            });
+            done();
+          });
+        }, 1000);
       }
     },
     created() {
@@ -168,13 +205,15 @@
   }
   
   .rechargeLog-list {
-    padding: 0 .8rem;
-    &>ul>li {
+    & ul{
+      padding: 0 .8rem;
+      li {
       padding: .5rem 0 .5rem;
       border-bottom: 1px solid #cfcfcf;
       &>div:first-child>p:last-child {
         font-size: .55rem;
       }
+    }
     }
   }
 </style>

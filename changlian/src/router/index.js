@@ -163,11 +163,6 @@ export default new Router({
       component: phoneInput
     },
     {
-      path: '/register',
-      name: 'register',
-      component: register
-    },
-    {
       path: '/identifyCodeInput/:title/:phone',
       name: 'identifyCodeInput',
       component: identifyCodeInput

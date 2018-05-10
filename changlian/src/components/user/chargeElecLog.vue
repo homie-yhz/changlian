@@ -11,24 +11,20 @@
   
     </ul>
     <div class="scroll-box">
-      <div class="chargeElecLog-list">
-        <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-          <li v-if="chargeElecLogList.length>0" class="" v-for="chargeElecLog in chargeElecLogList" :key="chargeElecLog.id">
-            <div>{{chargeElecLog.time||''}}</div>
-            <div>{{chargeElecLog.addr||''}}</div>
-            <div>设备：{{chargeElecLog.equipmentNum}}</div>
-            <div class="v-fb">
-              <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.chargeTime||''}}</p>
-              <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||''}} 元</p>
-            </div>
-          </li>
-        </ul>
-        <div class="v-fcm">
-          <div v-if="loadingState" class="v-fm" style="padding:.5rem 0;">
-            <mt-spinner type="fading-circle" style="margin-right:.5rem;"></mt-spinner> 加载中...
-          </div>
-          <div v-if="!loadingState" class="v-fm" style="padding:.5rem 0;">没有更多数据</div>
-        </div>
+      <div class="chargeElecLog-list" style="position:relative;height:100%;">
+        <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
+          <ul>
+            <li v-if="chargeElecLogList.length>0" class="" v-for="chargeElecLog in chargeElecLogList" :key="chargeElecLog.id">
+              <div>{{chargeElecLog.time||''}}</div>
+              <div>{{chargeElecLog.addr||''}}</div>
+              <div>设备：{{chargeElecLog.equipmentNum}}</div>
+              <div class="v-fb">
+                <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.chargeTime||''}}</p>
+                <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||''}} 元</p>
+              </div>
+            </li>
+          </ul>
+        </scroller>
       </div>
     </div>
   </div>
@@ -38,16 +34,14 @@
   import Vue from 'vue';
   import GLOBAL from '../../GLOBAL';
   import axios from 'axios';
-  import {
-    InfiniteScroll
-  } from 'mint-ui';
   import 'mint-ui/lib/style.css'
   import {
     Spinner
   } from 'mint-ui';
   Vue.component('mt-spinner', Spinner);
-  Vue.use(InfiniteScroll);
-  
+
+  import VueScroller from "vue-scroller";
+  Vue.use(VueScroller);
   export default {
     data() {
       return {
@@ -57,43 +51,94 @@
           currentPage: 1,
           listLen: 1
         },
-        loadingState: true
+        loadingState: true,
+        scrollState: '',
+        height: '100%',
+        noDataText: '没有更多数据！'
       };
     },
     methods: {
       back() {
         this.$router.go(-1);
       },
-      loadMore() {
+      refresh(done) {
+        console.log("refresh-1");
+        this.scrollState = "refresh";
+        this.postData.currentPage = 0;
+        this.hasNext = true;
         let _this = this;
         if (this.hasNext) {
-          this.hasNext = false;
-          this.loading = true;
+          _this.loadMore(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
+        }
+      },
+      infinite(done) {
+        if (this.hasNext && this.scrollState === "") {
+          console.log("loadmore-1");
+          this.loadMore(done);
+        } else {
+          console.log(`没有更多数据`);
+          this.$refs.scrollDom.finishInfinite(true);
+        }
+      },
+      loadMore(done) {
+        let _this = this;
+        setTimeout(function(){
+          _this.postData.currentPage++;
           //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
-          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/getChargeElecLogListUrl?'+
-          'userId=' + sessionStorage.getItem('userId')+'&currentPage='+this.postData.currentPage+'&listLen='+this.postData.listLen;
+          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/getChargeElecLogListUrl?' +
+            'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + _this.postData.currentPage + '&listLen=' + _this.postData.listLen;
+            console.log(getChargeElecLogListUrl);
+            getChargeElecLogListUrl = '';
           axios
             .get(getChargeElecLogListUrl)
             .then(function(data) {
-              let res = data.data;
-              if(res.code === 200){
-                _this.chargeElecLogList = _this.chargeElecLogList.concat(res.body.chargeElecLogList);
-                console.log(_this.chargeElecLogList);
-                _this.loading = false;
-                _this.hasNext = res.body.hasNext;
-                !_this.hasNext && (_this.loadingState = false);
+              data= {
+                data:{
+                  code:200,
+                  body:{
+                'hasNext': true,
+                'chargeElecLogList': [{
+                  "time": "2017-11-10 09:09",
+                  "addr": "龙井大事",
+                  "equipmentNum": "3213213213",
+                  "chargeTime": "2小时12分钟",
+                  "coast": "22"
+                }]
               }
-              // data.data = {
-              //   'hasNext': false,
-              //   'chargeElecLogList': [{
-              //     "time": "2017-11-10 09:09",
-              //     "addr": "龙井大事",
-              //     "equipmentNum": "3213213213",
-              //     "chargeTime": "2小时12分钟",
-              //     "coast": "22"
-              //   }]
-              // }
+                }
+              }
               console.log('getChargeElecLogListUrl|返回数据|' + JSON.stringify(data.data));
+              let res = data.data;
+
+              if (res.code === 200) {
+                console.log('in');
+            if (_this.scrollState === "refresh") {
+              _this.chargeElecLogList = [];
+            }
+            _this.chargeElecLogList = _this.chargeElecLogList.concat(
+              res.body.chargeElecLogList
+            );
+            _this.hasNext = res.body.hasNext;
+            _this.scrollState = "";
+  
+            if (_this.chargeElecLogList.length === 0) {
+              let noDataDom = document.getElementsByClassName("no-data-text")[0];
+              let noDataMsgHtml =
+                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              noDataDom.innerHTML = noDataMsgHtml;
+            } else {
+              _this.noDataText = "没有更多数据！";
+            }
+            _this.$nextTick(function() {
+              _this.$refs.scrollDom.resize();
+            });
+            done();
+
+              }
+              
             })
             .catch(function(err) {
               console.log({
@@ -101,8 +146,8 @@
                 'err': JSON.stringify(err)
               });
             });
-        }
-      }
+        },1000);
+          
     },
     created() {
   
@@ -119,14 +164,16 @@
           });
         });
     }
+    }
   };
 </script>
 
 <style lang="scss">
   @import "../../../static/css/common.scss";
   .chargeElecLog-list {
+    & ul{
     padding: 0 .8rem;
-    &>ul>li {
+      li {
       padding: .4rem 0;
       border-bottom: 1px solid #cfcfcf;
       &>div {
@@ -135,6 +182,7 @@
           margin-bottom: 0;
         }
       }
+    }
     }
   }
   

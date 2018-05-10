@@ -14,7 +14,7 @@
           <span class="iconfont icon-sousuo"></span>
           <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
         </div>
-        <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
+        <router-link tag="div"  :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
@@ -39,16 +39,15 @@
                 <p class="fw-b">{{stationInfo.stationAddr}}</p>
                 <!-- 允许支付方式 -->
                 <p class="icon-label-box mt-2">
-                  <span>现金</span>
-                  <span>APP支付+</span>
+                  <span style="margin-right:.2rem;" v-for="payMethod in stationInfo.payMethods">{{payMethod}}</span>
                 </p>
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                            <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                    <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                          <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                    <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -61,7 +60,7 @@
                     <div>
                       <i class="icon-distance" style="margin-top:.2rem;"></i>
                       <!-- 据我多远 -->
-                      <span>{{stationInfo.distanceToMe}}</span>
+                      <span>{{stationInfo.distanceToMe>1000?(stationInfo.distanceToMe/1000).toFixed(2)+'km':(stationInfo.distanceToMe).toFixed(2)+'m'}}</span>
                     </div>
                   </div>
                 </div>
@@ -103,6 +102,7 @@
   import VueScroller from "vue-scroller";
   import FloatCircle from "../my-cpt/float-circle.vue";
   import $ from "jquery";
+  import wx from 'weixin-js-sdk';
   Vue.use(VueScroller);
   import {
     Tab,
@@ -135,7 +135,8 @@
           pageIndex: 0,
           listLen: 10,
           searchInfo: "",
-          position: ["000", "000"],
+          //position: ["40.552", "116.167"],
+          position: ["39.90762942", "116.337447"],
           userId: "002",
           listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
         },
@@ -155,132 +156,42 @@
       },
       getStationList(done) {
         let _this = this;
-        setTimeout(() => {
           this.postData.pageIndex++;
+          
           // console.log(JSON.stringify(this.postData));
           // let stationListUrl = "../../../../static/data/stationInfo.json";
-          let stationListUrl = "";
-          // let stationListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
+          // let stationListUrl = "";
+          let stationListUrl = GLOBAL.interfacePath+'/stationList?postData='+JSON.stringify(_this.postData);
           console.log(JSON.stringify(this.postData));
           axios.get(stationListUrl).then(function(data) {
             console.log(data.data);
-            data.data = {
-    "code":200,
-    "message":"充电站接口",
-    "body":{
-    "hasNext": false,
-    "stationList": [
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":true
-        },
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":false
-        },
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":false
-        },
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":false
-        },
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":false
-        },
-        {
-            "stationName": "龙锦苑东五区充电站//充电站名称",
-            "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-            "stationId": "001",
-            "stationNum": "9803213213213//充电站编号",
-            "payMethods": [
-                "刷卡",
-                "APP支付//支持的支付方式"
-            ],
-            "totalChargePortsNum": 3,
-            "idleChargePortsNum": 2,
-            "chargeType": "fast",
-            "distanceToMe": "200m",
-            "operationTime": "00:00-24:00//运营时间",
-            "operator": "运营商//运营商",
-            "parkCost": "免费/2元/h//停车费用",
-            "showBindBtn":false
-        }
-    ]
-}
-}
+            /*data.data = {
+              "code": 200,
+              "message": "充电站接口",
+              "body": {
+                "hasNext": true,
+                "stationList": [{
+                    "stationName": "龙锦苑东五区充电站//充电站名称",
+                    "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+                    "stationId": "001",
+                    "stationNum": "9803213213213//充电站编号",
+                    "payMethods": [
+                      "刷卡",
+                      "APP支付//支持的支付方式"
+                    ],
+                    "totalChargePortsNum": 3,
+                    "idleChargePortsNum": 2,
+                    "chargeType": "fast",
+                    "distanceToMe": "200m",
+                    "operationTime": "00:00-24:00//运营时间",
+                    "operator": "运营商//运营商",
+                    "parkCost": "免费/2元/h//停车费用",
+                    "showBindBtn": true
+                  }
+                ]
+              }
+            }
+            */
             // console.log(JSON.stringify(data));
             let request = data.data;
             if (_this.scrollState === "refresh") {
@@ -305,7 +216,6 @@
             });
             done();
           });
-        }, 1000);
       },
       switchTabItem(index) {
         console.log("on-before-index-change", index);
@@ -348,6 +258,7 @@
     },
     mounted() {},
     created() {
+      console.log(wx);
       let _this = this;
       console.log("if绑定电站列表：" + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
@@ -385,7 +296,7 @@
       // })
   
       var html = `
-          `;
+            `;
     },
     watch: {
       searchInfo: function(nv, ov) {
@@ -451,7 +362,7 @@
     background-color: #fff;
     color: $cl-c;
     border: 1px solid $cl-c;
-    margin: auto 0.2rem;
+    margin: auto 0.5rem;
     border-radius: 3px;
   }
   

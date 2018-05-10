@@ -6,7 +6,7 @@
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>
-      <a href="tel:111111111" class="poa rt-0 v-fcm h-100" style="width:10%;">
+      <a href="tel:" class="poa rt-0 v-fcm h-100" style="width:10%;">
         <span class="icon-call"></span>
       </a>
     </header>
@@ -24,8 +24,8 @@
           </span>
         </p>
         <div class="ports-box">
-          <div class="v-fm" @click="choosePort(port)" :class="{broken:port.state==='broken',charging:port.state==='charging',idle:port.state==='idle',checked:postData.portId===port.ID}" :key="port.id" v-for="(port,key) in stationDetail.chargePortsList">
-            <div class="v-fcm">{{port.index}}</div>
+          <div class="v-fm" @click="choosePort(port)" :class="{broken:port.state==='broken',charging:port.state==='charging',idle:port.state==='idle',checked:postData.portId===port.ID}" :key="port.id" v-for="(port,key) in chargePortsList">
+            <div class="v-fcm">{{key+1}}</div>
             <div class="v-fcm fz-55">
               <div v-if="port.method==='AC'" class="">
                 <p class="icon-port icon-ac-white"></p>
@@ -78,6 +78,7 @@ export default {
       },
       chargeMethods: [],
       stationDetail: {},
+      chargePortsList:[],
       userInfo: {}
     };
   },
@@ -104,85 +105,107 @@ export default {
   },
   created() {
     let _this = this;
-    // let stationInfoUrl = GLOBAL.interfacePath + '';
-    let stationInfoUrl = "";
+    let chargePortsListUrl = GLOBAL.interfacePath + '/chargePortsList?stationId='+this.$route.params.stationId;
+    // let stationInfoUrl = "";
+    console.log(chargePortsListUrl);
     axios
-      .get(stationInfoUrl)
+      .get(chargePortsListUrl)
       .then(function(data) {
-        data.data = {
-          stationName: "龙锦苑东五区充电站", //充电站名称
-          stationAddr: "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面", //充电站地址
-          stationId: "001", //充电站ID
-          payMethods: ["刷卡", "APP支付"], //支持的支付方式
-          totalChargePortsNum: 3, //一共的充电口数
-          idleChargePortsNum: 2, //闲置的充电口数
-          chargeType: "fast", //充电口类型  fast/slow
-          distanceToMe: "200m", //距离我的位置
-          operationTime: "00:00-24:00", //运营时间
-          operator: "运营商", //运营商
-          parkCost: "免费/2元/h", //停车费用
-          chargePortsList: [
-            {
-              index: "1",
-              ID: "port1",
-              method: "AC", //交流电AC、直流电DC
-              state: "broken" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "2",
-              ID: "port2",
-              method: "DC", //交流电AC、直流电DC
-              state: "broken" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "3",
-              ID: "port3",
-              method: "AC", //交流电AC、直流电DC
-              state: "charging" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "4",
-              ID: "port4",
-              method: "AC", //交流电AC、直流电DC
-              state: "charging" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "5",
-              ID: "port5",
-              method: "AC", //交流电AC、直流电DC
-              state: "idle" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "6",
-              ID: "port6",
-              method: "DC", //交流电AC、直流电DC
-              state: "idle" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "7",
-              ID: "port7",
-              method: "AC", //交流电AC、直流电DC
-              state: "idle" //损坏/充电中/闲置broken/charging/idle
-            },
-            {
-              index: "8",
-              ID: "port8",
-              method: "AC", //交流电AC、直流电DC
-              state: "idle" //损坏/充电中/闲置broken/charging/idle
-            }
-          ]
-        };
+        let res = data.data;
+        if(res.code === 200){
+          console.log(JSON.parse(res.body));
+          _this.chargePortsList = JSON.parse(res.body);
+        }
+        // data.data = {
+        //   stationName: "龙锦苑东五区充电站", //充电站名称
+        //   stationAddr: "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面", //充电站地址
+        //   stationId: "001", //充电站ID
+        //   payMethods: ["刷卡", "APP支付"], //支持的支付方式
+        //   totalChargePortsNum: 3, //一共的充电口数
+        //   idleChargePortsNum: 2, //闲置的充电口数
+        //   chargeType: "fast", //充电口类型  fast/slow
+        //   distanceToMe: "200m", //距离我的位置
+        //   operationTime: "00:00-24:00", //运营时间
+        //   operator: "运营商", //运营商
+        //   parkCost: "免费/2元/h", //停车费用
+        //   chargePortsList: [
+        //     {
+        //       index: "1",
+        //       ID: "port1",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "broken" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "2",
+        //       ID: "port2",
+        //       method: "DC", //交流电AC、直流电DC
+        //       state: "broken" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "3",
+        //       ID: "port3",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "charging" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "4",
+        //       ID: "port4",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "charging" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "5",
+        //       ID: "port5",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "idle" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "6",
+        //       ID: "port6",
+        //       method: "DC", //交流电AC、直流电DC
+        //       state: "idle" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "7",
+        //       ID: "port7",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "idle" //损坏/充电中/闲置broken/charging/idle
+        //     },
+        //     {
+        //       index: "8",
+        //       ID: "port8",
+        //       method: "AC", //交流电AC、直流电DC
+        //       state: "idle" //损坏/充电中/闲置broken/charging/idle
+        //     }
+        //   ]
+        // };
         console.log("stationInfoUrl|返回数据|" + JSON.stringify(data.data));
-        _this.stationDetail = data.data;
         //set 充电站Id
         _this.postData.stationId = data.data.stationId;
       })
       .catch(function(err) {
         console.log({
-          url: stationInfoUrl,
+          url: chargePortsListUrl,
           err: JSON.stringify(err)
         });
       });
+
+      let stationDetailInfoUrl = GLOBAL.interfacePath+'/stationDetailInfo?stationId='+this.$route.params.stationId;
+      //let stationDetailInfoUrl = GLOBAL.interfacePath + '';
+      axios
+        .get(stationDetailInfoUrl)
+        .then(function(data){
+          let res = data.data;
+          console.log(res);
+          if(res.code === 200){
+            _this.stationDetail = res.body;
+          }else{
+            alert(res.msg);
+          }
+        })
+        .catch(function(err){
+          console.log({'url':stationDetailInfoUrl,'err':JSON.stringify(err)});
+        });
   }
 };
 </script>
@@ -196,7 +219,6 @@ $cl-bgc: #ff9800;
   padding: 0.3rem 0 0.4rem 0.8rem;
   border-bottom: 1px solid #e6e6e6;
 }
-
 .ports-box {
   display: flex;
   flex-wrap: wrap;

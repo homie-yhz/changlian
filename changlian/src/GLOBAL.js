@@ -7,9 +7,11 @@ export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
     // interfacePath: 'http://localhost:8080/v1/api0/clyun',
-    interfacePath: 'http://192.168.31.23:8080/v1/api0/clyun',   //UAT 接口路径
-    //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
+    //interfacePath: 'http://192.168.31.23:8080/v1/api0/clyun',   //UAT 接口路径
 
+    interfacePath: 'test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+
+    //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level:'2.2.1'
@@ -132,7 +134,109 @@ export function getUserInfo() {
 }
 
 
-export function getOpenId(){
-    
-}
+export function getCode(_this){
+    // alert(window.location.href);
+    let url = window.location.href;
+    //首先获取 签名
+    //先请求一次接口
+    let getSignUrl = GLOBAL.interfacePath+'/order/scanQR.do?htmlUrl=' + encodeURIComponent(window.location.href.split('#')[0]);
+    // alert(getSignUrl);
+    return new Promise(function(resolve,reject){
+      axios.get(getSignUrl)
+        .then(function(data) {
+          console.log(data);
+          let res = data.data;
+          if(res.code === 200){
+            let WXoptions = res.body;
+            alert(JSON.stringify(WXoptions));
+            resolve(WXoptions);
+          }
+          // alert(JSON.stringify(options));
+          //sessionStorage.setItem('WXoptions',JSON.stringify(options));
+          // alert('进入获取签名接口');
+          // alert('获取配置2'+sessionStorage.getItem('WXoptions'));
+          /*if(!!localStorage.getItem('openId')){
+            // alert('openId存在'+localStorage.getItem('openId'));
+            // alert('getCode3-1')
+            // alert('2');
+            // alert('openId' + localStorage.getItem('openId'));
+            let focusUrl = GLOBAL.interfacePath+'/jsonDataCtrl/getIsGz.do?openId='+localStorage.getItem('openId');
+            axios.get(focusUrl)
+              .then(function(data){
+                // alert(JSON.stringify(data.data));
+                if(data.data.state === 'false'){
+                  //展示二维码
+                //   _this.showQRCode = true;
+                  //展示关注按钮
+                //   _this.showQRCodeBtn = true;
+                }
+                resolve();
+              })
+              .catch(function(){
+                layer.alert('是否关注接口报错！');
+              });
+          }
+  
+          else if(url.indexOf('code')>-1){
+            // alert('getCode3-2')
+            // alert('code存在');
+  
+            let code = '';
+            let urlParamsArr = url.match(/\?(\S*)\#/)[1].split('&');
+            let urlParamsLen = urlParamsArr.length;
+            
+            for(let i = 0;i<urlParamsLen;i++){
+              if(urlParamsArr[i].indexOf('code')>-1){
+                code = urlParamsArr[i].split('=')[1];
+              }
+            }
+            
+            // alert(code);
+            let getOpenIdUrl = GLOBAL.interfacePath+'/jsonDataCtrl/getOpenid.do?code='+code;
+            axios.get(getOpenIdUrl)
+            //获取openId
+              .then(function(data) {
+  
+                let openId = data.data.openId;
+                (!!openId) && (localStorage.setItem('openId', openId));
+                // alert('openId' + localStorage.getItem('openId'));
+  
+                //调用是否关注接口
+                let focusUrl = GLOBAL.interfacePath + '/jsonDataCtrl/getIsGz.do?openId=' + localStorage.getItem('openId');
+                axios.get(focusUrl)
+                  .then(function (data) {
+                    // alert(JSON.stringify(data.data));
+                    if (data.data.state === 'false') {
+                      //展示二维码
+                      _this.showQRCode = true;
+                      //展示关注按钮
+                      _this.showQRCodeBtn = true;
+                    }
+                    resolve();
+                  })
+                  .catch(function(data){
+                    layer.alert('是否关注接口报错！');
+                  })
+              })
+          }
+  
+          else{
+            // alert('3');
+            //获取 WXoptions
+            if(!!sessionStorage.getItem('WXoptions')){
+              let APPID = JSON.parse(sessionStorage.getItem('WXoptions')).appid;
+              let authorizeUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code' +
+                '&scope=snsapi_userinfo&state=123#wechat_redirect';
+              window.location.href = authorizeUrl;
+            }
+            else{
+              alert('WXoptions为空');
+            }
+          }*/
+        })
+        .catch(function (data) {
+          console.log(JSON.stringify(data));
+        });
+    });
+  }
 
