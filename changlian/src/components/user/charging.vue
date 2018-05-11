@@ -1,5 +1,5 @@
 <template>
-  <div class="charge-box">
+  <div class="charge-box" ref="charging">
     <!-- 详情 -->
     <header class="header-poa-white v-fcm" style="background-color:#fff;">
       <div class="v-fcm m-auto h-100 header-title" style="width:80%">充电</div>
@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-            <span class="arrow-back"></span>
-          </div> -->
+              <span class="arrow-back"></span>
+            </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -73,242 +73,280 @@
             <div class="v-fm v-fb">
               <div class="v-fm">
                 {{chargeLog.wRange}}</div>
-                  <div>{{chargeLog.priceRate}}</div>
-              </div>
+              <div>{{chargeLog.priceRate}}</div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 底部停止充电按钮 -->
-      <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
-        <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
-      </div>
     </div>
+    <!-- 底部停止充电按钮 -->
+    <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
+      <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from "axios";
-import GLOBAL,{getUserInfo} from "../../GLOBAL";
-import { Toast } from "mint-ui";
-import "mint-ui/lib/toast/style.css";
-import { timestampToData } from "../../Filter";
-export default {
-  data() {
-    return {
-      userInfo:{},
-      stationInfo: {},
-      chargeLog: {
-        chargeState: "startCharge"
-      },
-      postData: {
-        portId: "",
-        stationId: "",
-        methodId: ""
-      },
-      chargeMethods: [],
-      equipment: {}
-    };
-  },
-  methods: {
-    back() {
-      this.$router.go(-1);
+  let interval = null;
+  import axios from "axios";
+  import GLOBAL, {
+    getUserInfo
+  } from "../../GLOBAL";
+  import {
+    Toast
+  } from "mint-ui";
+  import "mint-ui/lib/toast/style.css";
+  import {
+    timestampToData
+  } from "../../Filter";
+  import store from '../../store';
+import { clearTimeout } from 'timers';
+  export default {
+    data() {
+      return {
+        userInfo: {},
+        stationInfo: {},
+        chargeLog: {
+          chargeState: "startCharge"
+        },
+        postData: {
+          portId: "",
+          stationId: "",
+          methodId: ""
+        },
+        chargeMethods: [],
+        equipment: {}
+      };
     },
-    stopCharge() {
+    computed:{
+      update:function(){
+        console.log('子组件更新');
+        this.requestChargeInfo();
+        return store.state.update;
+      }
+    },
+    methods: {
+      back() {
+        this.$router.go(-1);
+      },
+      //请求充电接口  或者是  获取是否含有充电信息的接口。
+      requestChargeInfo() {
+        let _this = this;
+        let requestChargeUrl = "";
+        axios
+          .get(requestChargeUrl)
+          .then(function(data) {
+            console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
+            let res = data.data;
+            res = {
+                  code:200,
+                  body:
+                  {
+                  chargeState: "charging",
+                  hasChargedPercent: "70%",
+                  hasChargedTime: 58000, //已充时长
+                  currentW: "800", //当前功率与实际功率
+                  payMethod: "按时长收费",
+                  expectedChargeTime: "2",
+                  actualChargeTime: "1小时28分",
+                  wRange: "200<功率≤500瓦",
+                  priceRate: "0.7元/小时",
+                  costMoney: "1.80",
+                  costDegree: "3", //使用的度数
+                  chargeEndTime: "2017-11-10 20:00"
+                }
+            }
+            console.log();
+            if (res.code === 200) {
+              window.clearInterval(interval);
+                _this.equipment = {
+                  addr: "fdsafsa",
+                  num: "321321321",
+                  index: "02"
+                };
+              _this.chargeLog = res.body;
+              console.log(_this.chargeLog.hasChargedTime);
+              interval = setInterval(() => {
+                _this.chargeLog.hasChargedTime = (
+                  parseInt(_this.chargeLog.hasChargedTime) + 1000
+                ).toString();
+              }, 1000);
+            }
+          })
+          .catch(function(err) {
+            console.log({
+              url: requestChargeUrl,
+              err: JSON.stringify(err)
+            });
+          });
+      },
+      stopCharge() {
+        let _this = this;
+        //let stopChargeUrl = GLOBAL.interfacePath + '';
+        let stopChargeUrl = "";
+        axios
+          .get(stopChargeUrl)
+          .then(function(data) {
+            console.log("stopChargeUrl|返回数据|" + JSON.stringify(data.data));
+            data.data = {
+              state: "success",
+              msg: ""
+            };
+            _this.$router.replace({
+              name: "endCharge"
+            });
+          })
+          .catch(function(err) {
+            console.log({
+              url: stopChargeUrl,
+              err: JSON.stringify(err)
+            });
+          });
+      }
+    },
+    created() {
+      // 开始充电页面
+      //时间戳转化 时间 filter 方法。
+      timestampToData();
       let _this = this;
-      //let stopChargeUrl = GLOBAL.interfacePath + '';
-      let stopChargeUrl = "";
-      axios
-        .get(stopChargeUrl)
-        .then(function(data) {
-          console.log("stopChargeUrl|返回数据|" + JSON.stringify(data.data));
-          data.data = {
-            state: "success",
-            msg: ""
-          };
-          _this.$router.replace({
-            name: "endCharge"
-          });
-        })
-        .catch(function(err) {
-          console.log({
-            url: stopChargeUrl,
-            err: JSON.stringify(err)
-          });
-        });
-    }
-  },
-  created() {
-    timestampToData();
-    let _this = this;
-    getUserInfo().then(function(userInfo){
-      _this.userInfo = userInfo;
-      console.log(_this.userInfo);
-    });
-
-    //let requestChargeUrl = GLOBAL.interfacePath + '';
-    let requestChargeUrl = "";
-    axios
-      .get(requestChargeUrl)
-      .then(function(data) {
-        console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
-        setTimeout(() => {
-          _this.equipment = {
-            addr: "fdsafsa",
-            num: "321321321",
-            index: "02"
-          };
-          _this.chargeLog = {
-            chargeState: "charging",
-            hasChargedPercent: "69%",
-            hasChargedTime: "58000",
-            currentW: "800", //当前功率与实际功率
-            payMethod: "按时长收费",
-            expectedChargeTime: "2",
-            actualChargeTime: "1小时28分",
-            wRange: "200<功率≤500瓦",
-            priceRate: "0.7元/小时",
-            costMoney: "1.80",
-            costDegree: "3", //使用的度数
-            chargeEndTime: "2017-11-10 20:00"
-          };
-        }, 1000);
-        setInterval(() => {
-          _this.chargeLog.hasChargedTime = (
-            parseInt(_this.chargeLog.hasChargedTime) + 1000
-          ).toString();
-        }, 1000);
-      })
-      .catch(function(err) {
-        console.log({
-          url: requestChargeUrl,
-          err: JSON.stringify(err)
-        });
+      getUserInfo().then(function(userInfo) {
+        _this.userInfo = userInfo;
+        console.log(_this.userInfo);
       });
-  }
-};
+      this.requestChargeInfo();
+      //let requestChargeUrl = GLOBAL.interfacePath + '';
+      console.log(store.state.update);
+    },
+   watch: {
+     update:function(nv,ov){
+       
+     }
+    // 监听是否有充电信息更新   
+  },
+  };
 </script>
 
 <style lang="scss">
-@import "../../../static/css/common.scss";
-@import "../../../static/css/iconfont.css";
-.bgc-2e {
-  background-color: #2e2e2e;
-}
-
-.charge-box {
-  color: #fff;
-  height: 100%;
-  background-color: #2daeec;
-  .charge-state {
-    overflow: hidden;
-    padding-top:.7rem;
-    .circle {
-      border: 2px solid #fff;
-      border-radius: 50%;
-      height: 7rem;
-      width: 7rem;
-      margin: 0.5rem auto;
-      position: relative;
-      & > div {
-        margin: 0 auto 0.2rem;
-        text-align: center;
-      }
-      // 70%
-      & > div:nth-child(1) {
-        color: #fff !important;
-      }
-      // 健康保养充电中...
-      & > div:nth-child(3) {
-        margin-top: 0.4rem;
-        color: #fff !important;
-        text-shadow: #fff 0px 0px 4px;
-      }
-      & > div:nth-child(4) {
-        color: #ebd510;
-        & > p {
-          border-bottom: 1px solid #b2dbee;
+  @import "../../../static/css/common.scss";
+  @import "../../../static/css/iconfont.css";
+  .bgc-2e {
+    background-color: #2e2e2e;
+  }
+  
+  .charge-box {
+    color: #fff;
+    height: 100%;
+    background-color: #2daeec;
+    .charge-state {
+      overflow: hidden;
+      padding-top: .7rem;
+      .circle {
+        border: 2px solid #fff;
+        border-radius: 50%;
+        height: 7rem;
+        width: 7rem;
+        margin: 0.5rem auto;
+        position: relative;
+        &>div {
+          margin: 0 auto 0.2rem;
+          text-align: center;
         }
-      }
-      & > div:nth-child(5) {
-        color: #ebd510;
-        & > p {
-          border-bottom: 1px solid #b2dbee;
+        // 70%
+        &>div:nth-child(1) {
+          color: #fff !important;
         }
-      }
-      .percent {
-        position: absolute;
-        top: -0.4rem;
-        width: 100%;
-        text-align: center;
-        @include fcm;
-        span {
-          background-color: #2daeec;
-          display: block;
-          width: 1.8rem;
+        // 健康保养充电中...
+        &>div:nth-child(3) {
+          margin-top: 0.4rem;
+          color: #fff !important;
+          text-shadow: #fff 0px 0px 4px;
+        }
+        &>div:nth-child(4) {
+          color: #ebd510;
+          &>p {
+            border-bottom: 1px solid #b2dbee;
+          }
+        }
+        &>div:nth-child(5) {
+          color: #ebd510;
+          &>p {
+            border-bottom: 1px solid #b2dbee;
+          }
+        }
+        .percent {
+          position: absolute;
+          top: -0.4rem;
+          width: 100%;
+          text-align: center;
+          @include fcm;
+          span {
+            background-color: #2daeec;
+            display: block;
+            width: 1.8rem;
+          }
         }
       }
     }
   }
-}
-
-.equitment-box {
-  padding: 0.5rem 0.8rem 0.2rem;
-  background-color: #2daeec;
-  & > div > p:first-child {
-    margin-bottom: 0.2rem;
-    min-height: 0.5rem;
+  
+  .equitment-box {
+    padding: 0.5rem 0.8rem 0.2rem;
+    background-color: #2daeec;
+    &>div>p:first-child {
+      margin-bottom: 0.2rem;
+      min-height: 0.5rem;
+    }
+    .icon-equipment-num {
+      border-radius: 100rem;
+      height: 2rem;
+      width: 2rem;
+      background-color: #ff9800;
+      color: #fff;
+      font-size: 0.9rem;
+    }
   }
-  .icon-equipment-num {
-    border-radius: 100rem;
-    height: 2rem;
-    width: 2rem;
-    background-color: #ff9800;
+  
+  .cost-method-box {
+    &>div {}
+  }
+  
+  .icon-point-green {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: block;
+    background-color: #19d74f;
+    margin-right: 0.2rem;
+  }
+  
+  .stop-btn {
+    width: 80%;
+    margin: 0 auto;
+    height: 1.6rem;
+    border: 2px solid #fff;
     color: #fff;
-    font-size: 0.9rem;
+    border-radius: 5px;
+    box-shadow: #fff 0px 0px 10px;
   }
-}
-
-.cost-method-box {
-  & > div {
+  
+  .opacity0 {
+    opacity: 0;
+    transition: opacity 0.25s ease-in;
   }
-}
-
-.icon-point-green {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  display: block;
-  background-color: #19d74f;
-  margin-right: 0.2rem;
-}
-
-.stop-btn {
-  width: 80%;
-  margin: 0 auto;
-  height: 1.6rem;
-  border: 2px solid #fff;
-  color: #fff;
-  border-radius: 5px;
-  box-shadow: #fff 0px 0px 10px;
-}
-
-.opacity0 {
-  opacity: 0;
-  transition: opacity 0.25s ease-in;
-}
-
-.opacity1 {
-  opacity: 1;
-}
-.handle-method {
-  margin: 0 0 0.5rem 0.8rem;
-  font-size: 0.5rem;
-  & > div {
-    @include fm;
-    background: rgba(255, 255, 255, 0.7);
-    color: #666;
-    border-radius: 3px;
-    padding: 0.1rem 0.2rem;
+  
+  .opacity1 {
+    opacity: 1;
   }
-}
+  
+  .handle-method {
+    margin: 0 0 0.5rem 0.8rem;
+    font-size: 0.5rem;
+    &>div {
+      @include fm;
+      background: rgba(255, 255, 255, 0.7);
+      color: #666;
+      border-radius: 3px;
+      padding: 0.1rem 0.2rem;
+    }
+  }
 </style>

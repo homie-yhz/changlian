@@ -258,13 +258,10 @@
     },
     mounted() {},
     created() {
-      console.log(wx);
       let _this = this;
       console.log("if绑定电站列表：" + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
       //获取附近电站信息列表
-      // this.getStationList();
-      console.log(this.hasNext);
       //调用  是否登录接口
       axios
         .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])

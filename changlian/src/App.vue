@@ -10,6 +10,8 @@
   import Vue from 'vue'
   import VueRouter from 'vue-router'
   import GLOBAL from './GLOBAL';
+  import store from './store';
+import { setInterval } from 'timers';
   VueRouter.prototype.goBack = function(){
     this.isBack = true
 　　 window.history.go(-1)
@@ -31,10 +33,11 @@
         this.transitionName = 'slide-left'
       }
       this.$router.isBack = false
-      next()
+      next();
     },
     created(){
-      let websocket = null;
+      let _this = this;
+    let websocket = null;
     if ('WebSocket' in window) {
         websocket = new WebSocket("ws://" + GLOBAL.interfacePath + "/websocket/" + 'test1' );
     } else {
@@ -47,13 +50,24 @@
 
     //连接成功建立的回调方法
     websocket.onopen = function() {
-    setMessageInnerHTML("WebSocket连接成功");
+      setMessageInnerHTML("WebSocket连接成功");
     }
 
     //接收到消息的回调方法
     websocket.onmessage = function(event) {
-    setMessageInnerHTML(event.data);
-
+      setMessageInnerHTML(event.data);
+      let res = {
+        state:'update',
+      }
+      setInterval(()=>{
+        let num = Math.round(Math.random());
+        console.log('num:'+num);
+        if(num === 0){
+          store.commit('increment');
+          console.log('发生更新！');
+          console.log(store.state.update);
+        }
+      },5000);
     }
 
     //连接关闭的回调方法

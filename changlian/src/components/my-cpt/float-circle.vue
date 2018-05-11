@@ -21,12 +21,7 @@
     mounted() {
       let _this = this;
       this.$nextTick(() => {
-        console.log(_this);
         let circle = _this.$refs.circleDom;
-        console.log(_this.$refs);
-        console.log(_this.$refs.keys);
-        console.log("refsDom");
-        console.log(circle);
         // circle.addEventListener("touchmove", function(event) {
         //   circle.style.left = event.touches[0].pageX + "px";
         //   circle.style.top = event.touches[0].pageY + "px";

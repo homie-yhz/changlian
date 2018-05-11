@@ -71,6 +71,7 @@
     Toast
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
+  import store from '../../store';
   export default {
     data() {
       return {
@@ -96,6 +97,7 @@
       },
       // 开始充电
       startCharge() {
+        store.commit('increment');
         if (this.userInfo.balance - 0.1 < 0) {
           Toast("余额不足！无法充电！");
         } else if (!this.postData.chargeMethodId) {
