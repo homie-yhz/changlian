@@ -88,13 +88,13 @@
         <p class="tac">电站</p>
       </router-link>
       <div class="v-i1">
-        <p class="tac" style="margin-top:1.05rem;">扫一扫</p>
+        <p class="tac" style="margin-top:1.05rem;" @click="scanQRCode()">扫一扫</p>
       </div>
       <div class="v-i1 checked">
         <i class="icon-me"></i>
         <p class="tac">我</p>
       </div>
-      <div class="icon-scan">
+      <div class="icon-scan" @click="scanQRCode()">
         <i></i>
       </div>
     </div>
@@ -103,7 +103,8 @@
 
 <script>
   import GLOBAL, {
-    getUserInfo
+    getUserInfo,
+    getCode
   } from "../../GLOBAL";
   export default {
     data() {
@@ -116,17 +117,27 @@
       register() {},
       // 跳到到相关页面
       routerTo(name, params) {
-        this.$router.push({name:name});
-        // if (this.userInfo.loginState) {
-        //   this.$router.push({
-        //     name: name,
-        //     params: params
-        //   });
-        // } else {
-        //   this.$router.push({
-        //     name: 'login'
-        //   });
-        // }
+        if (this.userInfo.loginState) {
+          this.$router.push({
+            name: name,
+            params: params
+          });
+        } else {
+          this.$router.push({
+            name: 'login'
+          });
+        }
+      },
+      scanQRCode() {
+        alert('调用扫一扫');
+        wx.scanQRCode({
+          needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function(res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            alert('扫一扫返回地址：'+result);
+          }
+        });
       }
     },
     created() {
@@ -147,6 +158,30 @@
               err: JSON.stringify(err)
             });
           })
+      //获取code 调用扫一扫功能
+      getCode(_this).then(function(WXoptions) {
+        alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+          timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
+          nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
+          signature: WXoptions.signature, // 必填，签名
+          jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+        });
+        wx.ready(function() {
+          wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function(res) {
+              var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+              var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+              var speed = res.speed; // 速度，以米/每秒计
+              var accuracy = res.accuracy; // 位置精度
+              alert('获取经纬度：经度：'+latitude+'(经度)/'+longitude+'(纬度)/'+speed+'(速度)/'+accuracy+'(经度)');
+            }
+          });
+        });
+      });
       }
     }
   };

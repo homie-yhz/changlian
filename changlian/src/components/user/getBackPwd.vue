@@ -10,10 +10,10 @@
       <div>
         <div style="width:85%;" class="register-box">
           <div>
-            <input type="tel" v-model="postData.phone" maxlength="11" placeholder="手机号">
+            <input type="tel" v-model="body.phone" maxlength="11" placeholder="手机号">
             <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
           </div>
-          <input type="tel" v-model="postData.identifyCode" maxlength="6" placeholder="验证码">
+          <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码">
           <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
         </div>
       </div>
@@ -28,7 +28,7 @@ import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
 const leftTime = 60;
-
+import loader from '../../loading';
 export default {
   data() {
     return {
@@ -40,7 +40,7 @@ export default {
         leftTime: leftTime,
         text: "发送验证码" //倒计时剩余时间,
       },
-      postData: {
+      body: {
         phone: "",
         identifyCode: ""
       }
@@ -80,20 +80,29 @@ export default {
     //获取验证码接口
     getIndentifyCode_IF() {
       //params:phone
-      // let getIndentifyCodeUrl = GLOBAL.interfacePath + '';
-      let getIndentifyCodeUrl = "";
+      let getIndentifyCodeUrl =
+        GLOBAL.interfacePath + "/clyun/getIndentifyCodeUrl?phone=" + this.body.phone;
+      let _this = this;
+      loader.show();
       axios
         .get(getIndentifyCodeUrl)
         .then(function(data) {
-          console.log("getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data));
-          data.data = {
-            identifyCode: "2014"
-          };
-          if (!!data.data) {
-            alert("验证码" + data.data.identifyCode);
+          console.log(
+            "getIndentifyCodeUrl|返回数据|" + JSON.stringify(data.data)
+          );
+          loader.hide();
+          let res = data.data;
+          if (res.code === 200) {
+            sessionStorage.setItem("smsId", res.body.smsId);
+            _this.body.smsId = res.body.smsId;
+            alert("验证码" + res.body.code);
+          } else {
+            MessageBox.alert(res.msg);
           }
         })
         .catch(function(err) {
+          MessageBox.alert("接口异常");
+          loader.hide();
           console.log({
             url: getIndentifyCodeUrl,
             err: JSON.stringify(err)
@@ -125,7 +134,7 @@ export default {
   },
   created() {},
   watch: {
-    postData: {
+    body: {
       handler(nv) {
         console.log(JSON.stringify(nv));
         if (

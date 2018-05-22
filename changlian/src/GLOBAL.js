@@ -7,9 +7,11 @@ export default {
     env: 'UAT',
     // interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
     // interfacePath: 'http://localhost:8080/v1/api0/clyun',
-    //interfacePath: 'http://192.168.31.23:8080/v1/api0/clyun',   //UAT 接口路径
+    // interfacePath: 'http://192.168.31.23:8080/v1/api0',   //志鸿
 
-    interfacePath: 'test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+    // interfacePath: 'http://192.168.31.101:8080/v1/api0',   //UAT 接口路径
 
     //interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
     appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
@@ -86,8 +88,9 @@ export let hasChargingMechineObj = {
  * 
  */
 export function getUserInfo() {
+    console.log('调动获取用户信息接口！');
     return new Promise(function (resolve, reject) {
-        let getUserInfoUrl = GLOBAL.interfacePath + '/getUserInfo?userId='+sessionStorage.getItem('userId');
+        let getUserInfoUrl = GLOBAL.interfacePath + '/clyun/getUserInfo?userId='+sessionStorage.getItem('userId')||'';
         axios
             .get(getUserInfoUrl)
             .then(function (data) {
@@ -136,13 +139,17 @@ export function getUserInfo() {
 
 export function getCode(_this){
     // alert(window.location.href);
+    //alert('调用获取code接口');
     let url = window.location.href;
     //首先获取 签名
     //先请求一次接口
-    let getSignUrl = GLOBAL.interfacePath+'/order/scanQR.do?htmlUrl=' + encodeURIComponent(window.location.href.split('#')[0]);
+    let getSignUrl = GLOBAL.interfacePath+'/order/scanQR';
+    //alert(getSignUrl);
+    let params = new URLSearchParams();
+    params.append("url",encodeURIComponent(window.location.href.split('#')[0]));
     // alert(getSignUrl);
     return new Promise(function(resolve,reject){
-      axios.get(getSignUrl)
+      axios.post(getSignUrl,params)
         .then(function(data) {
           console.log(data);
           let res = data.data;

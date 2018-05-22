@@ -88,7 +88,7 @@
         setTimeout(function(){
           _this.postData.currentPage++;
           //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
-          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/getChargeElecLogListUrl?' +
+          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/clyun/getChargeElecLogListUrl?' +
             'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + _this.postData.currentPage + '&listLen=' + _this.postData.listLen;
             console.log(getChargeElecLogListUrl);
             getChargeElecLogListUrl = '';

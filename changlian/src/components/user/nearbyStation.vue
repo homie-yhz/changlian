@@ -14,7 +14,7 @@
           <span class="iconfont icon-sousuo"></span>
           <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
         </div>
-        <router-link tag="div"  :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
+        <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
@@ -34,7 +34,7 @@
         <div>
           <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
             <router-link v-for="stationInfo in stationList" :key="stationInfo.stationId" tag="div" :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" class="v-fm station-item" style="width:100%;">
-              <div class="ml-6 v-i1">
+              <div class="ml-6 v-i1"  :stationId="stationInfo.stationId">
                 <!-- 地址 -->
                 <p class="fw-b">{{stationInfo.stationAddr}}</p>
                 <!-- 允许支付方式 -->
@@ -81,13 +81,13 @@
         <p class="tac">电站</p>
       </div>
       <div class="v-i1">
-        <p class="tac" style="margin-top:1.05rem;">扫一扫</p>
+        <p class="tac" style="margin-top:1.05rem;" @click="scanQRCode()">扫一扫</p>
       </div>
       <router-link class="v-i1" :to="{name:'personalCenter'}">
         <i class="icon-me"></i>
         <p class="tac">我</p>
       </router-link>
-      <div class="icon-scan">
+      <div class="icon-scan" @click="scanQRCode()">
         <i></i>
       </div>
     </div>
@@ -111,7 +111,8 @@
   import GLOBAL, {
     getUserInfo,
     judgeLoginObj,
-    hasChargingMechineObj
+    hasChargingMechineObj,
+    getCode
   } from "../../GLOBAL";
   export default {
     components: {
@@ -131,14 +132,25 @@
         hasNext: true,
         noDataText: "附近10公里范围内没有更多站点了",
         showUsuallyStation: false, //是否展示常用电站按钮
+
+        //正式数据
+        // postData: {
+        //   pageIndex: 0,
+        //   listLen: 10,
+        //   searchInfo: "",
+        //   position: [], // 39.907,116.337
+        //   userId: "",
+        //   listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
+        // },
+
+        //postData 测试参数
         postData: {
           pageIndex: 0,
           listLen: 10,
           searchInfo: "",
-          //position: ["40.552", "116.167"],
-          position: ["39.90762942", "116.337447"],
-          userId: "002",
-          listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
+          position: [40.552,116.167], // 39.907,116.337
+          userId: "",
+          listType: "normalList" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
         },
         height: "100%",
         scrollState: "", // refresh/infinite
@@ -156,66 +168,67 @@
       },
       getStationList(done) {
         let _this = this;
-          this.postData.pageIndex++;
-          
-          // console.log(JSON.stringify(this.postData));
-          // let stationListUrl = "../../../../static/data/stationInfo.json";
-          // let stationListUrl = "";
-          let stationListUrl = GLOBAL.interfacePath+'/stationList?postData='+JSON.stringify(_this.postData);
-          console.log(JSON.stringify(this.postData));
-          axios.get(stationListUrl).then(function(data) {
-            console.log(data.data);
-            /*data.data = {
-              "code": 200,
-              "message": "充电站接口",
-              "body": {
-                "hasNext": true,
-                "stationList": [{
-                    "stationName": "龙锦苑东五区充电站//充电站名称",
-                    "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
-                    "stationId": "001",
-                    "stationNum": "9803213213213//充电站编号",
-                    "payMethods": [
-                      "刷卡",
-                      "APP支付//支持的支付方式"
-                    ],
-                    "totalChargePortsNum": 3,
-                    "idleChargePortsNum": 2,
-                    "chargeType": "fast",
-                    "distanceToMe": "200m",
-                    "operationTime": "00:00-24:00//运营时间",
-                    "operator": "运营商//运营商",
-                    "parkCost": "免费/2元/h//停车费用",
-                    "showBindBtn": true
-                  }
-                ]
-              }
-            }
-            */
-            // console.log(JSON.stringify(data));
-            let request = data.data;
-            if (_this.scrollState === "refresh") {
-              _this.stationList = [];
-            }
-            _this.stationList = _this.stationList.concat(
-              request.body.stationList
-            );
-            _this.hasNext = request.body.hasNext;
-            _this.scrollState = "";
+        this.postData.pageIndex++;
   
-            if (_this.stationList.length === 0) {
-              let noDataDom = document.getElementsByClassName("no-data-text")[0];
-              let noDataMsgHtml =
-                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
-              noDataDom.innerHTML = noDataMsgHtml;
-            } else {
-              _this.noDataText = "附近10公里范围内没有更多站点了！";
-            }
-            _this.$nextTick(function() {
-              _this.$refs.scrollDom.resize();
-            });
-            done();
+        // console.log(JSON.stringify(this.postData));
+        let stationListUrl = GLOBAL.interfacePath + '/clyun/stationList?postData=' + JSON.stringify(_this.postData);
+
+        alert('电站列表地址：' + stationListUrl);
+        axios.get(stationListUrl).then(function(data) {
+          console.log(JSON.stringify(data.data));
+          // data.data = {
+          //   "code": 200,
+          //   "message": "充电站接口",
+          //   "body": {
+          //     "hasNext": true,
+          //     "stationList": [{
+          //       "stationName": "龙锦苑东五区充电站//充电站名称",
+          //       "stationAddr": "北京市昌平区龙锦三街-龙锦苑东五区-13号楼1单元对面//充电站地址",
+          //       "stationId": "001",
+          //       "stationNum": "9803213213213//充电站编号",
+          //       "payMethods": [
+          //         "刷卡",
+          //         "APP支付//支持的支付方式"
+          //       ],
+          //       "totalChargePortsNum": 3,
+          //       "idleChargePortsNum": 2,
+          //       "chargeType": "fast",
+          //       "distanceToMe": 200,
+          //       "operationTime": "00:00-24:00//运营时间",
+          //       "operator": "运营商//运营商",
+          //       "parkCost": "免费/2元/h//停车费用",
+          //       "showBindBtn": true
+          //     }]
+          //   }
+          // }
+          // console.log(JSON.stringify(data));
+          let request = data.data;
+          if (_this.scrollState === "refresh") {
+            _this.stationList = [];
+          }
+          _this.stationList = _this.stationList.concat(
+            request.body.stationList
+          );
+          _this.hasNext = request.body.hasNext;
+          _this.scrollState = "";
+  
+          if (_this.hasNext) {
+            let noDataDom = document.getElementsByClassName("no-data-text")[0];
+          }
+  
+          if (_this.stationList.length === 0) {
+            let noDataDom = document.getElementsByClassName("no-data-text")[0];
+            let noDataMsgHtml =
+              '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+            noDataDom.innerHTML = noDataMsgHtml;
+          } else {
+            _this.noDataText = "附近10公里范围内没有更多站点了！";
+          }
+          _this.$nextTick(function() {
+            _this.$refs.scrollDom.resize();
           });
+          done();
+        });
       },
       switchTabItem(index) {
         console.log("on-before-index-change", index);
@@ -247,13 +260,60 @@
       },
       infinite(done) {
         let _this = this;
-        if (this.hasNext && this.scrollState === "") {
+        //获取code 调用扫一扫功能
+       /*getCode(_this)
+          .then(function(WXoptions) {
+            // return new Promise(function(resolve, reject) {
+            //alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
+            wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+              timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
+              nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
+              signature: WXoptions.signature, // 必填，签名
+              jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+            });
+            wx.ready(function() {
+              wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function(res) {
+                  var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                  var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                  var speed = res.speed; // 速度，以米/每秒计
+                  var accuracy = res.accuracy; // 位置精度
+                  _this.postData.position[0] = longitude;
+                  _this.postData.position[1] = latitude;
+                  //alert('获取经纬度：经度：' + latitude + '(经度)/' + longitude + '(纬度)/' + speed + '(速度)/' + accuracy + '(经度)');
+                  //alert(JSON.stringify('发送给后台的定位信息' + _this.postData.position));
+                  if (_this.hasNext && _this.scrollState === "") {
+                    console.log("loadmore-1");
+                    _this.getStationList(done);
+                  } else {
+                    console.log(`没有更多数据`);
+                    _this.$refs.scrollDom.finishInfinite(true);
+                  }
+                }
+              });
+            });
+          });*/
+        if (_this.hasNext && _this.scrollState === "") {
           console.log("loadmore-1");
           _this.getStationList(done);
         } else {
           console.log(`没有更多数据`);
-          this.$refs.scrollDom.finishInfinite(true);
+          _this.$refs.scrollDom.finishInfinite(true);
         }
+      },
+      scanQRCode() {
+        // alert('调用扫一扫');
+        wx.scanQRCode({
+          needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function(res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            //alert('扫一扫返回地址：' + result);
+          }
+        });
       }
     },
     mounted() {},
@@ -261,6 +321,7 @@
       let _this = this;
       console.log("if绑定电站列表：" + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
+      this.postData.userId = sessionStorage.getItem('userId');
       //获取附近电站信息列表
       //调用  是否登录接口
       axios
@@ -272,10 +333,41 @@
             console.log(pers);
           });
         });
-  
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
       });
+  
+      //获取code 调用扫一扫功能
+      /*getCode(_this).then(function(WXoptions) {
+        alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+          timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
+          nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
+          signature: WXoptions.signature, // 必填，签名
+          jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+        });
+        wx.ready(function() {
+          wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function(res) {
+              var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+              var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+              var speed = res.speed; // 速度，以米/每秒计
+              var accuracy = res.accuracy; // 位置精度
+              _this.postData.position[0] = longitude;
+              _this.postData.position[1] = latitude;
+              alert('获取经纬度：经度：'+latitude+'(经度)/'+longitude+'(纬度)/'+speed+'(速度)/'+accuracy+'(经度)');
+              alert(JSON.stringify('发送给后台的定位信息'+_this.postData.position));
+            }
+          });
+        });
+      });
+      */
+  
+  
+  
       // function judgeLoginFn(){
       //   return axios.get('');
       // }
@@ -293,7 +385,7 @@
       // })
   
       var html = `
-            `;
+                                  `;
     },
     watch: {
       searchInfo: function(nv, ov) {

@@ -84,7 +84,7 @@
     created() {
 
       let _this = this;
-			let getRechargeCardsList = GLOBAL.interfacePath + '/getRechargeCardsList?userId=' + sessionStorage.getItem('userId');
+			let getRechargeCardsList = GLOBAL.interfacePath + '/clyun/getRechargeCardsList?userId=' + sessionStorage.getItem('userId');
       axios
         .get(getRechargeCardsList)
         .then(function(data) {

@@ -97,7 +97,7 @@
         setTimeout(() => {
           this.postData.currentPage++;
           // let getRechargeLogListUrl = "../../../../static/data/stationInfo.json";
-          let getRechargeLogListUrl = GLOBAL.interfacePath + '/getRechargeLogListUrl?' +
+          let getRechargeLogListUrl = GLOBAL.interfacePath + '/clyun/getRechargeLogListUrl?' +
             'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + this.postData.currentPage + '&listLen=' + this.postData.listLen;
           // let getRechargeLogListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
           getRechargeLogListUrl = '';

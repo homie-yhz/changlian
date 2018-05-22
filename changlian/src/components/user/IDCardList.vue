@@ -81,7 +81,7 @@ import RegExp from '../../RegExp';
 				//解绑ID卡地址   将ID卡的 ID发送后台
 				//let unbindIDCardUrl = GLOBAL.interfacePath + '';
 				//params:   cardId='';
-				let unbindIDCardUrl = GLOBAL.interfacePath + '/unbindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+cardId;
+				let unbindIDCardUrl = GLOBAL.interfacePath + '/clyun/unbindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+cardId;
 				console.log(unbindIDCardUrl);
 				axios
 					.get(unbindIDCardUrl)

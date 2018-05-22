@@ -24,7 +24,7 @@
           </span>
         </p>
         <div class="ports-box">
-          <div class="v-fm" @click="choosePort(port)" :class="{broken:port.state==='broken',charging:port.state==='charging',idle:port.state==='idle',checked:postData.portId===port.ID}" :key="port.id" v-for="(port,key) in chargePortsList">
+          <div class="v-fm" @click="choosePort(port,key+1)" :class="{broken:port.state==='broken',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
             <div class="v-fcm">{{key+1}}</div>
             <div class="v-fcm fz-55">
               <div v-if="port.method==='AC'" class="">
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       postData: {
-        portId: "",
+        consoleId: "",
         stationId: "",
         methodId: ""
       },
@@ -86,15 +86,16 @@ export default {
     back() {
       this.$router.go(-1);
     },
-    choosePort(port) {
-      console.log(port.ID);
+    choosePort(port,portIndex) {
+      console.log(port.consoleId);
       let portState = port.state;
       if (portState === "idle") {
         //增加样式
-        this.postData.portId = port.ID;
+        sessionStorage.setItem('portIndex',portIndex)
+        this.postData.consoleId = port.consoleId;
         this.$router.push({
           name: "chooseChargeMethod",
-          params: { portId: port.ID }
+          params: {stationId:this.$route.params.stationId||'*', portId: port.ID||'*',portNumber:port.portNumber||'*',consoleId:port.consoleId||'*',consoleNumber:port.consoleNumber||'*' }
         });
       } else if (portState === "broken") {
         Toast("抱歉！该充电口暂时无法使用！");
@@ -105,7 +106,7 @@ export default {
   },
   created() {
     let _this = this;
-    let chargePortsListUrl = GLOBAL.interfacePath + '/chargePortsList?stationId='+this.$route.params.stationId;
+    let chargePortsListUrl = GLOBAL.interfacePath + '/clyun/chargePortsList?stationId='+this.$route.params.stationId;
     // let stationInfoUrl = "";
     console.log(chargePortsListUrl);
     axios
@@ -190,7 +191,7 @@ export default {
         });
       });
 
-      let stationDetailInfoUrl = GLOBAL.interfacePath+'/stationDetailInfo?stationId='+this.$route.params.stationId;
+      let stationDetailInfoUrl = GLOBAL.interfacePath+'/clyun/stationDetailInfo?stationId='+this.$route.params.stationId;
       //let stationDetailInfoUrl = GLOBAL.interfacePath + '';
       axios
         .get(stationDetailInfoUrl)

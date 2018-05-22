@@ -56,7 +56,7 @@ export default {
     //let chargingList = GLOBAL.interfacePath + '';
     let chargingList =
       GLOBAL.interfacePath +
-      "/chargingList?" +
+      "/clyun/chargingList?" +
       "userId=" +
       sessionStorage.getItem("userId")+'&chargeLogId='+'2';
     axios

@@ -60,6 +60,7 @@ export default {
       this.$router.go(-1);
     },
     login() {
+     
       let _this = this;
       console.log("提交登录信息");
       console.log(JSON.stringify(this.body));
@@ -71,7 +72,7 @@ export default {
       }else{
         loader.show();
         let _this = this;
-        let url = GLOBAL.interfacePath + '/postUserLoginUrl';
+        let url = GLOBAL.interfacePath + '/clyun/postUserLoginUrl';
         let params = new URLSearchParams();
         params.append("body",JSON.stringify(this.body));
       axios

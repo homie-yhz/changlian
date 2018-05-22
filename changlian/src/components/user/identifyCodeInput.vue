@@ -81,7 +81,7 @@ export default {
     //获取验证码接口
     getIndentifyCode_IF(){
         //params:phone
-        let getIndentifyCodeUrl = GLOBAL.interfacePath + 'getIndentifyCodeUrl?phone=';
+        let getIndentifyCodeUrl = GLOBAL.interfacePath + '/clyun/getIndentifyCodeUrl?phone=';
         axios
           .get(getIndentifyCodeUrl)
           .then(function(data){

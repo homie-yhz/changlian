@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-              <span class="arrow-back"></span>
-            </div> -->
+                <span class="arrow-back"></span>
+              </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -17,11 +17,11 @@
           <div class="equitment-box v-fb v-fm" style="background-color: #2daeec;">
             <div class="">
               <!-- 设备地址 -->
-              <p>{{equipment.addr}}</p>
+              <p>{{equipment.stationAddr}}</p>
               <!-- 设备编号 -->
-              <p>设备编号：{{equipment.num}}</p>
+              <p>设备编号：{{equipment.stationNum}}</p>
             </div>
-            <div class="v-fcm icon-equipment-num">{{equipment.index}}</div>
+            <div class="v-fcm icon-equipment-num">{{equipment.portIndex}}</div>
           </div>
           <div class="v-fm handle-method">
             <div v-if="userInfo.chargeSource === 'APP'" class="v-fm">
@@ -93,14 +93,16 @@
     getUserInfo
   } from "../../GLOBAL";
   import {
-    Toast
+    Toast,MessageBox
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
   import {
     timestampToData
   } from "../../Filter";
   import store from '../../store';
-import { clearTimeout } from 'timers';
+  import {
+    clearTimeout
+  } from 'timers';
   export default {
     data() {
       return {
@@ -118,8 +120,8 @@ import { clearTimeout } from 'timers';
         equipment: {}
       };
     },
-    computed:{
-      update:function(){
+    computed: {
+      update: function() {
         console.log('子组件更新');
         this.requestChargeInfo();
         return store.state.update;
@@ -132,38 +134,37 @@ import { clearTimeout } from 'timers';
       //请求充电接口  或者是  获取是否含有充电信息的接口。
       requestChargeInfo() {
         let _this = this;
-        let requestChargeUrl = "";
+        // 电站详情信息
+        let stationDetailInfo = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + sessionStorage.getItem('stationId');
+        axios
+          .get(stationDetailInfo)
+          .then(function(data) {
+            console.log('stationDetailInfo|返回数据|', data.data.body);
+            let res = data.data;
+            if (res.code === 200) {
+              _this.equipment = res.body;
+              _this.equipment.portIndex = sessionStorage.getItem('portIndex');
+            }
+          })
+          .catch(function(err) {
+            console.log({
+              'url': stationDetailInfo,
+              'err': JSON.stringify(err)
+            });
+          });
+        // 获取充电信息
+        /*let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
+          'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
+          '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime');
+        console.log(requestChargeUrl);
         axios
           .get(requestChargeUrl)
           .then(function(data) {
             console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
             let res = data.data;
-            res = {
-                  code:200,
-                  body:
-                  {
-                  chargeState: "charging",
-                  hasChargedPercent: "70%",
-                  hasChargedTime: 58000, //已充时长
-                  currentW: "800", //当前功率与实际功率
-                  payMethod: "按时长收费",
-                  expectedChargeTime: "2",
-                  actualChargeTime: "1小时28分",
-                  wRange: "200<功率≤500瓦",
-                  priceRate: "0.7元/小时",
-                  costMoney: "1.80",
-                  costDegree: "3", //使用的度数
-                  chargeEndTime: "2017-11-10 20:00"
-                }
-            }
-            console.log();
+            console.log(JSON.stringify(res.body));
             if (res.code === 200) {
               window.clearInterval(interval);
-                _this.equipment = {
-                  addr: "fdsafsa",
-                  num: "321321321",
-                  index: "02"
-                };
               _this.chargeLog = res.body;
               console.log(_this.chargeLog.hasChargedTime);
               interval = setInterval(() => {
@@ -171,6 +172,8 @@ import { clearTimeout } from 'timers';
                   parseInt(_this.chargeLog.hasChargedTime) + 1000
                 ).toString();
               }, 1000);
+            }else{
+              MessageBox.alert(res.msg);
             }
           })
           .catch(function(err) {
@@ -178,7 +181,7 @@ import { clearTimeout } from 'timers';
               url: requestChargeUrl,
               err: JSON.stringify(err)
             });
-          });
+          });*/
       },
       stopCharge() {
         let _this = this;
@@ -217,12 +220,12 @@ import { clearTimeout } from 'timers';
       //let requestChargeUrl = GLOBAL.interfacePath + '';
       console.log(store.state.update);
     },
-   watch: {
-     update:function(nv,ov){
-       
-     }
-    // 监听是否有充电信息更新   
-  },
+    watch: {
+      update: function(nv, ov) {
+        console.log('charging调用接口！！！成功！');
+      }
+      // 监听是否有充电信息更新   
+    },
   };
 </script>
 

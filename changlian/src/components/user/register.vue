@@ -59,7 +59,7 @@ export default {
 
         loader.show();
         let _this = this;
-        let url = GLOBAL.interfacePath + "/postRegisterInfoUrl";
+        let url = GLOBAL.interfacePath + "/clyun/postRegisterInfoUrl";
         let params = new URLSearchParams();
         params.append("body", JSON.stringify(this.body));
         axios
@@ -116,7 +116,7 @@ export default {
     getIndentifyCode_IF() {
       //params:phone
       let getIndentifyCodeUrl =
-        GLOBAL.interfacePath + "/getIndentifyCodeUrl?phone=" + this.body.phone;
+        GLOBAL.interfacePath + "/clyun/getIndentifyCodeUrl?phone=" + this.body.phone;
       let _this = this;
       loader.show();
       axios
