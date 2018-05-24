@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                <span class="arrow-back"></span>
-              </div> -->
+                  <span class="arrow-back"></span>
+                </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -93,7 +93,8 @@
     getUserInfo
   } from "../../GLOBAL";
   import {
-    Toast,MessageBox
+    Toast,
+    MessageBox
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
   import {
@@ -152,7 +153,7 @@
             });
           });
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeRecordId='+sessionStorage.getItem('chargeRecordId');
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeRecordId=' + sessionStorage.getItem('chargeRecordId');
         console.log(chargeLog);
         axios
           .get(chargeLog)
@@ -170,7 +171,7 @@
                   parseInt(_this.chargeLog.hasChargedTime) + 1000
                 ).toString();
               }, 1000);
-            }else{
+            } else {
               MessageBox.alert(res.msg);
             }
           })
@@ -184,15 +185,14 @@
       stopCharge() {
         let _this = this;
         //let stopChargeUrl = GLOBAL.interfacePath + '';
-        let stopChargeUrl = "";
+        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeLogId');
+        // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
+        console.log(stopChargeUrl);
         axios
           .get(stopChargeUrl)
           .then(function(data) {
-            console.log("stopChargeUrl|返回数据|" + JSON.stringify(data.data));
-            data.data = {
-              state: "success",
-              msg: ""
-            };
+            console.log("stopChargeUrl|停止充电返回数据|" ,data.data);
+            
             _this.$router.replace({
               name: "endCharge"
             });
@@ -206,6 +206,7 @@
       }
     },
     created() {
+      // this.chargeLog.chargeState = 'charging';
       // 开始充电页面
       //时间戳转化 时间 filter 方法。
       timestampToData();

@@ -4,26 +4,20 @@ import { MessageBox } from 'mint-ui';
 import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 export default {
-env: 'test',
-// interfacePath: 'http://192.168.1.110:8080/v1/api0/clyun',   //UAT 接口路径
-// interfacePath: 'http://localhost:8080/v1/api0/clyun',
+// env:'UAT',
+env:'test',
 // interfacePath: 'http://192.168.31.23:8080/v1/api0',   //志鸿
-
 interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
 interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
-// interfacePath: 'http://192.168.31.101:8080/v1/api0',   //UAT 接口路径
-
-//interfacePath: 'http://localhost:8080/v1/api0/clyun',   //UAT 接口路径
-appPath: 'http://epsout.life.taikang.com/tkyc/tkgq/#',
+appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
+//主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
 publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
 level:'2.2.1'
 
 //正式项目地址以及接口地址
 //公共账号及域名配置   64.11 64.12 64.13
-/*env:'prod',
-interfacePath:'http://eps.taikanglife.com/epstkrs',//接口路径公共域名部分
-appPath:'http://tkyc.eps.group.taikang.com/tkyc/tkgq/#',    //前台应用路径
-publicAccountAddress:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNjk1OTQ2NQ==&scene=124#wechat_redirect'*/
+/*
+*/
 }
 
 //判断是否登录模块

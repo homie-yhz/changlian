@@ -175,7 +175,7 @@
   
         //alert('电站列表地址：' + stationListUrl);
         axios.get(stationListUrl).then(function(data) {
-          console.log(JSON.stringify(data.data));
+          console.log('电站列表',(data.data));
           // data.data = {
           //   "code": 200,
           //   "message": "充电站接口",
