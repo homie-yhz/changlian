@@ -123,7 +123,6 @@
     computed: {
       update: function() {
         console.log('子组件更新');
-        this.requestChargeInfo();
         return store.state.update;
       }
     },
@@ -153,19 +152,18 @@
             });
           });
         // 获取充电信息
-        /*let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
-          'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
-          '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime');
-        console.log(requestChargeUrl);
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeRecordId='+sessionStorage.getItem('chargeRecordId');
+        console.log(chargeLog);
         axios
-          .get(requestChargeUrl)
+          .get(chargeLog)
           .then(function(data) {
-            console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
+            console.log("chargeLog|返回数据|" + JSON.stringify(data.data));
             let res = data.data;
             console.log(JSON.stringify(res.body));
             if (res.code === 200) {
               window.clearInterval(interval);
               _this.chargeLog = res.body;
+              _this.chargeLog.chargeState = 'charging';
               console.log(_this.chargeLog.hasChargedTime);
               interval = setInterval(() => {
                 _this.chargeLog.hasChargedTime = (
@@ -178,10 +176,10 @@
           })
           .catch(function(err) {
             console.log({
-              url: requestChargeUrl,
+              url: chargeLog,
               err: JSON.stringify(err)
             });
-          });*/
+          });
       },
       stopCharge() {
         let _this = this;
@@ -216,13 +214,12 @@
         _this.userInfo = userInfo;
         console.log(_this.userInfo);
       });
-      this.requestChargeInfo();
-      //let requestChargeUrl = GLOBAL.interfacePath + '';
-      console.log(store.state.update);
+      //console.log(store.state.update);
     },
     watch: {
       update: function(nv, ov) {
         console.log('charging调用接口！！！成功！');
+        this.requestChargeInfo();
       }
       // 监听是否有充电信息更新   
     },

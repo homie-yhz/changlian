@@ -132,12 +132,17 @@
             axios
               .get(requestChargeUrl)
               .then(function(data) {
-                console.log("requestChargeUrl|返回数据|" + JSON.stringify(data.data));
                 let res = data.data;
-                console.log(JSON.stringify(res.body));
+                console.log('点击开始充电返回数据： requestChargeUrl',res);
                 loader.hide();
                 if (res.code === 200) {
-                  _this.$router.replace({name:'charging'});
+                  if(res.body.success === true){
+                    //设置 充电记录Id 
+                    sessionStorage.setItem('chargeLogId',res.body.info.chargeRecordId);
+                    _this.$router.replace({name:'charging'});
+                  }else{
+                    MessageBox.alert('请求充电失败！请重新请求！');
+                  }
                 } else {
                   MessageBox.alert(res.msg);
                 }
@@ -222,7 +227,11 @@
             err: JSON.stringify(err)
           });
         });
-  
+
+      //请求个人信息接口  获取金额
+      getUserInfo().then(function(userInfo){
+        _this.userInfo = userInfo;
+      });
   
   
   

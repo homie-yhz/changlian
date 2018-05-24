@@ -34,7 +34,7 @@
         <div>
           <scroller :on-refresh="refresh" :height="height" :is-no-more-data="hasNext" :on-infinite="infinite" ref="scrollDom" :no-data-text="noDataText">
             <router-link v-for="stationInfo in stationList" :key="stationInfo.stationId" tag="div" :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" class="v-fm station-item" style="width:100%;">
-              <div class="ml-6 v-i1"  :stationId="stationInfo.stationId">
+              <div class="ml-6 v-i1" :stationId="stationInfo.stationId">
                 <!-- 地址 -->
                 <p class="fw-b">{{stationInfo.stationAddr}}</p>
                 <!-- 允许支付方式 -->
@@ -44,10 +44,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                    <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                      <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                    <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                      <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -132,7 +132,7 @@
         hasNext: true,
         noDataText: "附近10公里范围内没有更多站点了",
         showUsuallyStation: false, //是否展示常用电站按钮
-
+  
         //正式数据
         // postData: {
         //   pageIndex: 0,
@@ -142,13 +142,13 @@
         //   userId: "",
         //   listType: "" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
         // },
-
+  
         //postData 测试参数
         postData: {
           pageIndex: 0,
           listLen: 10,
           searchInfo: "",
-          position: [40.552,116.167], // 39.907,116.337
+          position: [40.552, 116.167], // 39.907,116.337
           userId: "",
           listType: "normalList" //bindList:带有绑定按钮的List normalList:不带有绑定按钮的List;
         },
@@ -172,8 +172,8 @@
   
         // console.log(JSON.stringify(this.postData));
         let stationListUrl = GLOBAL.interfacePath + '/clyun/stationList?postData=' + JSON.stringify(_this.postData);
-
-        alert('电站列表地址：' + stationListUrl);
+  
+        //alert('电站列表地址：' + stationListUrl);
         axios.get(stationListUrl).then(function(data) {
           console.log(JSON.stringify(data.data));
           // data.data = {
@@ -254,54 +254,57 @@
         if (this.hasNext) {
           _this.getStationList(done);
         } else {
-          console.log(`没有更多数据`);
+          console.log('没有更多数据');
           this.$refs.scrollDom.finishInfinite(true);
         }
       },
       infinite(done) {
         let _this = this;
         //获取code 调用扫一扫功能
-       /*getCode(_this)
-          .then(function(WXoptions) {
-            // return new Promise(function(resolve, reject) {
-            //alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
-            wx.config({
-              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
-              timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
-              nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
-              signature: WXoptions.signature, // 必填，签名
-              jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
-            });
-            wx.ready(function() {
-              wx.getLocation({
-                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                success: function(res) {
-                  var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                  var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                  var speed = res.speed; // 速度，以米/每秒计
-                  var accuracy = res.accuracy; // 位置精度
-                  _this.postData.position[0] = longitude;
-                  _this.postData.position[1] = latitude;
-                  //alert('获取经纬度：经度：' + latitude + '(经度)/' + longitude + '(纬度)/' + speed + '(速度)/' + accuracy + '(经度)');
-                  //alert(JSON.stringify('发送给后台的定位信息' + _this.postData.position));
-                  if (_this.hasNext && _this.scrollState === "") {
-                    console.log("loadmore-1");
-                    _this.getStationList(done);
-                  } else {
-                    console.log(`没有更多数据`);
-                    _this.$refs.scrollDom.finishInfinite(true);
+        if (GLOBAL.env !== 'test') {
+          getCode(_this)
+            .then(function(WXoptions) {
+              // return new Promise(function(resolve, reject) {
+              //alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
+              wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+                timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
+                nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
+                signature: WXoptions.signature, // 必填，签名
+                jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+              });
+              wx.ready(function() {
+                wx.getLocation({
+                  type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                  success: function(res) {
+                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    var speed = res.speed; // 速度，以米/每秒计
+                    var accuracy = res.accuracy; // 位置精度
+                    _this.postData.position[0] = longitude;
+                    _this.postData.position[1] = latitude;
+                    //alert('获取经纬度：经度：' + latitude + '(经度)/' + longitude + '(纬度)/' + speed + '(速度)/' + accuracy + '(经度)');
+                    //alert(JSON.stringify('发送给后台的定位信息' + _this.postData.position));
+                    if (_this.hasNext && _this.scrollState === "") {
+                      console.log("loadmore-1");
+                      _this.getStationList(done);
+                    } else {
+                      console.log(`没有更多数据`);
+                      _this.$refs.scrollDom.finishInfinite(true);
+                    }
                   }
-                }
+                });
               });
             });
-          });*/
-        if (_this.hasNext && _this.scrollState === "") {
-          console.log("loadmore-1");
-          _this.getStationList(done);
         } else {
-          console.log(`没有更多数据`);
-          _this.$refs.scrollDom.finishInfinite(true);
+          if (_this.hasNext && _this.scrollState === "") {
+            console.log("loadmore-1");
+            _this.getStationList(done);
+          } else {
+            console.log(`没有更多数据`);
+            _this.$refs.scrollDom.finishInfinite(true);
+          }
         }
       },
       scanQRCode() {
@@ -385,7 +388,7 @@
       // })
   
       var html = `
-                                  `;
+                                    `;
     },
     watch: {
       searchInfo: function(nv, ov) {

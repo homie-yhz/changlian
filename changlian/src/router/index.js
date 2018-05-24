@@ -51,23 +51,8 @@ const createAgent = r => require.ensure([], () => r(require('@/components/user/c
 const updateAgent = r => require.ensure([], () => r(require('@/components/user/updateAgent.vue')), 'News'); //修改更新代理商信息
 const scroller = r => require.ensure([], () => r(require('@/components/user/vueScroller.vue')), 'News'); //修改更新代理商信息
 
-//test
-const father = r => require.ensure([], () => r(require('@/components/my-cpt/father.vue')), 'News');
-const child = r => require.ensure([], () => r(require('@/components/my-cpt/child.vue')), 'News');
-
-
 export default new Router({
   routes: [
-    {
-      path:'/father',
-      name:'father',
-      component:father
-    },
-    {
-      path:'/child',
-      name:'child',
-      component:child
-    },
     {
       path:'/',
       redirect:'nearbyStation/normalList',

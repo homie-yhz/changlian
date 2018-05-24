@@ -6,7 +6,7 @@
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
       </div>
-      <a href="tel:" class="poa rt-0 v-fcm h-100" style="width:10%;">
+      <a v-bind:href="'tel:'+stationDetail.phone" class="poa rt-0 v-fcm h-100" style="width:10%;">
         <span class="icon-call"></span>
       </a>
     </header>
@@ -24,7 +24,7 @@
           </span>
         </p>
         <div class="ports-box">
-          <div class="v-fm" @click="choosePort(port,key+1)" :class="{broken:port.state==='broken',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
+          <div class="v-fm" @click="choosePort(port,key+1)" :class="{broken:port.state==='broken'||port.state ==='',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
             <div class="v-fcm">{{key+1}}</div>
             <div class="v-fcm fz-55">
               <div v-if="port.method==='AC'" class="">
@@ -113,8 +113,8 @@ export default {
       .get(chargePortsListUrl)
       .then(function(data) {
         let res = data.data;
+        console.log('获取端口+chargePortsListUrl',res)
         if(res.code === 200){
-          console.log(JSON.parse(res.body));
           _this.chargePortsList = JSON.parse(res.body);
         }
         // data.data = {
@@ -180,7 +180,7 @@ export default {
         //     }
         //   ]
         // };
-        console.log("stationInfoUrl|返回数据|" + JSON.stringify(data.data));
+
         //set 充电站Id
         _this.postData.stationId = data.data.stationId;
       })
@@ -197,7 +197,7 @@ export default {
         .get(stationDetailInfoUrl)
         .then(function(data){
           let res = data.data;
-          console.log(res);
+          console.log('stationDetail',res);
           if(res.code === 200){
             _this.stationDetail = res.body;
           }else{

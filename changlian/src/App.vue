@@ -38,11 +38,12 @@
       next();
     },
     created() {
-      let _this = this;
+      if(!!sessionStorage.getItem('userId')){
+        let _this = this;
       let websocket = null;
       if ('WebSocket' in window) {
-        //console.log("ws://" + GLOBAL.interfacePathWS + "/websocket/" + 'test3');
-        websocket = new WebSocket("ws://" + GLOBAL.interfacePathWS + "/websocket/" + 'test3');
+        console.log("ws://" + GLOBAL.interfacePathWS + "/websocket/" + sessionStorage.getItem('userId'));
+        websocket = new WebSocket("ws://" + GLOBAL.interfacePathWS + "/websocket/" + sessionStorage.getItem('userId'));
       } else {
         alert('当前浏览器 Not support websocket');
       }
@@ -63,7 +64,7 @@
           state: 'update',
         }
           store.commit('increment');
-          console.log('发生更新！');
+          console.log('websocket 接口到信息：');
           console.log(store.state.update);
       }
   
@@ -91,6 +92,8 @@
       function send() {
         websocket.send(message);
       }
+      }
+      
     }
   }
 </script>
