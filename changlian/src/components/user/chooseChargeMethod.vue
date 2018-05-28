@@ -115,15 +115,14 @@
           } else if (!this.postData.chargeMethodId) {
             Toast("请选择充电方式");
           } else {
-            //设置charginTime
+            //设置chargingTime:即为充电ID
             sessionStorage.setItem('chargingTime', this.postData.chargeMethodId);
             if (this.userInfo.balance - 1 < 0) {
               Toast("余额过低！请及时充值！");
               setTimeout(()=>{
-                loader.show();
+                // loader.show();
               },1000);
             }
-            loader.show();
             // 请求充电
             let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
               'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
@@ -134,11 +133,10 @@
               .then(function(data) {
                 let res = data.data;
                 console.log('点击开始充电返回数据： requestChargeUrl',res);
-                loader.hide();
                 if (res.code === 200) {
                   if(res.body.success === true){
                     //设置 充电记录Id 
-                    sessionStorage.setItem('chargeLogId',res.body.info.chargeRecordId);
+                    sessionStorage.setItem('chargeRecordId',res.body.info.chargeRecordId);
                     _this.$router.replace({name:'charging'});
                   }else{
                     MessageBox.alert('请求充电失败！请重新请求！');

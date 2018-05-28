@@ -41,7 +41,7 @@
 
 <script>
 import axios from "axios";
-import GLOBAL from "../../GLOBAL";
+import GLOBAL,{ws} from "../../GLOBAL";
 import regExp from "../../RegExp";
 import { Toast,MessageBox } from "mint-ui";
 import loader from '../../loading';
@@ -87,6 +87,7 @@ export default {
               MessageBox.alert("登录成功！").then(action => {
                 //设置userId 以及 登录状态 
                 sessionStorage.setItem('userId',res.body.userId||'');
+                ws();
                 sessionStorage.setItem('loginState',res.body.loginState||'');
                 _this.$router.replace({name:'personalCenter'});
               });

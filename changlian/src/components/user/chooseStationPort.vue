@@ -97,7 +97,7 @@ export default {
           name: "chooseChargeMethod",
           params: {stationId:this.$route.params.stationId||'*', portId: port.ID||'*',portNumber:port.portNumber||'*',consoleId:port.consoleId||'*',consoleNumber:port.consoleNumber||'*' }
         });
-      } else if (portState === "broken") {
+      } else if (portState === "broken" || portState === '') {
         Toast("抱歉！该充电口暂时无法使用！");
       } else if (portState === "charging") {
         Toast("该端口正在使用！");

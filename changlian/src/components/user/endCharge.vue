@@ -75,7 +75,7 @@
         <span>{{chargeLog.chargeEndTime}}</span>
       </p>
     </div>
-    <router-link :to="{name:'nearbyStation'}" replace class="btn" style="height:1.8rem;width:90%;margin:0 auto;">关闭</router-link>
+    <router-link :to="{name:'nearbyStation/normalList'}" replace class="btn" style="height:1.8rem;width:90%;margin:0 auto;">关闭</router-link>
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@ export default {
       this.$router.go(-1);
     },
     closeEndChargePage() {
-      this.$router.replace({ name: "nearbyStation" });
+      this.$router.replace({ name: "nearbyStation/normalList" });
     }
   },
   mounted() {},

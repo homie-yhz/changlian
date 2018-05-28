@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                  <span class="arrow-back"></span>
-                </div> -->
+                                      <span class="arrow-back"></span>
+                                    </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -89,6 +89,7 @@
 <script>
   let interval = null;
   import axios from "axios";
+  import loader from '../../loading.js';
   import GLOBAL, {
     getUserInfo
   } from "../../GLOBAL";
@@ -153,13 +154,32 @@
             });
           });
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeRecordId=' + sessionStorage.getItem('chargeRecordId');
+        // let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId')+'&userId='+sessionStorage.getItem('userId')+'&methodId='+sessionStorage.getItem('chargingTime');
+        let chargeLog = '';
         console.log(chargeLog);
         axios
           .get(chargeLog)
           .then(function(data) {
             console.log("chargeLog|返回数据|" + JSON.stringify(data.data));
             let res = data.data;
+            res = {
+              code: 200,
+              msg: 'fdsfds',
+              body: {
+                chargeState: 'charging',
+                hasChargedPercent: "1%",
+                hasChargedTime: "58000",
+                currentW: "800", //当前功率与实际功率
+                payMethod: "按时长收费",
+                expectedChargeTime: "2",
+                actualChargeTime: "1小时28分",
+                wRange: "200<功率≤500瓦",
+                priceRate: "0.7元/小时",
+                costMoney: "1.80",
+                costDegree: "3", //使用的度数
+                chargeEndTime: "2017-11-10 20:00"
+              }
+            }
             console.log(JSON.stringify(res.body));
             if (res.code === 200) {
               window.clearInterval(interval);
@@ -191,11 +211,15 @@
         axios
           .get(stopChargeUrl)
           .then(function(data) {
-            console.log("stopChargeUrl|停止充电返回数据|" ,data.data);
-            
-            _this.$router.replace({
-              name: "endCharge"
-            });
+            let res = data.data;
+            console.log("stopChargeUrl|停止充电返回数据|", data.data);
+            if (res.code === 200) {
+              _this.$router.replace({
+                name: "endCharge"
+              });
+            } else {
+              MessageBox.alert(res.msg);
+            }
           })
           .catch(function(err) {
             console.log({
@@ -205,7 +229,11 @@
           });
       }
     },
+    mounted(){
+    },
     created() {
+      this.$nextTick(function(){
+      });
       // this.chargeLog.chargeState = 'charging';
       // 开始充电页面
       //时间戳转化 时间 filter 方法。
