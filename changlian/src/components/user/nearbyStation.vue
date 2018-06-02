@@ -175,7 +175,7 @@
   
         //alert('电站列表地址：' + stationListUrl);
         axios.get(stationListUrl).then(function(data) {
-          console.log('电站列表',(data.data));
+          console.log('>>>电站列表',data.data);
           // data.data = {
           //   "code": 200,
           //   "message": "充电站接口",
@@ -322,23 +322,26 @@
     mounted() {},
     created() {
       let _this = this;
-      console.log("if绑定电站列表：" + this.$route.params.listType);
+      console.log('listType|电站列表：' + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
       this.postData.userId = sessionStorage.getItem('userId');
-      //获取附近电站信息列表
-      //调用  是否登录接口
-      axios
-        .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
-        .then(function() {
-          console.log("all");
-          axios.spread(function(acc, pers) {
-            console.log(acc);
-            console.log(pers);
-          });
-        });
+
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
       });
+
+      //获取附近电站信息列表
+      //调用  是否登录接口
+      // axios
+      //   .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
+      //   .then(function() {
+      //     console.log("all");
+      //     axios.spread(function(acc, pers) {
+      //       console.log(acc);
+      //       console.log(pers);
+      //     });
+      //   });
+      
   
       //获取code 调用扫一扫功能
       /*getCode(_this).then(function(WXoptions) {
@@ -387,8 +390,7 @@
       //   });
       // })
   
-      var html = `
-                                    `;
+      var html = `  `;
     },
     watch: {
       searchInfo: function(nv, ov) {

@@ -71,7 +71,7 @@ export default {
             if (res.code === 200) {
               MessageBox.alert("注册成功！").then(action => {
                 //注册成功 跳转到个人主页。
-                _this.$router.replace({name: "personalCenter"});
+                _this.$router.replace({name: "login"});
               });
             } else {
               MessageBox.alert(data.data.msg);
@@ -86,10 +86,14 @@ export default {
     //获取验证码
     getCode() {
       if (this.getCodeBtn.state === 1) {
-        console.log("允许点击");
+        if(regExp.phone.test(this.body.phone)){
+          console.log("获取验证码成功！");
         this.getCodeBtn.text = leftTime + "s后重新获取";
         this.countDown();
         this.getIndentifyCode_IF();
+        }else{
+          MessageBox.alert('手机号输入有误！请重新输入！');
+        }
       }
     },
     //倒计时
@@ -152,7 +156,7 @@ export default {
         if (this.getCodeBtn.state !== 2) {
           if (nv.phone.length === 11) {
             this.getCodeBtn.state = 1;
-            console.log("长度11 允许点击");
+            console.log("长度11 允许点击，点击后进行获取验证码操作");
           } else {
             this.getCodeBtn.state = 0;
           }

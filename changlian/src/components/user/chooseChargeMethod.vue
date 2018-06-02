@@ -51,7 +51,6 @@
   
           <!-- 开始充电按钮 -->
           <div @click="startCharge" class="v-fcm btn-start-charge">开始充电</div>
-  
         </div>
       </div>
     </div>
@@ -103,12 +102,13 @@
         console.log(method.methodId);
         // 充电模式存入postData
         this.postData.chargeMethodId = method.methodId;
+        this.postData.chargingTime = method.chargeTime;
       },
       // 开始充电
       startCharge() {
         console.log('点击开始充电');
         let _this = this;
-        if (sessionStorage.getItem('loginState') === 'true') {
+        if (sessionStorage.getItem('loginState')==='true') {
           store.commit('increment');
           if (this.userInfo.balance - 0.1 < 0) {
             Toast("余额不足！无法充电！");
@@ -116,7 +116,8 @@
             Toast("请选择充电方式");
           } else {
             //设置chargingTime:即为充电ID
-            sessionStorage.setItem('chargingTime', this.postData.chargeMethodId);
+            sessionStorage.setItem('methodId', this.postData.chargeMethodId);
+            sessionStorage.setItem('chargingTime',this.postData.chargingTime)
             if (this.userInfo.balance - 1 < 0) {
               Toast("余额过低！请及时充值！");
               setTimeout(()=>{
@@ -126,7 +127,7 @@
             // 请求充电
             let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
               'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
-              '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime');
+              '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime')+'&methodId='+this.postData.chargeMethodId;
             console.log(requestChargeUrl);
             axios
               .get(requestChargeUrl)
@@ -154,7 +155,7 @@
             console.log(JSON.stringify(this.postData));
           }
         } else {
-          MessageBox.alert('您还没有登录，即将跳转登录!').then(action => {
+          MessageBox.alert('您还没有登录，前去登录？').then(action => {
             this.$router.push({
               name: "login"
             });
@@ -176,7 +177,7 @@
       axios
         .get(stationDetailInfo)
         .then(function(data) {
-          console.log('stationDetailInfo|返回数据|', data.data.body);
+          console.log('>>>stationDetailInfo|返回数据|', data.data.body);
           let res = data.data;
           if (res.code === 200) {
             _this.equipment = res.body;
@@ -227,12 +228,11 @@
         });
 
       //请求个人信息接口  获取金额
-      getUserInfo().then(function(userInfo){
+      if(sessionStorage.getItem('loginState')==='true'){
+        getUserInfo().then(function(userInfo){
         _this.userInfo = userInfo;
       });
-  
-  
-  
+      }
     },
     watch: {
       update: function(nv, ov) {

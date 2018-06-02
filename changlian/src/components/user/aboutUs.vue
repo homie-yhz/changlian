@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 @import "../../../static/css/common.scss";
 @import "../../../static/css/iconfont.css";
 </style>

@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                                      <span class="arrow-back"></span>
-                                    </div> -->
+                                                              <span class="arrow-back"></span>
+                                                            </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -58,7 +58,7 @@
               <div style="font-size:2rem;">
                 <i class="icon-lightning icon-lightning-big"></i>
               </div>
-              <div style="position:absolute;bottom:1rem;">请求充电中...</div>
+              <div style="position:absolute;bottom:1rem;">请求充电中<span v-text="waitText"></span></div>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="cost-method-box opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}">
           <div class="v-fm v-fb" style="padding:.5rem .8rem;">
             <div class="v-fm">预设充电时长</div>
-            <div>{{chargeLog.expectedChargeTime}} 小时</div>
+            <div>{{chargeLog.expectedChargeTime|SToHM}}</div>
           </div>
           <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
             <div class="mb-40">收费标准</div>
@@ -99,11 +99,13 @@
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
   import {
-    timestampToData
+    timestampToData,
+    SToHM
   } from "../../Filter";
   import store from '../../store';
   import {
-    clearTimeout
+    clearTimeout,
+    setInterval
   } from 'timers';
   export default {
     data() {
@@ -119,13 +121,18 @@
           methodId: ""
         },
         chargeMethods: [],
-        equipment: {}
+        equipment: {},
+        waitText: '...'
       };
     },
     computed: {
       update: function() {
         console.log('子组件更新');
         return store.state.update;
+      },
+      wsData: function() {
+        console.log('ws发来数据');
+        return store.state.chargingData;
       }
     },
     methods: {
@@ -133,69 +140,109 @@
         this.$router.go(-1);
       },
       //请求充电接口  或者是  获取是否含有充电信息的接口。
-      requestChargeInfo() {
+      requestChargeInfo1(status) {
         let _this = this;
-        // 电站详情信息
-        let stationDetailInfo = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + sessionStorage.getItem('stationId');
-        axios
-          .get(stationDetailInfo)
-          .then(function(data) {
-            console.log('stationDetailInfo|返回数据|', data.data.body);
-            let res = data.data;
-            if (res.code === 200) {
-              _this.equipment = res.body;
-              _this.equipment.portIndex = sessionStorage.getItem('portIndex');
-            }
-          })
-          .catch(function(err) {
-            console.log({
-              'url': stationDetailInfo,
-              'err': JSON.stringify(err)
+        // 获取充电信息
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        // let chargeLog = '';
+        console.log('>>>chargeLog|充电信息', chargeLog);
+        if (status === 2) {
+          axios
+            .get(chargeLog)
+            .then(function(data) {
+              console.log("chargeLog|返回数据|", data.data);
+              let res = data.data;
+              // res = {
+              //   code: 200,
+              //   msg: 'fdsfds',
+              //   body: {
+              //     chargeState: 'charging',
+              //     hasChargedPercent: "1%",
+              //     hasChargedTime: "58000",
+              //     currentW: "800", //当前功率与实际功率
+              //     payMethod: "按时长收费",
+              //     expectedChargeTime: "2",
+              //     actualChargeTime: "1小时28分",
+              //     wRange: "200<功率≤500瓦",
+              //     priceRate: "0.7元/小时",
+              //     costMoney: "1.80",
+              //     costDegree: "3", //使用的度数
+              //     chargeEndTime: "2017-11-10 20:00"
+              //   }
+              // }
+              if (res.code === 200) {
+                //判断已充时长是否存在 如果不存在则 等待ws返回数据  如果存在直接调用。
+                // if (!!_this.chargeLog.hasChargedTime) {
+                _this.chargeLog.chargeState = 'charging';
+                window.clearInterval(interval);
+                _this.chargeLog = JSON.parse(res.body)[0];
+                //自增已充时长。
+                interval = setInterval(() => {
+                  _this.chargeLog.hasChargedTime = (
+                    parseInt(_this.chargeLog.hasChargedTime) + 1
+                  ).toString();
+                }, 1000);
+              }
+            }).catch(function(err) {
+              console.log({
+                url: chargeLog,
+                err: JSON.stringify(err)
+              });
+            });
+        } else if (status === 4) {
+          MessageBox.alert('充电结束！跳转结算页面！').then(action => {
+            //设置userId 以及 登录状态 
+            _this.$router.replace({
+              name: 'endCharge'
             });
           });
+        } else {
+          MessageBox.alert(res.msg);
+        }
+      },
+      requestChargeInfo() {
+        let _this = this;
         // 获取充电信息
-        // let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId')+'&userId='+sessionStorage.getItem('userId')+'&methodId='+sessionStorage.getItem('chargingTime');
-        let chargeLog = '';
-        console.log(chargeLog);
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        // let chargeLog = '';
+        console.log('>>>chargeLog|充电信息', chargeLog);
         axios
           .get(chargeLog)
           .then(function(data) {
-            console.log("chargeLog|返回数据|" + JSON.stringify(data.data));
+            console.log("chargeLog|返回数据|", data.data);
             let res = data.data;
-            res = {
-              code: 200,
-              msg: 'fdsfds',
-              body: {
-                chargeState: 'charging',
-                hasChargedPercent: "1%",
-                hasChargedTime: "58000",
-                currentW: "800", //当前功率与实际功率
-                payMethod: "按时长收费",
-                expectedChargeTime: "2",
-                actualChargeTime: "1小时28分",
-                wRange: "200<功率≤500瓦",
-                priceRate: "0.7元/小时",
-                costMoney: "1.80",
-                costDegree: "3", //使用的度数
-                chargeEndTime: "2017-11-10 20:00"
-              }
-            }
-            console.log(JSON.stringify(res.body));
+            // res = {
+            //   code: 200,
+            //   msg: 'fdsfds',
+            //   body: {
+            //     chargeState: 'charging',
+            //     hasChargedPercent: "1%",
+            //     hasChargedTime: "58000",
+            //     currentW: "800", //当前功率与实际功率
+            //     payMethod: "按时长收费",
+            //     expectedChargeTime: "2",
+            //     actualChargeTime: "1小时28分",
+            //     wRange: "200<功率≤500瓦",
+            //     priceRate: "0.7元/小时",
+            //     costMoney: "1.80",
+            //     costDegree: "3", //使用的度数
+            //     chargeEndTime: "2017-11-10 20:00"
+            //   }
+            // }
             if (res.code === 200) {
-              window.clearInterval(interval);
-              _this.chargeLog = res.body;
+              //判断已充时长是否存在 如果不存在则 等待ws返回数据  如果存在直接调用。
+              // if (!!_this.chargeLog.hasChargedTime) {
               _this.chargeLog.chargeState = 'charging';
-              console.log(_this.chargeLog.hasChargedTime);
+              window.clearInterval(interval);
+              _this.chargeLog = JSON.parse(res.body)[0];
+              //自增已充时长。
               interval = setInterval(() => {
                 _this.chargeLog.hasChargedTime = (
-                  parseInt(_this.chargeLog.hasChargedTime) + 1000
+                  parseInt(_this.chargeLog.hasChargedTime) + 1
                 ).toString();
               }, 1000);
-            } else {
-              MessageBox.alert(res.msg);
             }
-          })
-          .catch(function(err) {
+          }).catch(function(err) {
             console.log({
               url: chargeLog,
               err: JSON.stringify(err)
@@ -203,42 +250,61 @@
           });
       },
       stopCharge() {
-        let _this = this;
-        //let stopChargeUrl = GLOBAL.interfacePath + '';
-        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeLogId');
-        // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
-        console.log(stopChargeUrl);
-        axios
-          .get(stopChargeUrl)
-          .then(function(data) {
-            let res = data.data;
-            console.log("stopChargeUrl|停止充电返回数据|", data.data);
-            if (res.code === 200) {
-              _this.$router.replace({
-                name: "endCharge"
-              });
-            } else {
-              MessageBox.alert(res.msg);
-            }
-          })
-          .catch(function(err) {
-            console.log({
-              url: stopChargeUrl,
-              err: JSON.stringify(err)
-            });
+      let _this = this;
+      //let stopChargeUrl = GLOBAL.interfacePath + '';
+      let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeRecordId');
+      // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
+      console.log(stopChargeUrl);
+      axios
+        .get(stopChargeUrl)
+        .then(function(data) {
+          // let res = data.data;
+          // console.log("stopChargeUrl|停止充电返回数据|", data.data);
+          // if (res.code === 200) {
+          //   _this.$router.replace({
+          //     name: "endCharge"
+          //   });
+          // } else {
+          //   MessageBox.alert(res.msg);
+          // }
+        })
+        .catch(function(err) {
+          console.log({
+            url: stopChargeUrl,
+            err: JSON.stringify(err)
           });
-      }
+        });
     },
-    mounted(){
-    },
+  },
+  mounted() {},
     created() {
-      this.$nextTick(function(){
-      });
+      let _this = this;
       // this.chargeLog.chargeState = 'charging';
       // 开始充电页面
       //时间戳转化 时间 filter 方法。
       timestampToData();
-      let _this = this;
+      //时间戳转化 时间 filter 方法。
+      SToHM();
+      //请求充电信息
+      this.requestChargeInfo();
+      // 电站详情信息
+      let stationDetailInfo = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + sessionStorage.getItem('stationId');
+      axios
+        .get(stationDetailInfo)
+        .then(function(data) {
+          console.log('stationDetailInfo|返回数据|', data.data.body);
+          let res = data.data;
+          if (res.code === 200) {
+            _this.equipment = res.body;
+            _this.equipment.portIndex = sessionStorage.getItem('portIndex');
+          }
+        })
+        .catch(function(err) {
+          console.log({
+            'url': stationDetailInfo,
+            'err': JSON.stringify(err)
+          });
+        });
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
         console.log(_this.userInfo);
@@ -247,10 +313,9 @@
     },
     watch: {
       update: function(nv, ov) {
-        console.log('charging调用接口！！！成功！');
-        this.requestChargeInfo();
+        console.log('websocket返回信息！');
+        this.requestChargeInfo1(this.wsData.status);
       }
-      // 监听是否有充电信息更新   
     },
   };
 </script>

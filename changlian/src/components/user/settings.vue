@@ -37,9 +37,13 @@
 		</div>
 	</div>
 </template>
+
 <script>
 	import GLOBAL from "../../GLOBAL";
 	import axios from 'axios';
+	import {
+		MessageBox
+	} from "mint-ui";
 	export default {
 		data() {
 			return {
@@ -50,26 +54,35 @@
 			back() {
 				this.$router.go(-1);
 			},
-			loginOut(){
-				let _this = this;
-				let userId = sessionStorage.getItem('userId');
-				//let loginOutUrl = GLOBAL.interfacePath + '';
-				let loginOutUrl = '';
-				axios
-					.get(loginOutUrl)
-					.then(function(data){
-						console.log('loginOutUrl|返回数据|'+JSON.stringify(data.data));
-						data.data = {
-							state:'success'
-						};
-						if(data.data.state === 'success'){
-							sessionStorage.removeItem('userId');
-							_this.$router.replace({name:'personalCenter'});
-						} 
-					})
-					.catch(function(err){
-						console.log({'url':loginOutUrl,'err':JSON.stringify(err)});
-					});
+			loginOut() {
+				MessageBox.confirm('确定退出?').then(action => {
+					let _this = this;
+					let userId = sessionStorage.getItem('userId');
+					//let loginOutUrl = GLOBAL.interfacePath + '';
+					let loginOutUrl = '';
+					axios
+						.get(loginOutUrl)
+						.then(function(data) {
+							console.log('>>>退出登录|返回数据|' ,data.data);
+							data.data = {
+								state: 'success'
+							};
+							if (data.data.state === 'success') {
+								sessionStorage.setItem('loginState','false');
+								sessionStorage.removeItem('userId');
+								_this.$router.replace({
+									name: 'personalCenter'
+								});
+							}
+						})
+						.catch(function(err) {
+							console.log({
+								'url': loginOutUrl,
+								'err': JSON.stringify(err)
+							});
+						});
+				});
+	
 			}
 		},
 		created() {

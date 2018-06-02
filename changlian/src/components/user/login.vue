@@ -78,10 +78,8 @@ export default {
       axios
         .post(url,params)
         .then(function(data) {
-          console.log('2');
-          alert(2);
           loader.hide();
-          console.log("url|返回数据|" + JSON.stringify(data.data));
+          console.log(">>>登录接口|返回数据|" ,data.data);
           let res = data.data;
           if (res.code === 200) {
               MessageBox.alert("登录成功！").then(action => {

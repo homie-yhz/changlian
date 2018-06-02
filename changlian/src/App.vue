@@ -5,18 +5,15 @@
     <router-view class="child-view"></router-view>
   </div>
 </template>
-
 <script>
   import Vue from 'vue'
   import VueRouter from 'vue-router'
   import GLOBAL,{ws} from './GLOBAL';
   import store from './store';
-  import {
-    setInterval
-  } from 'timers';
+
   VueRouter.prototype.goBack = function() {
     this.isBack = true;　　
-    window.history.go(-1)
+    window.history.go(-1);
   };
   export default {
     name: 'app',
@@ -42,8 +39,7 @@
     }
   }
 </script>
-
-<style>
+<style lang="scss">
   #app {
     width: 100%;
     height: 100%;

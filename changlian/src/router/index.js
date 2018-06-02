@@ -143,11 +143,6 @@ export default new Router({
       component: main
     },
     {
-      path: '/nearbyStation',
-      name: 'nearbyStation',
-      component: nearbyStation
-    },
-    {
       path: '/personalCenter',
       name: 'personalCenter',
       component: personalCenter
