@@ -4,7 +4,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     update:0,
-    chargingData:{}
+    chargingData:{},
+    chargingMechineAmount:0,
+    loginState:false
   },
   mutations: {
     increment (state) {
@@ -13,6 +15,12 @@ export default new Vuex.Store({
     },
     getWSData(state,WSData){
       state.chargingData = WSData; 
+    },
+    setChargingMechineAmount(state,amount){
+      state.chargingMechineAmount = amount;
+    },
+    setLoginState(state,loginState){
+      state.loginState = loginState;
     }
   }
 })

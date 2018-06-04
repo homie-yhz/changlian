@@ -1,25 +1,41 @@
 <template>
   <div id="app">
     <!-- <transition :name="transitionName">
-          </transition> -->
+            </transition> -->
     <router-view class="child-view"></router-view>
+    <float-circle :num="chargingMechineAmount" :show="userId && !!chargingMechineAmount"></float-circle>
   </div>
 </template>
-<script>
-  import Vue from 'vue'
-  import VueRouter from 'vue-router'
-  import GLOBAL,{ws} from './GLOBAL';
-  import store from './store';
 
+<script>
+  import Vue from 'vue';
+  import VueRouter from 'vue-router';
+  import GLOBAL, {
+    ws,getUserInfo
+  } from './GLOBAL';
+  import store from './store';
+  import FloatCircle from "./components/my-cpt/float-circle.vue";
   VueRouter.prototype.goBack = function() {
     this.isBack = true;　　
     window.history.go(-1);
   };
   export default {
     name: 'app',
+    components: {
+      FloatCircle
+    },
     data() {
       return {
         transitionName: 'slide-right',
+      }
+    },
+    computed:{
+      userId:function(){
+        return !!sessionStorage.getItem('userId');
+      },
+      chargingMechineAmount:function(){
+        console.log('chargingMechineAmount改变');
+        return store.state.chargingMechineAmount;
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -36,9 +52,14 @@
     },
     created() {
       ws();
+      getUserInfo().then(function(userInfo){
+        console.log('sssssss',userInfo);
+        store.commit('setChargingMechineAmount',userInfo.chargingMechineAmount);
+      });
     }
   }
 </script>
+
 <style lang="scss">
   #app {
     width: 100%;

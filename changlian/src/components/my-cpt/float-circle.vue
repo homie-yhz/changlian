@@ -41,8 +41,8 @@
     position: absolute;
     top: 9.5rem;
     right: 0.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.5rem!important;
+    height: 2.5rem!important;
     background-color: #e51c23;
     color: #fff;
     border-radius: 50%;
@@ -50,8 +50,8 @@
     box-shadow: 0 0 10px #e51c23;
     transition: box-shadow 1s linear;
     &>p:first-child {
-      width: 1rem;
-      height: 1rem;
+      width: 1rem!important;
+      height: 1rem!important;
       border-radius: 50%;
       background-color: #fff;
       margin: 0 auto;

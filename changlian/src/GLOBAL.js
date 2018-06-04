@@ -5,20 +5,19 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 export default {
-env:'UAT',
-// env:'test',
+// env:'UAT',
+env:'test',
 // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
-// interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-// interfacePathWS: '192.168.43.202:8080/v1/api0',
+interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+// interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+// interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
 appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
 publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
 level:'2.2.1'
-
 }
 
 //判断是否登录模块
@@ -94,6 +93,9 @@ export function getUserInfo() {
                 if (res.code === 200) {
                     console.log('>>>getUserInfoUrl|用户个人信息' , data.data);
                     sessionStorage.setItem('loginState', res.body.loginState);
+                    //调用 获取用户信息接口的时候 就会改变vuex中的loginState与chargingMechineAmount的状态。
+                    store.commit('setLoginState',res.body.loginState);
+                    store.commit('setChargingMechineAmount',res.body.chargingMechineAmount);
                     resolve(res.body);
                 }
                 // data.data = {
@@ -143,7 +145,7 @@ export function getCode(_this){
     //alert(getSignUrl);
     let params = new URLSearchParams();
     params.append("url",encodeURIComponent(window.location.href.split('#')[0]));
-    // alert(getSignUrl);
+
     return new Promise(function(resolve,reject){
       axios.post(getSignUrl,params)
         .then(function(data) {
@@ -244,8 +246,12 @@ export function getCode(_this){
   }
 
   export function ws(){
-    console.log(sessionStorage.getItem('wsTime')!== 'done');
-    if (!!sessionStorage.getItem('userId') && sessionStorage.getItem('wsTime')!== 'done') {
+    console.log('ws start');
+    // window.setInterval(function(){
+    //   console.log(1);
+    //   store.commit('setChargingMechineAmount',Math.floor((Math.random()*10)+1));
+    // },1000);
+    if (!!sessionStorage.getItem('userId')){
         let _this = this;
         let websocket = null;
         if ('WebSocket' in window) {
@@ -264,21 +270,21 @@ export function getCode(_this){
           sessionStorage.setItem('wsTime','done');
           setMessageInnerHTML("*******WebSocket连接成功*********");
         }
-        
+
         //接收到消息的回调方法
         websocket.onmessage = function(event) {
-          console.log(event);
-          console.log('ws返回数据----',JSON.parse(JSON.parse(event.data).body));
+          console.log('>>>>>>>>WS返回数据<<<<<<<<<<',JSON.parse(JSON.parse(event.data).body));
           let body = JSON.parse(JSON.parse(event.data).body);
           store.commit('increment');
-          console.log('websocket 接口到信息：');
           store.commit('getWSData',body)
+          getUserInfo().then(function(userInfo){
+            store.commit('setChargingMechineAmount',userInfo.chargingMechineAmount);
+          });
           console.log(store.state.update);
         }
   
         //连接关闭的回调方法
         websocket.onclose = function() {
-          sessionStorage.setItem('wsTime','');
           setMessageInnerHTML("WebSocket连接关闭");
         }
   

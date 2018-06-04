@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                                                              <span class="arrow-back"></span>
-                                                            </div> -->
+          <span class="arrow-back"></span>
+        </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -19,9 +19,9 @@
               <!-- 设备地址 -->
               <p>{{equipment.stationAddr}}</p>
               <!-- 设备编号 -->
-              <p>设备编号：{{equipment.stationNum}}</p>
+              <p>设备编号：{{chargeLog.num}}</p>
             </div>
-            <div class="v-fcm icon-equipment-num">{{equipment.portIndex}}</div>
+            <div class="v-fcm icon-equipment-num">{{String(chargeLog.portIndex).length===1?'0'+chargeLog.portIndex:chargeLog.portIndex}}</div>
           </div>
           <div class="v-fm handle-method">
             <div v-if="userInfo.chargeSource === 'APP'" class="v-fm">
@@ -175,7 +175,8 @@
                 // if (!!_this.chargeLog.hasChargedTime) {
                 _this.chargeLog.chargeState = 'charging';
                 window.clearInterval(interval);
-                _this.chargeLog = JSON.parse(res.body)[0];
+                _this.chargeLog = res.body;
+                console.log(_this.chargeLog);
                 //自增已充时长。
                 interval = setInterval(() => {
                   _this.chargeLog.hasChargedTime = (
@@ -234,7 +235,7 @@
               // if (!!_this.chargeLog.hasChargedTime) {
               _this.chargeLog.chargeState = 'charging';
               window.clearInterval(interval);
-              _this.chargeLog = JSON.parse(res.body)[0];
+              _this.chargeLog = res.body;
               //自增已充时长。
               interval = setInterval(() => {
                 _this.chargeLog.hasChargedTime = (
@@ -250,33 +251,33 @@
           });
       },
       stopCharge() {
-      let _this = this;
-      //let stopChargeUrl = GLOBAL.interfacePath + '';
-      let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeRecordId');
-      // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
-      console.log(stopChargeUrl);
-      axios
-        .get(stopChargeUrl)
-        .then(function(data) {
-          // let res = data.data;
-          // console.log("stopChargeUrl|停止充电返回数据|", data.data);
-          // if (res.code === 200) {
-          //   _this.$router.replace({
-          //     name: "endCharge"
-          //   });
-          // } else {
-          //   MessageBox.alert(res.msg);
-          // }
-        })
-        .catch(function(err) {
-          console.log({
-            url: stopChargeUrl,
-            err: JSON.stringify(err)
+        let _this = this;
+        //let stopChargeUrl = GLOBAL.interfacePath + '';
+        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeRecordId');
+        // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
+        console.log(stopChargeUrl);
+        axios
+          .get(stopChargeUrl)
+          .then(function(data) {
+            // let res = data.data;
+            // console.log("stopChargeUrl|停止充电返回数据|", data.data);
+            // if (res.code === 200) {
+            //   _this.$router.replace({
+            //     name: "endCharge"
+            //   });
+            // } else {
+            //   MessageBox.alert(res.msg);
+            // }
+          })
+          .catch(function(err) {
+            console.log({
+              url: stopChargeUrl,
+              err: JSON.stringify(err)
+            });
           });
-        });
+      },
     },
-  },
-  mounted() {},
+    mounted() {},
     created() {
       let _this = this;
       // this.chargeLog.chargeState = 'charging';
@@ -296,7 +297,8 @@
           let res = data.data;
           if (res.code === 200) {
             _this.equipment = res.body;
-            _this.equipment.portIndex = sessionStorage.getItem('portIndex');
+            console.log(_this.equipment);
+            //_this.equipment.portIndex = sessionStorage.getItem('portIndex');
           }
         })
         .catch(function(err) {

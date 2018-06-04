@@ -68,7 +68,6 @@
 								state: 'success'
 							};
 							if (data.data.state === 'success') {
-								sessionStorage.setItem('loginState','false');
 								sessionStorage.removeItem('userId');
 								_this.$router.replace({
 									name: 'personalCenter'

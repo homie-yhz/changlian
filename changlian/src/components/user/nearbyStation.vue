@@ -92,7 +92,7 @@
       </div>
     </div>
     <!-- 充电设备圈 -->
-    <float-circle :num="userInfo.chargingMechineAmount" :show="userInfo.loginState && !!userInfo.chargingMechineAmount"></float-circle>
+    <!-- <float-circle :num="userInfo.chargingMechineAmount" :show="userInfo.loginState && !!userInfo.chargingMechineAmount"></float-circle> -->
   </div>
 </template>
 
@@ -328,6 +328,7 @@
 
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
+        // _this.userInfo.chargingMechineAmount = 2;
       });
 
       //获取附近电站信息列表

@@ -19,7 +19,7 @@
               <!-- 设备编号 -->
               <p>设备编号：{{equipment.num}}</p>
             </div>
-            <div class="v-fcm icon-equipment-num">{{equipment.index}}</div>
+            <div class="v-fcm icon-equipment-num">{{equipment.index.length===1?'0'+equipment.index:equipment.index}}</div>
           </div>
           <div class="v-fm handle-method">
             <div v-if="equipment.chargeSource === 'APP'" class="v-fm">
@@ -67,11 +67,10 @@
         GLOBAL.interfacePath +
         "/clyun/chargingList?" +
         "userId=" +
-        sessionStorage.getItem("userId")+'&chargeLogId=0';
+        sessionStorage.getItem("userId")+'&chargeLogId=0';  //该接口中的 chargeLogId 是不需要的选项，但是要穿。
       axios
         .get(chargingList)
         .then(function(data) {
-          console.log(">>>chargingList|充电列表|",data.data);
           // data = {
           //   data: {
           //     code:200,
@@ -88,10 +87,8 @@
           // };
           let res = data.data;
           if (res.code === 200) {
-            console.log(res.body);
-            // _this.chargingList = JSON.parse(res.body);
+            console.log('>>>正在充电列表：',chargingList,res);
             _this.chargingList = res.body;
-            
           } else {
             alert(res.msg);
           }
@@ -102,10 +99,6 @@
             err: JSON.stringify(err)
           });
         });
-      // getUserInfo().then(function(userInfo) {
-      // 	_this.chargingList = userInfo.chargingList;
-      // 	console.log(_this.equipmentList);
-      // });
     }
   };
 </script>
