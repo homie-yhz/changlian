@@ -24,7 +24,7 @@
             </span>
           </p>
           <div class="ports-box">
-            <div class="v-fm" @click="choosePort(port,key+1)" :class="{broken:port.state==='broken'||port.state ==='',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
+            <div class="v-fm" @click="choosePort(port)" :class="{broken:port.state==='broken'||port.state ==='',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
               <div class="v-fcm">{{key+1}}</div>
               <div class="v-fcm v-i1 fz-55">
                 <div v-if="port.method==='AC'" class="">
@@ -98,7 +98,14 @@
         let portState = port.state;
         if (portState === "idle") {
           //增加样式
-          sessionStorage.setItem('portIndex', portIndex)
+          sessionStorage.setItem('portIndex', port.portIndex);
+          sessionStorage.setItem('num',port.num);
+          sessionStorage.setItem('stationId',this.$route.params.stationId);
+          sessionStorage.setItem('portId',port.ID);
+          sessionStorage.setItem('portNumber',port.portNumber);
+          sessionStorage.setItem('consoleId',port.consoleId);
+          sessionStorage.setItem('consoleNumber',port.consoleNumber);
+
           this.postData.consoleId = port.consoleId;
           this.$router.push({
             name: "chooseChargeMethod",
@@ -128,7 +135,7 @@
           let res = data.data;
           console.log('获取端口+chargePortsListUrl', res)
           if (res.code === 200) {
-            _this.chargePortsList = JSON.parse(res.body);
+            _this.chargePortsList = res.body;
           }
           // data.data = {
           //   stationName: "龙锦苑东五区充电站", //充电站名称
@@ -213,6 +220,7 @@
           console.log('>>>stationDetail|电站详情', res);
           if (res.code === 200) {
             _this.stationDetail = res.body;
+            sessionStorage.setItem('stationAddr',res.body.stationAddr);
           } else {
             alert(res.msg);
           }

@@ -34,7 +34,7 @@
             <!-- 设备地址 -->
             <p>{{equipment.stationAddr}}</p>
             <!-- 设备编号 -->
-            <p>设备编号：{{equipment.stationNum}}</p>
+            <p>设备编号：{{chargeLog.num}}</p>
           </div>
           <div class="v-fcm icon-equipment-num">{{equipment.portIndex}}</div>
         </div>
@@ -56,19 +56,19 @@
             <span class="v-fm">
               <span class="icon-point-gray"></span>实际功率
             </span>
-            <span>{{chargeLog.currentW}}瓦</span>
+            <span>{{chargeLog.average_power}}瓦</span>
           </p>
           <p class="v-fb v-fm">
             <span class="v-fm">
               <span class="icon-point-gray"></span>充电时长
             </span>
-            <span>{{chargeLog.actualChargeTime}}</span>
+            <span>{{chargeLog.hasChargedTime|SToHM}}</span>
           </p>
           <p class="v-fb v-fm">
             <span class="v-fm">
               <span class="icon-point-gray"></span>使用度数
             </span>
-            <span>{{chargeLog.costDegree}}度</span>
+            <span>{{chargeLog.currentW}}度</span>
           </p>
           <p class="v-fb v-fm">
             <span></span>
@@ -84,6 +84,7 @@
 <script>
   import axios from "axios";
   import GLOBAL from "../../GLOBAL.js";
+  import {SToHM} from '../../Filter.js';
   export default {
     data() {
       return {
@@ -104,6 +105,7 @@
     },
     mounted() {},
     created() {
+      SToHM();
       this.paySuccessState = false;
       console.log("0" + this.paySuccessState);
       let _this = this;
@@ -135,7 +137,7 @@
           //   }
           // }
           if (res.code === 200) {
-            _this.chargeLog = JSON.parse(res.body)[0];
+            _this.chargeLog = res.body;
           } else {
             MessageBox.alert(res.msg);
           }

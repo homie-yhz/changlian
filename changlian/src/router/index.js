@@ -41,6 +41,9 @@ const operatorPlatform = r => require.ensure([], () => r(require('@/components/u
 const aboutUs = r => require.ensure([], () => r(require('@/components/user/aboutUs.vue')), 'News');
 const chooseToCharge = r => require.ensure([], () => r(require('@/components/user/chooseToCharge.vue')), 'News');
 const userAgreement = r => require.ensure([], () => r(require('@/components/user/userAgreement.vue')), 'News');
+const qrCodePage = r => require.ensure([], () => r(require('@/components/user/qrCodePage.vue')), 'News');
+const registerStationInfo = r => require.ensure([], () => r(require('@/components/user/registerStationInfo.vue')), 'News');
+
 //errorPage
 const errorPage = r => require.ensure([], () => r(require('@/components/user/errorPage.vue')), 'News');
 // 运营商管理平台页面
@@ -258,6 +261,16 @@ export default new Router({
       path: '/scroller',
       name: 'scroller',
       component: scroller
+    },
+    {
+      path: '/qrCodePage/:qrCodeId',
+      name: 'qrCodePage',
+      component: qrCodePage
+    },
+    {
+      path: '/registerStationInfo',
+      name: 'registerStationInfo',
+      component: registerStationInfo
     },
     {
       path: '*',   // 错误路由

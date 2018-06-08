@@ -13,11 +13,11 @@
         <div class="equitment-box v-fb v-fm" style="background-color:#fff;">
           <div class="">
             <!-- 设备地址 -->
-            <p>{{equipment.stationAddr}}</p>
+            <p>{{stationDetail.stationAddr}}</p>
             <!-- 设备编号 -->
-            <p>设备编号：{{equipment.stationNum}}</p>
+            <p>设备编号：{{stationDetail.num}}</p>
           </div>
-          <div class="v-fcm icon-equipment-num">{{equipment.portIndex}}</div>
+          <div class="v-fcm icon-equipment-num">{{stationDetail.portIndex}}</div>
         </div>
         <div class="blank"></div>
         <div class="cl-box">
@@ -48,7 +48,6 @@
             <span class="tac">余额：<span class="cl-red balance">{{userInfo.balance||'*'}} 元</span></span>
             <router-link :to="{name:'recharge'}" @click="recharge" class="v-fcm btn-recharge">去充值</router-link>
           </div>
-  
           <!-- 开始充电按钮 -->
           <div @click="startCharge" class="v-fcm btn-start-charge">开始充电</div>
         </div>
@@ -99,7 +98,6 @@
       },
       // 选择充电模式
       chooseChargeMethod(method) {
-        console.log(method.methodId);
         // 充电模式存入postData
         this.postData.chargeMethodId = method.methodId;
         this.postData.chargingTime = method.chargeTime;
@@ -108,8 +106,8 @@
       startCharge() {
         console.log('点击开始充电');
         let _this = this;
-        if (sessionStorage.getItem('loginState')==='true') {
-          store.commit('increment');
+        if (!!sessionStorage.getItem('userId')) {
+          // store.commit('increment');
           if (this.userInfo.balance - 0.1 < 0) {
             Toast("余额不足！无法充电！");
           } else if (!this.postData.chargeMethodId) {
@@ -118,22 +116,16 @@
             //设置chargingTime:即为充电ID
             sessionStorage.setItem('methodId', this.postData.chargeMethodId);
             sessionStorage.setItem('chargingTime',this.postData.chargingTime)
-            if (this.userInfo.balance - 1 < 0) {
-              Toast("余额过低！请及时充值！");
-              setTimeout(()=>{
-                // loader.show();
-              },1000);
-            }
             // 请求充电
             let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
               'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
               '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime')+'&methodId='+this.postData.chargeMethodId;
-            console.log(requestChargeUrl);
+            console.log('>>>请求充电',requestChargeUrl);
             axios
               .get(requestChargeUrl)
               .then(function(data) {
                 let res = data.data;
-                console.log('点击开始充电返回数据： requestChargeUrl',res);
+                console.log('>>>点击开始充电返回数据： requestChargeUrl',res);
                 if (res.code === 200) {
                   if(res.body.success === true){
                     //设置 充电记录Id 
@@ -152,7 +144,6 @@
                   err: JSON.stringify(err)
                 });
               });
-            console.log(JSON.stringify(this.postData));
           }
         } else {
           MessageBox.alert('您还没有登录，前去登录？').then(action => {
@@ -172,25 +163,9 @@
       sessionStorage.setItem('consoleNumber', this.$route.params.consoleNumber);
       sessionStorage.setItem('portNumber', this.$route.params.portNumber);
       sessionStorage.setItem('stationId', this.$route.params.stationId);
-      // 电站详情信息
-      let stationDetailInfo = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + this.$route.params.stationId;
-      axios
-        .get(stationDetailInfo)
-        .then(function(data) {
-          console.log('>>>stationDetailInfo|返回数据|', data.data.body);
-          let res = data.data;
-          if (res.code === 200) {
-            _this.equipment = res.body;
-            _this.equipment.portIndex = sessionStorage.getItem('portIndex');
-          }
-        })
-        .catch(function(err) {
-          console.log({
-            'url': stationDetailInfo,
-            'err': JSON.stringify(err)
-          });
-        });
-  
+      this.stationDetail.stationAddr = sessionStorage.getItem('stationAddr');
+      this.stationDetail.portIndex = sessionStorage.getItem('portIndex');
+      this.stationDetail.num = sessionStorage.getItem('num');
       // 选择充电方式
       let chargeMethods = GLOBAL.interfacePath + '/clyun/chargeMethods?stationId=' + this.$route.params.stationId + '&portId=' + this.$route.params.portId + '&consoleId=' + this.$route.params.consoleId;
       axios
@@ -208,16 +183,16 @@
             'err': JSON.stringify(err)
           });
         });
-  
       // 收费标准说明
       let chargeDescripetionList = GLOBAL.interfacePath + '/clyun/chargeDescripetionList?stationId=' + this.$route.params.stationId + '&portId=' + this.$route.params.portId + '&consoleId=' + this.$route.params.consoleId;
       axios
         .get(chargeDescripetionList)
         .then(function(data) {
+          console.log('22222222');
           let res = data.data;
-          console.log(JSON.stringify(res));
           if (res.code === 200) {
-            _this.chargeDescripetionList = JSON.parse(res.body);
+            _this.chargeDescripetionList = res.body;
+            console.log('>>>收费标准',res.body);
           }
         })
         .catch(function(err) {

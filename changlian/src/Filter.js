@@ -18,7 +18,7 @@ export function timestampToData(){
 export function SToHM(){
 	Vue.filter('SToHM',function(value){
 		let h = Math.floor(value/60/60);
-		let m = Math.floor(value%(60*60)/60);
+		let m = Math.floor((value+59)%(60*60)/60);
 		// console.log(h,m);
 		return h+'小时 '+m+'分';
 	})

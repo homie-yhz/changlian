@@ -8,11 +8,11 @@ export default {
 // env:'UAT',
 env:'test',
 // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
-interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-interfacePathWS: '192.168.43.202:8080/v1/api0',
+// interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+// interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-// interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-// interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
 appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
@@ -80,7 +80,7 @@ export let hasChargingMechineObj = {
 
 // 获取用户信息
 /**
- * 
+ *
  */
 export function getUserInfo() {
     console.log('调用getUseInfo|用户信息接口');
@@ -126,7 +126,7 @@ export function getUserInfo() {
                 //     ],
                 //     chargeSource:'IDCard'
                 // }
-                
+
             })
             .catch(function (err) {
                 console.log({ 'url': getUserInfoUrl, 'err': JSON.stringify(err) });
@@ -136,6 +136,7 @@ export function getUserInfo() {
 
 
 export function getCode(_this){
+  console.log('调用getCode');
     // alert(window.location.href);
     //alert('调用获取code接口');
     let url = window.location.href;
@@ -181,31 +182,31 @@ export function getCode(_this){
                 layer.alert('是否关注接口报错！');
               });
           }
-  
+
           else if(url.indexOf('code')>-1){
             // alert('getCode3-2')
             // alert('code存在');
-  
+
             let code = '';
             let urlParamsArr = url.match(/\?(\S*)\#/)[1].split('&');
             let urlParamsLen = urlParamsArr.length;
-            
+
             for(let i = 0;i<urlParamsLen;i++){
               if(urlParamsArr[i].indexOf('code')>-1){
                 code = urlParamsArr[i].split('=')[1];
               }
             }
-            
+
             // alert(code);
             let getOpenIdUrl = GLOBAL.interfacePath+'/jsonDataCtrl/getOpenid.do?code='+code;
             axios.get(getOpenIdUrl)
             //获取openId
               .then(function(data) {
-  
+
                 let openId = data.data.openId;
                 (!!openId) && (localStorage.setItem('openId', openId));
                 // alert('openId' + localStorage.getItem('openId'));
-  
+
                 //调用是否关注接口
                 let focusUrl = GLOBAL.interfacePath + '/jsonDataCtrl/getIsGz.do?openId=' + localStorage.getItem('openId');
                 axios.get(focusUrl)
@@ -224,7 +225,7 @@ export function getCode(_this){
                   })
               })
           }
-  
+
           else{
             // alert('3');
             //获取 WXoptions
@@ -264,10 +265,9 @@ export function getCode(_this){
         websocket.onerror = function() {
           setMessageInnerHTML("WebSocket连接发生错误");
         };
-  
+
         //连接成功建立的回调方法
         websocket.onopen = function() {
-          sessionStorage.setItem('wsTime','done');
           setMessageInnerHTML("*******WebSocket连接成功*********");
         }
 
@@ -282,28 +282,28 @@ export function getCode(_this){
           });
           console.log(store.state.update);
         }
-  
+
         //连接关闭的回调方法
         websocket.onclose = function() {
           setMessageInnerHTML("WebSocket连接关闭");
         }
-  
+
         //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
         window.onbeforeunload = function() {
           alert('关闭websocket');
           websocket.close();
         }
-  
+
         //关闭WebSocket连接
         function closeWebSocket() {
           websocket.close();
         }
-        
+
         //将消息显示在网页上
         function setMessageInnerHTML(innerHTML) {
           console.log(innerHTML);
         }
-  
+
         //发送消息
         function send() {
           websocket.send(message);

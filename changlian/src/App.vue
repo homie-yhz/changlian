@@ -53,7 +53,6 @@
     created() {
       ws();
       getUserInfo().then(function(userInfo){
-        console.log('sssssss',userInfo);
         store.commit('setChargingMechineAmount',userInfo.chargingMechineAmount);
       });
     }

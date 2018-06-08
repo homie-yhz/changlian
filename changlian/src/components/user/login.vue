@@ -17,8 +17,8 @@
         </div>
         <!-- 登录输入框 -->
         <div style="width:85%;" class="m-auto login-box">
-          <input type="text" v-model="body.phone" placeholder="手机号" maxlength="11">
-          <input type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
+          <input class="retinabt" type="text" v-model="body.phone" placeholder="手机号" maxlength="11">
+          <input class="retinabt" type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
           <p class="v-fb register-or-backpwd">
             <router-link :to="{name:'register'}" class="v-fm">新用户注册</router-link>
             <router-link :to="{name:'getBackPwd'}" class="v-fm">找回密码?</router-link>
@@ -73,10 +73,8 @@ export default {
         loader.show();
         let _this = this;
         let url = GLOBAL.interfacePath + '/clyun/postUserLoginUrl';
-        let params = new URLSearchParams();
-        params.append("body",JSON.stringify(this.body));
       axios
-        .post(url,params)
+        .post(url,this.body)
         .then(function(data) {
           loader.hide();
           console.log(">>>登录接口|返回数据|" ,data.data);

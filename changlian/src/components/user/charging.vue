@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-          <span class="arrow-back"></span>
-        </div> -->
+                <span class="arrow-back"></span>
+              </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -37,7 +37,7 @@
         <!-- 冲电圈 -->
         <div class="charge-state por">
           <!-- 正在充电 -->
-          <div class="circle opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}">
+          <div class="circle opacity0" :class="{'opacity1':chargeLog.chargeState===2}">
             <div class="percent">
               <span>{{chargeLog.hasChargedPercent}}</span>
             </div>
@@ -53,7 +53,7 @@
             </div>
           </div>
           <!-- 请求充电中 -->
-          <div class="opacity0" :class="{'opacity1':chargeLog.chargeState==='startCharge'}" style="position:absolute;width:100%;top:.7rem;">
+          <div class="opacity0" :class="{'opacity1':chargeLog.chargeState===0}" style="position:absolute;width:100%;top:.7rem;">
             <div class="circle v-fcm">
               <div style="font-size:2rem;">
                 <i class="icon-lightning icon-lightning-big"></i>
@@ -63,7 +63,7 @@
           </div>
         </div>
         <!-- 收费方式 -->
-        <div class="cost-method-box opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}">
+        <div class="cost-method-box opacity0" :class="{'opacity1':chargeLog.chargeState===2}">
           <div class="v-fm v-fb" style="padding:.5rem .8rem;">
             <div class="v-fm">预设充电时长</div>
             <div>{{chargeLog.expectedChargeTime|SToHM}}</div>
@@ -80,7 +80,7 @@
       </div>
     </div>
     <!-- 底部停止充电按钮 -->
-    <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState==='charging'}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
+    <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState===2}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
       <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
     </div>
   </div>
@@ -113,7 +113,7 @@
         userInfo: {},
         stationInfo: {},
         chargeLog: {
-          chargeState: "startCharge"
+          chargeState: 0
         },
         postData: {
           portId: "",
@@ -173,10 +173,10 @@
               if (res.code === 200) {
                 //判断已充时长是否存在 如果不存在则 等待ws返回数据  如果存在直接调用。
                 // if (!!_this.chargeLog.hasChargedTime) {
-                _this.chargeLog.chargeState = 'charging';
                 window.clearInterval(interval);
                 _this.chargeLog = res.body;
-                console.log(_this.chargeLog);
+                console.log('chargeState', _this.chargeLog.chargeState);
+                //chargeState:2:充电中
                 //自增已充时长。
                 interval = setInterval(() => {
                   _this.chargeLog.hasChargedTime = (
@@ -233,15 +233,24 @@
             if (res.code === 200) {
               //判断已充时长是否存在 如果不存在则 等待ws返回数据  如果存在直接调用。
               // if (!!_this.chargeLog.hasChargedTime) {
-              _this.chargeLog.chargeState = 'charging';
-              window.clearInterval(interval);
-              _this.chargeLog = res.body;
-              //自增已充时长。
-              interval = setInterval(() => {
-                _this.chargeLog.hasChargedTime = (
-                  parseInt(_this.chargeLog.hasChargedTime) + 1
-                ).toString();
-              }, 1000);
+              if (res.body.chargeState === 2) {
+                window.clearInterval(interval);
+                _this.chargeLog = res.body;
+                console.log('chargeState', _this.chargeLog.chargeState);
+                //自增已充时长。
+                interval = setInterval(() => {
+                  _this.chargeLog.hasChargedTime = (
+                    parseInt(_this.chargeLog.hasChargedTime) + 1
+                  ).toString();
+                }, 1000);
+              } else if (res.body.chargeState === 4) {
+                MessageBox.alert('充电结束！跳转结算页面！').then(action => {
+                  //设置userId 以及 登录状态 
+                  _this.$router.replace({
+                    name: 'endCharge'
+                  });
+                });
+              }
             }
           }).catch(function(err) {
             console.log({
