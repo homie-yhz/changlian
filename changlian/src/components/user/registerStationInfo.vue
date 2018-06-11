@@ -56,8 +56,10 @@
 					terminalCount: '',
 					consoleId: '-',
 					cooperatorId: '-',
-					longitude: '', // 经度
-					latitude: '' //纬度
+					sysUserId:'',
+					qrCodeId:'',
+					longitude: '1', // 经度
+					latitude: '1' //纬度
 				},
 				consoleList: [{'consoleName':'请选择','consoleId':'-'}],
 				cooperatorList: [{'cooperatorName':'请选择','cooperatorId':'-'}],
@@ -130,17 +132,29 @@
 						});
 					});
 				});
-			//合作商   录入电站信息 接口
-			let getMyStationInfo = GLOBAL.interfacePath + '/clyun/getMyStationInfo?userId=' + (sessionStorage.getItem('userId') || 0);
-			// let getStationInfo = '';
+
+			//模拟定位信息
+			_this.locationState = true;
+			/**
+			 * qrCodeId:  from->qrCodePage
+			 */
+			let getMyStationInfo = GLOBAL.interfacePath + '/clyun/getMyStationInfo?userId=' + (sessionStorage.getItem('userId') || 0)+'&qrCodeId='+sessionStorage.getItem('qrCodeId');
 			axios
 				.get(getMyStationInfo)
 				.then(function(data) {
 					let res = data.data;
 					console.log('getMyStationInfo|返回数据|', res);
 					if (res.code === 200) {
+
 						_this.consoleList = _this.consoleList.concat(res.body.consoleList);
 						_this.cooperatorList = _this.cooperatorList.concat(res.body.cooperatorList);
+						_this.postData.sysUserId = res.body.sysUserId;
+						_this.postData.qrCodeId = res.body.qrCodeId;
+
+						//注册信息回传
+						if(res.body.registerStationInfo !== null){
+							_this.postData = res.body.registerStationInfo;
+						}
 					}
 				})
 				.catch(function(err) {
@@ -149,7 +163,6 @@
 						'err': err
 					});
 				});
-	
 		},
 		watch: {
 			postData: {
@@ -191,8 +204,8 @@
 		}
 	}
 	.icon-right{
-		border-top:1px solid #e3e3e3;
-		border-right:1px solid #e3e3e3;
+		border-top:1px solid #888;
+		border-right:1px solid #888;
 		height:.5rem;
 		width:.5rem;
 		transform: rotate(45deg);

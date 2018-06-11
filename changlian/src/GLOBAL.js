@@ -8,11 +8,11 @@ export default {
 // env:'UAT',
 env:'test',
 // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
-// interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-// interfacePathWS: '192.168.43.202:8080/v1/api0',
+interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+// interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+// interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
 appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList

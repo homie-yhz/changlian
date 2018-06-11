@@ -84,7 +84,6 @@ export default {
                 //设置userId 以及 登录状态 
                 sessionStorage.setItem('userId',res.body.userId||'');
                 ws();
-                sessionStorage.setItem('loginState',res.body.loginState||'');
                 _this.$router.replace({name:'personalCenter'});
               });
               //用户不存在，前去注册？

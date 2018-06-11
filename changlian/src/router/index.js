@@ -4,7 +4,7 @@ Router.prototype.goBack = function () {
   this.isBack = true
   window.history.go(-1)
 }
-Vue.use(Router)
+Vue.use(Router);
 // 用户页面
 const IDCardList = r => require.ensure([], () => r(require('@/components/user/IDCardList.vue')), 'News');
 const chargeElecLog = r => require.ensure([], () => r(require('@/components/user/chargeElecLog.vue')), 'News');
