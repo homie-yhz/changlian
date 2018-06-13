@@ -5,7 +5,7 @@
       <div class="por">
         <div class="v-fm">
           <img src="../../../static/img/head-pic-blue.png" alt="">
-          <div v-if="!userInfo.loginState" class="v-fcm">
+          <div v-if="!userId" class="v-fcm">
             <router-link :to="{name:'login'}" tag="p">登录</router-link>
             <p style="margin:0 .2rem;">|</p>
             <router-link :to="{name:'register'}" tag="p">注册</router-link>
@@ -14,7 +14,7 @@
             <span>{{userInfo.phone}}</span>
           </div>
         </div>
-        <div>账户余额：<span v-bind:val1="userInfo.loginState">{{userInfo.loginState?userInfo.balance:'--:--'}}</span> 元</div>
+        <div>账户余额：<span>{{!!userId?userInfo.balance:'--:--'}}</span> 元</div>
         <div class="setting-message v-fm">
           <i class="iconfont icon-lingdang"></i>
           <div v-if="userInfo.loginState && userInfo.hasNews" class="v-f" style="height:.8rem;">
@@ -70,11 +70,11 @@
     </div>
     <div class="blank"></div>
     <div class="center-list">
-      <router-link :to="{name:'aboutUs'}" class="v-fm">
+      <a v-if="showPlatform" @click="routerToPlatform()" class="v-fm">
         <i class="icon-operator"></i>
         <p class="v-i1">经营者管理平台</p>
         <i class="icon-right"></i>
-      </router-link>
+      </a>
       <router-link :to="{name:'aboutUs'}" class="v-fm">
         <i class="icon-attention"></i>
         <p class="v-i1">关于我们</p>
@@ -109,7 +109,9 @@
   export default {
     data() {
       return {
-        userInfo: {}
+        userInfo: {},
+        showPlatform:false,
+        userId:null
       };
     },
     methods: {
@@ -117,7 +119,7 @@
       register() {},
       // 跳到到相关页面
       routerTo(name, params) {
-        if (this.userInfo.loginState) {
+        if (!!localStorage.getItem('userId')) {
           this.$router.push({
             name: name,
             params: params
@@ -128,6 +130,13 @@
           });
         }
       },
+      routerToPlatform(){
+        if(!!localStorage.getItem('operatorId')){
+          this.$router.push({name:'operatorMain'});
+        }else{
+          this.$router.push({name:'operatorLogin'});
+        }
+      },
       scanQRCode() {
         alert('调用扫一扫');
         wx.scanQRCode({
@@ -135,19 +144,21 @@
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function(res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            alert('扫一扫返回地址：'+result);
+            alert('扫一扫返回地址：' + result);
           }
         });
       }
     },
     created() {
       let _this = this;
-      let userId = sessionStorage.getItem("userId");
+      this.userId = localStorage.getItem("userId");
       console.log('login');
-      if (!!userId) {
+      console.log(this.userId);
+      if (!!this.userId) {
+        this.showPlatform = true;
         getUserInfo()
           .then((userInfo) => {
-            console.log(userInfo);
+            console.log('userInfo',userInfo);
             _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
           })
           .catch(function(err) {
@@ -158,30 +169,30 @@
               err: JSON.stringify(err)
             });
           })
-      //获取code 调用扫一扫功能
-      getCode(_this).then(function(WXoptions) {
-        alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
-        wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
-          timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
-          nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
-          signature: WXoptions.signature, // 必填，签名
-          jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
-        });
-        wx.ready(function() {
-          wx.getLocation({
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: function(res) {
-              var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              var speed = res.speed; // 速度，以米/每秒计
-              var accuracy = res.accuracy; // 位置精度
-              alert('获取经纬度：经度：'+latitude+'(经度)/'+longitude+'(纬度)/'+speed+'(速度)/'+accuracy+'(经度)');
-            }
+        //获取code 调用扫一扫功能
+        getCode(_this).then(function(WXoptions) {
+          // alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
+          wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+            timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
+            nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
+            signature: WXoptions.signature, // 必填，签名
+            jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+          });
+          wx.ready(function() {
+            wx.getLocation({
+              type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+              success: function(res) {
+                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                var speed = res.speed; // 速度，以米/每秒计
+                var accuracy = res.accuracy; // 位置精度
+                alert('获取经纬度：经度：' + latitude + '(经度)/' + longitude + '(纬度)/' + speed + '(速度)/' + accuracy + '(经度)');
+              }
+            });
           });
         });
-      });
       }
     }
   };

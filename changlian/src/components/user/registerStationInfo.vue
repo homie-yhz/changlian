@@ -12,17 +12,17 @@
 				<p>终端数量：</p>
 				<input type="text" v-model="postData.terminalCount"></div>
 			<div>
-				<p>中控信息：</p> 
+				<p>中控信息：</p>
 				<select v-model="postData.consoleId" @change="changeSelect('consoleList','consoleId')">
-					<option v-for="item in consoleList" :name="item.name" :key="item.consoleId" :value="item.consoleId">{{item.consoleName}}</option>
-				</select>
+						<option v-for="item in consoleList" :name="item.name" :key="item.consoleId" :value="item.consoleId">{{item.consoleName}}</option>
+					</select>
 				<i class="icon-right"></i>
 			</div>
 			<div>
-				<p>合作伙伴信息：</p> 
+				<p>合作伙伴信息：</p>
 				<select v-model="postData.cooperatorId" @change="changeSelect('cooperatorList','cooperatorId')">
-					<option v-for="item in cooperatorList" :key="item.cooperatorId" :value="item.cooperatorId">{{item.cooperatorName}}</option>
-				</select>
+						<option v-for="item in cooperatorList" :key="item.cooperatorId" :value="item.cooperatorId">{{item.cooperatorName}}</option>
+					</select>
 				<i class="icon-right"></i>
 			</div>
 			<div class="v-fm">
@@ -32,6 +32,9 @@
 			</div>
 			<div class="active cl-btn v-fcm" @click="saveStationInfo">
 				提 交
+			</div>
+			<div class="active cl-btn v-fcm" @click="scanQRCode()">
+				扫一扫维护终端信息
 			</div>
 		</div>
 	</div>
@@ -44,7 +47,7 @@
 	} from '../../GLOBAL.js';
 	import wx from 'weixin-js-sdk';
 	import {
-		Toast
+		Toast,MessageBox
 	} from "mint-ui";
 	import "mint-ui/lib/toast/style.css";
 	export default {
@@ -56,14 +59,20 @@
 					terminalCount: '',
 					consoleId: '-',
 					cooperatorId: '-',
-					sysUserId:'',
-					qrCodeId:'',
+					sysUserId: '',
+					qrCodeId: '',
 					longitude: '1', // 经度
 					latitude: '1' //纬度
 				},
-				consoleList: [{'consoleName':'请选择','consoleId':'-'}],
-				cooperatorList: [{'cooperatorName':'请选择','cooperatorId':'-'}],
-				locationState:false
+				consoleList: [{
+					'consoleName': '请选择',
+					'consoleId': '-'
+				}],
+				cooperatorList: [{
+					'cooperatorName': '请选择',
+					'cooperatorId': '-'
+				}],
+				locationState: false
 			}
 		},
 		methods: {
@@ -76,9 +85,9 @@
 					Toast('请输入电站地址！');
 				} else if (!this.postData.terminalCount) {
 					Toast('请输入终端数量！')
-				} else if (this.postData.consoleId==='-') {
+				} else if (this.postData.consoleId === '-') {
 					Toast('请选择中控信息！')
-				} else if (this.postData.cooperatorId==='-') {
+				} else if (this.postData.cooperatorId === '-') {
 					Toast('请选择合作伙伴信息！');
 				} else if (!this.postData.longitude || !this.postData.latitude) {
 					Toast('等待定位信息！');
@@ -99,16 +108,31 @@
 						});
 				}
 			},
-			changeSelect(listName,listId){
+			changeSelect(listName, listId) {
 				console.log(JSON.stringify(this[listName]));
-				if(this[listName][0][listId]==='-'){
+				if (this[listName][0][listId] === '-') {
 					this[listName] = this[listName].slice(1);
+				}
+			},
+			scanQRCode() {
+				console.log(1);
+				if (!!localStorage.getItem('registerTerminalId')) {
+					wx.scanQRCode({
+						needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+						scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+						success: function(res) {
+							var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+							//alert('扫一扫返回地址：' + result);
+						}
+					});
+				}else{
+					MessageBox.alert('请先注册电站信息！');
 				}
 			}
 		},
 		created() {
 			let _this = this;
-			//调用定位信息
+			//调用定位 以及扫一扫 信息
 			getCode(_this)
 				.then(function(WXoptions) {
 					wx.config({
@@ -117,7 +141,7 @@
 						timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
 						nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
 						signature: WXoptions.signature, // 必填，签名
-						jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
+						jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
 					});
 					wx.ready(function() {
 						wx.getLocation({
@@ -132,32 +156,36 @@
 						});
 					});
 				});
-
+	
 			//模拟定位信息
 			_this.locationState = true;
 			/**
 			 * qrCodeId:  from->qrCodePage
 			 */
-			let getMyStationInfo = GLOBAL.interfacePath + '/clyun/getMyStationInfo?userId=' + (sessionStorage.getItem('userId') || 0)+'&qrCodeId='+sessionStorage.getItem('qrCodeId');
+			let getMyStationInfo = GLOBAL.interfacePath + '/clyun/getMyStationInfo?userId=' + (localStorage.getItem('userId') || 0) + '&qrCodeId=' + localStorage.getItem('qrCodeId');
+			console.log(getMyStationInfo);
 			axios
 				.get(getMyStationInfo)
 				.then(function(data) {
 					let res = data.data;
 					console.log('getMyStationInfo|返回数据|', res);
 					if (res.code === 200) {
-
+	
 						_this.consoleList = _this.consoleList.concat(res.body.consoleList);
 						_this.cooperatorList = _this.cooperatorList.concat(res.body.cooperatorList);
 						_this.postData.sysUserId = res.body.sysUserId;
 						_this.postData.qrCodeId = res.body.qrCodeId;
-
+	
 						//注册信息回传
-						if(res.body.registerStationInfo !== null){
+						if (res.body.registerStationInfo !== null) {
 							_this.postData = res.body.registerStationInfo;
+							//回传信息后将 consoleId 存起来，然后扫描端口信息并注册
+							localStorage.setItem('registerConsoleId', res.body.registerStationInfo.consoleId)
 						}
 					}
 				})
 				.catch(function(err) {
+					MessageBox.alert('接口异常！(错误:102)')
 					console.log({
 						'url': getMyStationInfo,
 						'err': err
@@ -166,17 +194,17 @@
 		},
 		watch: {
 			postData: {
-				handler:function(nv, ov) {
+				handler: function(nv, ov) {
 					console.log(JSON.stringify(nv));
 				},
-				deep:true
+				deep: true
+			}
 		}
-	}
 	}
 </script>
 
 <style lang="scss">
-  @import "../../../static/css/common.scss";
+	@import "../../../static/css/common.scss";
 	.cl-btn {
 		width: 80%;
 		background-color: #2eafed!important;
@@ -185,30 +213,36 @@
 		border-radius: 3px;
 		height: 1.6rem;
 	}
-	#registerBox{
-		&>div{ 
+	
+	#registerBox {
+		&>div {
 			@include fm;
-			padding:0 .5rem;
+			padding: 0 .5rem;
 			background: #fff;
-			height:2rem;
-			font-size:.7rem;
-			border-bottom:1px solid #e3e3e3;
-			&>p:first-child{
-				width:5rem;
+			height: 2rem;
+			font-size: .7rem;
+			border-bottom: 1px solid #e3e3e3;
+			&>p:first-child {
+				width: 5rem;
 			}
-			select{width:5rem;};
-			input,select{
+			select {
+				width: 5rem;
+			}
+			;
+			input,
+			select {
 				@include i1;
 				background: #fff;
 			}
 		}
 	}
-	.icon-right{
-		border-top:1px solid #888;
-		border-right:1px solid #888;
-		height:.5rem;
-		width:.5rem;
+	
+	.icon-right {
+		border-top: 1px solid #888;
+		border-right: 1px solid #888;
+		height: .5rem;
+		width: .5rem;
 		transform: rotate(45deg);
-		margin:0!important;
+		margin: 0!important;
 	}
 </style>

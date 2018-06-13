@@ -5,14 +5,14 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 export default {
-// env:'UAT',
-env:'test',
+env:'UAT',
+// env:'test',
 // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
-interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-interfacePathWS: '192.168.43.202:8080/v1/api0',
+// interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+// interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-// interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-// interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
 appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
@@ -85,7 +85,7 @@ export let hasChargingMechineObj = {
 export function getUserInfo() {
     console.log('调用getUseInfo|用户信息接口');
     return new Promise(function (resolve, reject) {
-        let getUserInfoUrl = GLOBAL.interfacePath + '/clyun/getUserInfo?userId='+sessionStorage.getItem('userId')||'';
+        let getUserInfoUrl = GLOBAL.interfacePath + '/clyun/getUserInfo?userId='+localStorage.getItem('userId')||'';
         axios
             .get(getUserInfoUrl)
             .then(function (data) {
@@ -141,7 +141,6 @@ export function getCode(_this){
     //alert('调用获取code接口');
     let url = window.location.href;
     //首先获取 签名
-    //先请求一次接口
     let getSignUrl = GLOBAL.interfacePath+'/order/scanQR';
     //alert(getSignUrl);
     let params = new URLSearchParams();
@@ -157,88 +156,6 @@ export function getCode(_this){
             //alert(JSON.stringify(WXoptions));
             resolve(WXoptions);
           }
-          // alert(JSON.stringify(options));
-          //sessionStorage.setItem('WXoptions',JSON.stringify(options));
-          // alert('进入获取签名接口');
-          // alert('获取配置2'+sessionStorage.getItem('WXoptions'));
-          /*if(!!localStorage.getItem('openId')){
-            // alert('openId存在'+localStorage.getItem('openId'));
-            // alert('getCode3-1')
-            // alert('2');
-            // alert('openId' + localStorage.getItem('openId'));
-            let focusUrl = GLOBAL.interfacePath+'/jsonDataCtrl/getIsGz.do?openId='+localStorage.getItem('openId');
-            axios.get(focusUrl)
-              .then(function(data){
-                // alert(JSON.stringify(data.data));
-                if(data.data.state === 'false'){
-                  //展示二维码
-                //   _this.showQRCode = true;
-                  //展示关注按钮
-                //   _this.showQRCodeBtn = true;
-                }
-                resolve();
-              })
-              .catch(function(){
-                layer.alert('是否关注接口报错！');
-              });
-          }
-
-          else if(url.indexOf('code')>-1){
-            // alert('getCode3-2')
-            // alert('code存在');
-
-            let code = '';
-            let urlParamsArr = url.match(/\?(\S*)\#/)[1].split('&');
-            let urlParamsLen = urlParamsArr.length;
-
-            for(let i = 0;i<urlParamsLen;i++){
-              if(urlParamsArr[i].indexOf('code')>-1){
-                code = urlParamsArr[i].split('=')[1];
-              }
-            }
-
-            // alert(code);
-            let getOpenIdUrl = GLOBAL.interfacePath+'/jsonDataCtrl/getOpenid.do?code='+code;
-            axios.get(getOpenIdUrl)
-            //获取openId
-              .then(function(data) {
-
-                let openId = data.data.openId;
-                (!!openId) && (localStorage.setItem('openId', openId));
-                // alert('openId' + localStorage.getItem('openId'));
-
-                //调用是否关注接口
-                let focusUrl = GLOBAL.interfacePath + '/jsonDataCtrl/getIsGz.do?openId=' + localStorage.getItem('openId');
-                axios.get(focusUrl)
-                  .then(function (data) {
-                    // alert(JSON.stringify(data.data));
-                    if (data.data.state === 'false') {
-                      //展示二维码
-                      _this.showQRCode = true;
-                      //展示关注按钮
-                      _this.showQRCodeBtn = true;
-                    }
-                    resolve();
-                  })
-                  .catch(function(data){
-                    layer.alert('是否关注接口报错！');
-                  })
-              })
-          }
-
-          else{
-            // alert('3');
-            //获取 WXoptions
-            if(!!sessionStorage.getItem('WXoptions')){
-              let APPID = JSON.parse(sessionStorage.getItem('WXoptions')).appid;
-              let authorizeUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code' +
-                '&scope=snsapi_userinfo&state=123#wechat_redirect';
-              window.location.href = authorizeUrl;
-            }
-            else{
-              alert('WXoptions为空');
-            }
-          }*/
         })
         .catch(function (data) {
           console.log(JSON.stringify(data));

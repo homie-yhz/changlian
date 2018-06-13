@@ -60,7 +60,6 @@ export default {
       this.$router.go(-1);
     },
     login() {
-     
       let _this = this;
       console.log("提交登录信息");
       console.log(JSON.stringify(this.body));
@@ -80,9 +79,12 @@ export default {
           console.log(">>>登录接口|返回数据|" ,data.data);
           let res = data.data;
           if (res.code === 200) {
+              sessionStorage.setItem('userId',(res.body.userId||''));
+              localStorage.setItem('userId',res.body.userId||'');
               MessageBox.alert("登录成功！").then(action => {
                 //设置userId 以及 登录状态 
-                sessionStorage.setItem('userId',res.body.userId||'');
+                sessionStorage.setItem('userId',(res.body.userId||''));
+                alert('登录后userid'+sessionStorage.getItem('userId'));
                 ws();
                 _this.$router.replace({name:'personalCenter'});
               });

@@ -69,6 +69,7 @@
 							};
 							if (data.data.state === 'success') {
 								sessionStorage.removeItem('userId');
+								localStorage.removeItem('userId');
 								_this.$router.replace({
 									name: 'personalCenter'
 								});

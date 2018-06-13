@@ -13,7 +13,6 @@ const chargingList = r => require.ensure([], () => r(require('@/components/user/
 const endCharge = r => require.ensure([], () => r(require('@/components/user/endCharge.vue')), 'News');
 const ICInfo = r => require.ensure([], () => r(require('@/components/user/ICInfo.vue')), 'News');
 const ICRecharge = r => require.ensure([], () => r(require('@/components/user/ICRecharge.vue')), 'News');
-// const ICCardList = r => require.ensure([], () => r(require('@/components/user/ICCardList.vue')), 'News');
 const cardsBag = r => require.ensure([], () => r(require('@/components/user/cardsBag.vue')), 'News');
 const ICCardRecharge = r => require.ensure([], () => r(require('@/components/user/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/user/identifyCodeInput.vue')), 'News');
@@ -37,21 +36,22 @@ const usuallyStation = r => require.ensure([], () => r(require('@/components/use
 const nearbyStation = r => require.ensure([], () => r(require('@/components/user/nearbyStation.vue')), 'News');
 const bindStation = r => require.ensure([], () => r(require('@/components/user/bindStation.vue')), 'News');
 const myNews = r => require.ensure([], () => r(require('@/components/user/myNews.vue')), 'News');
-const operatorPlatform = r => require.ensure([], () => r(require('@/components/user/operatorPlatform.vue')), 'News');
 const aboutUs = r => require.ensure([], () => r(require('@/components/user/aboutUs.vue')), 'News');
 const chooseToCharge = r => require.ensure([], () => r(require('@/components/user/chooseToCharge.vue')), 'News');
 const userAgreement = r => require.ensure([], () => r(require('@/components/user/userAgreement.vue')), 'News');
 const qrCodePage = r => require.ensure([], () => r(require('@/components/user/qrCodePage.vue')), 'News');
 const registerStationInfo = r => require.ensure([], () => r(require('@/components/user/registerStationInfo.vue')), 'News');
+const registerTerminalInfo = r => require.ensure([], () => r(require('@/components/user/registerTerminalInfo.vue')), 'News');
 
-//errorPage
+// errorPage
 const errorPage = r => require.ensure([], () => r(require('@/components/user/errorPage.vue')), 'News');
 // 运营商管理平台页面
-const operatorLogin = r => require.ensure([], () => r(require('@/components/user/operatorLogin.vue')), 'News');
-const operatorMain = r => require.ensure([], () => r(require('@/components/user/operatorMain.vue')), 'News');
-const agentList = r => require.ensure([], () => r(require('@/components/user/agentList.vue')), 'News'); //代理商列表
-const createAgent = r => require.ensure([], () => r(require('@/components/user/createAgent.vue')), 'News'); //创建代理商
-const updateAgent = r => require.ensure([], () => r(require('@/components/user/updateAgent.vue')), 'News'); //修改更新代理商信息
+const operatorPlatform = r => require.ensure([], () => r(require('@/components/operator/operatorPlatform.vue')), 'News');
+const operatorLogin = r => require.ensure([], () => r(require('@/components/operator/operatorLogin.vue')), 'News');
+const operatorMain = r => require.ensure([], () => r(require('@/components/operator/operatorMain.vue')), 'News');
+const agentList = r => require.ensure([], () => r(require('@/components/operator/agentList.vue')), 'News'); //代理商列表
+const createAgent = r => require.ensure([], () => r(require('@/components/operator/createAgent.vue')), 'News'); //创建代理商
+const updateAgent = r => require.ensure([], () => r(require('@/components/operator/updateAgent.vue')), 'News'); //修改更新代理商信息
 const scroller = r => require.ensure([], () => r(require('@/components/user/vueScroller.vue')), 'News'); //修改更新代理商信息
 
 export default new Router({
@@ -271,6 +271,11 @@ export default new Router({
       path: '/registerStationInfo',
       name: 'registerStationInfo',
       component: registerStationInfo
+    },
+    {
+      path: '/registerTerminalInfo/:qrCodeId',
+      name: 'registerTerminalInfo',
+      component: registerTerminalInfo
     },
     {
       path: '*',   // 错误路由

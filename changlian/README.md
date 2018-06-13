@@ -53,3 +53,8 @@ http://blog.csdn.net/u014633852/article/details/73706459
 
 7.充电页面 头部 ID卡是什么意思？
 
+# 错误信息提示
+1. 101  运营商管理平台登录接口报错
+2. 102  getMyStationInfo|获取中控信息列表、合作伙伴列表、以及注册成功后的信息回传渲染
+3. 103  getScanQRCodePage|用户点击主页扫一扫后进入到跳转页面接口
+4. 104  saveTerminalInfo|用户扫描端口后 提交信息报错。

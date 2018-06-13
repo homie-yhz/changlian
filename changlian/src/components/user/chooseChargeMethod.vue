@@ -171,7 +171,7 @@
       axios
         .get(chargeMethods)
         .then(function(data) {
-          console.log('chargeMethods|返回数据|' + JSON.stringify(data.data));
+          console.log('chargeMethods|返回数据|',data.data);
           let res = data.data;
           if (res.code === 200) {
             _this.chargeMethods = res.body;
