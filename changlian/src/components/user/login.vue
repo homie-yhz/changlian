@@ -17,8 +17,8 @@
         </div>
         <!-- 登录输入框 -->
         <div style="width:85%;" class="m-auto login-box">
-          <input class="retinabt" type="text" v-model="body.phone" placeholder="手机号" maxlength="11">
-          <input class="retinabt" type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
+          <input type="text" v-model="body.phone" placeholder="手机号" maxlength="11" style="margin-bottom:3px;">
+          <input type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
           <p class="v-fb register-or-backpwd">
             <router-link :to="{name:'register'}" class="v-fm">新用户注册</router-link>
             <router-link :to="{name:'getBackPwd'}" class="v-fm">找回密码?</router-link>

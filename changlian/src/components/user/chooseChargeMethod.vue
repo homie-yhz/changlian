@@ -48,18 +48,15 @@
             <span class="tac">余额：<span class="cl-red balance">{{userInfo.balance||'*'}} 元</span></span>
             <router-link :to="{name:'recharge'}" @click="recharge" class="v-fcm btn-recharge">去充值</router-link>
           </div>
-          <!-- 开始充电按钮 -->
+  
+        </div>
+        <div class="v-fcm" style="width:80%;z-index:2;margin:1rem auto;">
           <div @click="startCharge" class="v-fcm btn-start-charge">开始充电</div>
         </div>
       </div>
     </div>
-  
-    <!-- 底部开始充电按钮 -->
-    <div class="cl-footer v-fb">
-    </div>
   </div>
 </template>
-
 <script>
   import axios from "axios";
   import GLOBAL, {
@@ -104,6 +101,7 @@
       },
       // 开始充电
       startCharge() {
+        alert('点击开始充电');
         console.log('点击开始充电');
         let _this = this;
         if (!!sessionStorage.getItem('userId')) {
@@ -113,25 +111,29 @@
           } else if (!this.postData.chargeMethodId) {
             Toast("请选择充电方式");
           } else {
+            loader.show();
             //设置chargingTime:即为充电ID
             sessionStorage.setItem('methodId', this.postData.chargeMethodId);
-            sessionStorage.setItem('chargingTime',this.postData.chargingTime)
+            sessionStorage.setItem('chargingTime', this.postData.chargingTime)
             // 请求充电
             let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
               'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
-              '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime')+'&methodId='+this.postData.chargeMethodId;
-            console.log('>>>请求充电',requestChargeUrl);
+              '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&methodId=' + this.postData.chargeMethodId;
+            console.log('>>>请求充电', requestChargeUrl);
             axios
               .get(requestChargeUrl)
               .then(function(data) {
+                loader.hide();
                 let res = data.data;
-                console.log('>>>点击开始充电返回数据： requestChargeUrl',res);
+                console.log('>>>点击开始充电返回数据： requestChargeUrl', res);
                 if (res.code === 200) {
-                  if(res.body.success === true){
+                  if (res.body.success === true) {
                     //设置 充电记录Id 
-                    sessionStorage.setItem('chargeRecordId',res.body.info.chargeRecordId);
-                    _this.$router.replace({name:'charging'});
-                  }else{
+                    sessionStorage.setItem('chargeRecordId', res.body.info.chargeRecordId);
+                    _this.$router.replace({
+                      name: 'charging'
+                    });
+                  } else {
                     MessageBox.alert('请求充电失败！请重新请求！');
                   }
                 } else {
@@ -171,7 +173,7 @@
       axios
         .get(chargeMethods)
         .then(function(data) {
-          console.log('chargeMethods|返回数据|',data.data);
+          console.log('chargeMethods|返回数据|', data.data);
           let res = data.data;
           if (res.code === 200) {
             _this.chargeMethods = res.body;
@@ -192,7 +194,7 @@
           let res = data.data;
           if (res.code === 200) {
             _this.chargeDescripetionList = res.body;
-            console.log('>>>收费标准',res.body);
+            console.log('>>>收费标准', res.body);
           }
         })
         .catch(function(err) {
@@ -201,12 +203,12 @@
             err: JSON.stringify(err)
           });
         });
-
+  
       //请求个人信息接口  获取金额
-      if(sessionStorage.getItem('loginState')==='true'){
-        getUserInfo().then(function(userInfo){
-        _this.userInfo = userInfo;
-      });
+      if (sessionStorage.getItem('loginState') === 'true') {
+        getUserInfo().then(function(userInfo) {
+          _this.userInfo = userInfo;
+        });
       }
     },
     watch: {
@@ -320,7 +322,7 @@
     width: 100%;
     height: 1.8rem;
     border-radius: 4px;
-    margin-top: 1rem;
+    // margin-top: 1rem;
     color: #fff;
   }
 </style>

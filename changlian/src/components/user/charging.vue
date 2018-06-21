@@ -68,14 +68,14 @@
             <div class="v-fm">预设充电时长</div>
             <div>{{chargeLog.expectedChargeTime|SToHM}}</div>
           </div>
-          <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
+          <!-- <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
             <div class="mb-40">收费标准</div>
             <div class="v-fm v-fb">
               <div class="v-fm">
                 {{chargeLog.wRange}}</div>
               <div>{{chargeLog.priceRate}}</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -191,6 +191,7 @@
               });
             });
         } else if (status === 4) {
+          loader.hide();
           MessageBox.alert('充电结束！跳转结算页面！').then(action => {
             //设置userId 以及 登录状态 
             _this.$router.replace({
@@ -260,6 +261,7 @@
           });
       },
       stopCharge() {
+        loader.show();
         let _this = this;
         //let stopChargeUrl = GLOBAL.interfacePath + '';
         let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeRecordId');

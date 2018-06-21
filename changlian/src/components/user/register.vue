@@ -13,7 +13,7 @@
             <input type="tel" v-model="body.phone" maxlength="11" placeholder="手机号">
             <span @click="getCode" v-bind:style="{color:getCodeBtn.state===1?'#2eafed':'#bbbbbb'}">{{getCodeBtn.text}}</span>
           </div>
-          <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码">
+          <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码" style="margin-bottom:3px;">
           <input type="password" v-model="body.pwd" maxlength="16" placeholder="密码（请输入6-16位字幕+数字的密码组合）">
           <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
           <!-- <p @click="nextStep" class="btn btn-login v-fcm">下一步</p> -->

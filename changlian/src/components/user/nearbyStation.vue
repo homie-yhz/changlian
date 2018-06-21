@@ -103,6 +103,7 @@
   import FloatCircle from "../my-cpt/float-circle.vue";
   import $ from "jquery";
   import wx from 'weixin-js-sdk';
+  import loader from '../../loading.js';
   Vue.use(VueScroller);
   import {
     Tab,
@@ -169,11 +170,7 @@
       getStationList(done) {
         let _this = this;
         this.postData.pageIndex++;
-  
-        // console.log(JSON.stringify(this.postData));
         let stationListUrl = GLOBAL.interfacePath + '/clyun/stationList?postData=' + JSON.stringify(_this.postData);
-  
-        //alert('电站列表地址：' + stationListUrl);
         axios.get(stationListUrl).then(function(data) {
           console.log('>>>电站列表',data.data);
           // data.data = {
@@ -230,16 +227,12 @@
           done();
         });
       },
+      //切换tab卡 重新请求信息
       switchTabItem(index) {
         console.log("on-before-index-change", index);
         this.postData.searchMethod =
           index === 0 ? "all" : index === 1 ? "slow" : "fast";
         this.postData.pageIndex = 0;
-        // this.$vux.loading.show({
-        //   text: 'loading'
-        // })
-        // setTimeout(() => {
-        // this.$vux.loading.hide()
         this.index01 = index;
         // }, 1000)
         console.log(this.postData.searchMethod);
@@ -328,7 +321,6 @@
 
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
-        // _this.userInfo.chargingMechineAmount = 2;
       });
 
       //获取附近电站信息列表

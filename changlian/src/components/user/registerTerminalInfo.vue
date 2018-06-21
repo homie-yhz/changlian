@@ -21,7 +21,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 	import axios from 'axios';
 	import GLOBAL, {
