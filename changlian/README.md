@@ -61,7 +61,10 @@ http://blog.csdn.net/u014633852/article/details/73706459
 102|getMyStationInfo|获取中控信息列表、合作伙伴列表、以及注册成功后的信息回
 103|getScanQRCodePage|用户点击主页扫一扫后进入到跳转页面接口
 104|saveTerminalInfo|用户扫描端口后 提交信息报错
-
-
+105|bindStationUrl|用户点击绑定电站按钮后的接口报错
+107|getRechargeCard|获取充值卡片信息报错
 # 2018 06 21 遇到问题汇总
 1.点击充电反应过慢
+
+# 开发过程遇到的问题
+1.post接口异常  405 ，解决办法：

@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                <span class="arrow-back"></span>
-              </div> -->
+                    <span class="arrow-back"></span>
+                  </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -49,7 +49,7 @@
               <p>已充时长 {{chargeLog.hasChargedTime|timestampToData}}</p>
             </div>
             <div class="v-fcm">
-              <p>当前功率 {{chargeLog.currentW}}瓦</p>
+              <!-- <p>当前功率 {{chargeLog.currentW}}瓦</p> -->
             </div>
           </div>
           <!-- 请求充电中 -->
@@ -65,17 +65,17 @@
         <!-- 收费方式 -->
         <div class="cost-method-box opacity0" :class="{'opacity1':chargeLog.chargeState===2}">
           <div class="v-fm v-fb" style="padding:.5rem .8rem;">
-            <div class="v-fm">预设充电时长</div>
+            <div class="v-fm">预计充电时长</div>
             <div>{{chargeLog.expectedChargeTime|SToHM}}</div>
           </div>
           <!-- <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
-            <div class="mb-40">收费标准</div>
-            <div class="v-fm v-fb">
-              <div class="v-fm">
-                {{chargeLog.wRange}}</div>
-              <div>{{chargeLog.priceRate}}</div>
-            </div>
-          </div> -->
+                <div class="mb-40">收费标准</div>
+                <div class="v-fm v-fb">
+                  <div class="v-fm">
+                    {{chargeLog.wRange}}</div>
+                  <div>{{chargeLog.priceRate}}</div>
+                </div>
+              </div> -->
         </div>
       </div>
     </div>
@@ -122,7 +122,8 @@
         },
         chargeMethods: [],
         equipment: {},
-        waitText: '...'
+        waitText: '...',
+        wsTimes: 0 //ws返回的次数   现在规定
       };
     },
     computed: {
@@ -141,12 +142,13 @@
       },
       //请求充电接口  或者是  获取是否含有充电信息的接口。
       requestChargeInfo1(status) {
+        this.wsTimes++;
         let _this = this;
         // 获取充电信息
         let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
-        // let chargeLog = '';
         console.log('>>>chargeLog|充电信息', chargeLog);
         if (status === 2) {
+          if(this.wsTimes>1){return false};
           axios
             .get(chargeLog)
             .then(function(data) {

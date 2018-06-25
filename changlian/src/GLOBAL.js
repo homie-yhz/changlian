@@ -5,8 +5,8 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 export default {
-// env:'UAT',
-env:'test',
+env:'UAT',
+// env:'test',
 // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
 // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
 // interfacePathWS: '192.168.43.202:8080/v1/api0',

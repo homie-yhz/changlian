@@ -44,10 +44,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                      <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                          <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                      <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                          <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -65,7 +65,7 @@
                   </div>
                 </div>
                 <!-- 绑定按钮 -->
-                <div class="btn-bind" v-if="stationInfo.showBindBtn">
+                <div @click.prevent="bindStation(stationInfo)" class="btn-bind" v-if="stationInfo.showBindBtn">
                   绑定
                 </div>
               </div>
@@ -104,6 +104,11 @@
   import $ from "jquery";
   import wx from 'weixin-js-sdk';
   import loader from '../../loading.js';
+  import {
+    Toast,
+    MessageBox
+  } from "mint-ui";
+  import "mint-ui/lib/toast/style.css";
   Vue.use(VueScroller);
   import {
     Tab,
@@ -167,12 +172,50 @@
       back() {
         this.$router.go(-1);
       },
+      /**
+       * 绑定电站接口：bindStationUrl
+       * 绑定成功后进行刷新操作。
+       * params:  stationId->stationInfo   userId->localStorage
+      */
+      bindStation(stationInfo) {
+        let _this = this;
+        if (!!localStorage.getItem('userId')) {
+          loader.show();
+          MessageBox.confirm('您即将绑定电站？').then(action => {
+            let bindStationUrl = GLOBAL.interfacePath + '/clyun/bindStation';
+            axios
+              .post(bindStationUrl,{'stationId':(stationInfo.stationId).toString(),'userId':localStorage.getItem('userId')})
+              .then(function(data) {
+                loader.hide();
+                let res = data.data;
+                if(res.code === 200){
+                  MessageBox.alert('绑定电站成功！');
+                  _this.$refs.scrollDom.triggerPullToRefresh();
+                }else{
+                  MessageBox.alert(res.msg);
+                }
+                console.log('bindStationUrl|返回数据|', res);
+              })
+              .catch(function(err) {
+                loader.hide();
+                MessageBox.alert('接口异常！错误代码:105');
+                console.log(err);
+              });
+          });
+        } else {
+          MessageBox.alert('您尚未登录，前去登录？').then(action => {
+            this.$route.push({
+              name: 'login'
+            });
+          });
+        }
+      },
       getStationList(done) {
         let _this = this;
         this.postData.pageIndex++;
         let stationListUrl = GLOBAL.interfacePath + '/clyun/stationList?postData=' + JSON.stringify(_this.postData);
         axios.get(stationListUrl).then(function(data) {
-          console.log('>>>电站列表',data.data);
+          console.log('>>>电站列表', data.data);
           // data.data = {
           //   "code": 200,
           //   "message": "充电站接口",
@@ -318,11 +361,11 @@
       console.log('listType|电站列表：' + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
       this.postData.userId = sessionStorage.getItem('userId');
-
+  
       getUserInfo().then(function(userInfo) {
         _this.userInfo = userInfo;
       });
-
+  
       //获取附近电站信息列表
       //调用  是否登录接口
       // axios
@@ -334,7 +377,7 @@
       //       console.log(pers);
       //     });
       //   });
-      
+  
   
       //获取code 调用扫一扫功能
       /*getCode(_this).then(function(WXoptions) {
