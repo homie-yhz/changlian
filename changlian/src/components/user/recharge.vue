@@ -10,13 +10,13 @@
     <!-- 充值模块 -->
     <div class="recharge-box">
       <div class="money-box">
-        <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.cardId===val.cardId}" :key="val.cardId">
+        <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.cardId}" :key="val.cardId">
           <span class="agent-name">{{val.name}}</span>
           <i class="icon-cl-log"></i>
           <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
           <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
-          <i v-show="postData.id===val.id" class="icon-check"></i>
-          <i v-show="postData.id===val.id" class="icon-check-yes"></i>
+          <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
+          <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
           <span class="give-money-end-time">赠额有效期至{{val.expirationDate}}</span>
         </p>
       </div>
@@ -25,10 +25,10 @@
       </div>
       <div class="payMethod">
         <p style="margin:.5rem auto;">支付方式</p>
-        <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
-          <i class="icon-zfb"></i>
-          <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
-        </div>
+        <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
+                                                <i class="icon-zfb"></i>
+                                                <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
+                                              </div> -->
         <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
           <i class="icon-wx"></i>
           <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
@@ -63,7 +63,8 @@
   import "mint-ui/lib/toast/style.css";
   
   import GLOBAL, {
-    getUserInfo
+    getUserInfo,
+    getOpenId
   } from "../../GLOBAL";
   import clAlert from "../my-cpt/cl-alert.vue";
   Vue.component("cl-alert", clAlert);
@@ -74,11 +75,11 @@
         selectedMoney: "",
         cardInfo: {},
         postData: {
-          id: "", //卡号
+          chargeCardId: "", //卡号
           payMethod: "", //支付方式：微信/支付宝
-          faceValue:'', //面值
-          userId:localStorage.getItem('userId'),
-          
+          faceValue: '', //面值
+          userId: localStorage.getItem('userId') || '',
+          openId: sessionStorage.getItem('openId') || ''
         },
         showClAlert: false //展示 绑定弹出层
       };
@@ -91,7 +92,8 @@
       // 选择卡片事件
       chooseCard(val) {
         this.selectedMoney = val.faceValue;
-        this.postData.id = val.id;
+        this.postData.chargeCardId = val.id;
+        this.postData.faceValue = val.faceValue;
       },
       // 选择付款方式
       payMethods(method) {
@@ -105,6 +107,7 @@
           .get(getRechargeCard)
           .then(function(data) {
             let res = data.data;
+            // alert('获取充值卡片信息接口!' + res.code);
             console.log('getRechargeCard|返回数据|', res);
             if (res.code === 200) {
               _this.rechargeCardsList = res.body;
@@ -133,16 +136,34 @@
       },
       // 充值接口
       rechargeInterface() {
-        let rechargeUrl = GLOBAL.interfacePath + '/clyun/rechargeUrl?userId=' + localStorage.getItem('userId');
+        let rechargeUrl = GLOBAL.interfacePath + '/clyun/rechargeUrl';
+        // alert('发送数据：' + JSON.stringify(this.postData));
         axios
-          .post(rechargeUrl,)
+          .post(rechargeUrl, this.postData)
           .then(function(data) {
+            let res = data.data;
             console.log(">>>rechargeUrl|返回数据|" + JSON.stringify(data.data));
-            data.data = {
-              state: "success"
-            };
-            if (data.data.state === "success") {
-              MessageBox.alert("充值成功！");
+            if (res.code === 200) {
+              WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                  "appId": res.body.appId, //公众号名称，由商户传入
+                  "timeStamp": res.body.timeStamp, //时间戳，自1970年以来的秒数
+                  "nonceStr": res.body.nonceStr, //随机串
+                  "package": res.body.package,
+                  "signType": res.body.signType, //微信签名方式：
+                  "paySign": res.body.sign //微信签名
+                },
+                function(res) {
+                  alert(JSON.stringify(res));
+                  if (res.err_msg === "get_brand_wcpay_request:ok") { // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                    MessageBox.alert('充值成功！');
+                  } else {
+                    MessageBox.alert('充值失败！');
+                  }
+                }
+              );
+            } else {
+              MessageBox.alert(res.msg);
             }
           })
           .catch(function(err) {
@@ -156,25 +177,13 @@
       // 立即充值
       rechargeNow() {
         let _this = this;
-        if (!this.postData.cardId) {
+        if (!this.postData.chargeCardId) {
           Toast("选择充值面额！");
         } else if (!this.postData.payMethod) {
           Toast("请选择支付方式！");
         } else {
-          console.log(JSON.stringify(this.postData));
-          // 判断是否绑定过用户
-          getUserInfo().then(function(userInfo) {
-            console.log("bind");
-            console.log(userInfo);
-            // 已绑定  调用充值接口
-            if (userInfo.bindState === true) {
-              _this.rechargeInterface();
-            } else {
-              // 未绑定  弹框提示
-              _this.showClAlert = true;
-              console.log(_this.showClAlert);
-            }
-          });
+          this.postData.openId = sessionStorage.getItem('openId');
+          this.rechargeInterface();
         }
       },
       back() {
@@ -184,17 +193,7 @@
     created() {
       //获取充值卡片信息
       this.getRechargeCardInfo();
-      let getUserCode = GLOBAL.interfacePath + '/clyun/getUserCode';
-      let url = window.location.href;
-      let code = '';
-      alert(url);
-      if(url.indexOf('code=')>-1){
-        code = url.split('code=')[1].split('&')[0];
-        alert('code='+code);
-      }else{
-        var url1 = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1dfdc1b4affcd19d&redirect_uri='+url.split('#')[0]+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
-        window.location.href = url1;
-      }
+      getOpenId();
     }
   };
 </script>
