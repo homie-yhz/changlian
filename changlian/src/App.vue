@@ -31,7 +31,7 @@
     },
     computed:{
       userId:function(){
-        return !!sessionStorage.getItem('userId');
+        return !!localStorage.getItem('userId');
       },
       chargingMechineAmount:function(){
         console.log('chargingMechineAmount改变');

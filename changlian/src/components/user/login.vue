@@ -41,7 +41,7 @@
 
 <script>
 import axios from "axios";
-import GLOBAL,{ws} from "../../GLOBAL";
+import GLOBAL,{ws,getOpenId} from "../../GLOBAL";
 import regExp from "../../RegExp";
 import { Toast,MessageBox } from "mint-ui";
 import loader from '../../loading';
@@ -84,8 +84,9 @@ export default {
               MessageBox.alert("登录成功！").then(action => {
                 //设置userId 以及 登录状态 
                 sessionStorage.setItem('userId',(res.body.userId||''));
-                alert('登录后userid'+sessionStorage.getItem('userId'));
+                // alert('登录后userid'+sessionStorage.getItem('userId'));
                 ws();
+                // getOpenId();
                 _this.$router.replace({name:'personalCenter'});
               });
               //用户不存在，前去注册？

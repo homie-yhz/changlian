@@ -16,7 +16,7 @@
 			</div>
 			<!-- 登录输入框 -->
 			<div style="width:85%;" class="m-auto operator-login-box">
-				<input type="text" v-model="operatorLoginInfo.userName" placeholder="账号">
+				<input type="tel" v-model="operatorLoginInfo.userName" maxlength="11" placeholder="账号" style="margin-bottom:3px;">
 				<input type="password" v-model="operatorLoginInfo.userPwd" placeholder="密码">
 				<!-- <p class="v-fb register-or-backpwd">
 				          <router-link :to="{name:'phoneInput',params:{title:'register'}}" class="v-fm td-u">新用户注册>></router-link>
@@ -45,7 +45,11 @@
 	export default {
 		data() {
 			return {
-				operatorLoginInfo: {}
+				operatorLoginInfo: {
+					userName:'',
+					userPwd:'',
+					userId:'',
+				}
 			};
 		},
 		methods: {
@@ -63,13 +67,11 @@
 				} else if (!this.operatorLoginInfo.userPwd) {
 					Toast('请输入密码！')
 				} 
-				// else if (!RegExp.pwd.test(this.operatorLoginInfo.userPwd)) {
-				// 	Toast('请输入密码！')
-				// } 
 				else {
 					//需要3个参数  还有一个 userId
-					_this.operatorLoginInfo.userId = sessionStorage.getItem('userId');
+					_this.operatorLoginInfo.userId = localStorage.getItem('userId');
 					let operatorLogin = GLOBAL.interfacePath + '/clyun/sysLogin';
+					console.log(_this.operatorLoginInfo);
 					axios
 						.post(operatorLogin, _this.operatorLoginInfo)
 						.then(function(data) {

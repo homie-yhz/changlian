@@ -97,7 +97,7 @@
 						.post(saveStationInfo, this.postData)
 						.then(function(data) {
 							let res = data.data;
-							alert(res.code);
+							// alert(res.code);
 							console.log('saveStationInfo|返回数据|', res);
 						})
 						.catch(function(err) {
@@ -135,9 +135,10 @@
 			//调用定位 以及扫一扫 信息
 			getCode(_this)
 				.then(function(WXoptions) {
+					// alert(JSON.stringify(WXoptions));
 					wx.config({
 						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-						appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+						appId: 'wx1dfdc1b4affcd19d', // 必填，公众号的唯一标识
 						timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
 						nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
 						signature: WXoptions.signature, // 必填，签名
@@ -147,6 +148,7 @@
 						wx.getLocation({
 							type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 							success: function(res) {
+								// alert('经纬度:'+JSON.stringify(res));
 								_this.postData.longitude = res.longitude;
 								_this.postData.latitude = res.latitude;
 								_this.locationState = true;
@@ -156,9 +158,6 @@
 						});
 					});
 				});
-	
-			//模拟定位信息
-			_this.locationState = true;
 			/**
 			 * qrCodeId:  from->qrCodePage
 			 */
@@ -168,6 +167,7 @@
 				.get(getMyStationInfo)
 				.then(function(data) {
 					let res = data.data;
+					// alert('返回的信息：'+JSON.stringify(res));
 					console.log('getMyStationInfo|返回数据|', res);
 					if (res.code === 200) {
 	

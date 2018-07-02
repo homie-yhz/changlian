@@ -46,17 +46,18 @@
           <!-- 余额  以及  去充值 -->
           <div class="v-fb v-fm v-i1" style="margin-top:1rem;">
             <span class="tac">余额：<span class="cl-red balance">{{userInfo.balance||'*'}} 元</span></span>
-            <router-link :to="{name:'recharge'}" @click="recharge" class="v-fcm btn-recharge">去充值</router-link>
+            <a @click="recharge()" class="v-fcm btn-recharge">去充值</a>
           </div>
   
         </div>
         <div class="v-fcm" style="width:80%;z-index:2;margin:1rem auto;">
-          <div @click="startCharge" class="v-fcm btn-start-charge">开始充电</div>
+          <div @click="startCharge()" class="v-fcm btn-start-charge">开始充电</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
   import axios from "axios";
   import GLOBAL, {
@@ -101,10 +102,8 @@
       },
       // 开始充电
       startCharge() {
-        alert('点击开始充电');
-        console.log('点击开始充电');
         let _this = this;
-        if (!!sessionStorage.getItem('userId')) {
+        if (!!localStorage.getItem('userId')) {
           // store.commit('increment');
           if (this.userInfo.balance - 0.1 < 0) {
             Toast("余额不足！无法充电！");
@@ -117,7 +116,7 @@
             sessionStorage.setItem('chargingTime', this.postData.chargingTime)
             // 请求充电
             let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
-              'userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
+              'userId=' + localStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
               '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&methodId=' + this.postData.chargeMethodId;
             console.log('>>>请求充电', requestChargeUrl);
             axios
@@ -155,9 +154,21 @@
           });
         }
       },
-      // 充值
       recharge() {
-        console.log("点击充值");
+        //未登录 去登录
+        if (!localStorage.getItem('userId')) {
+          MessageBox.alert('您还没有登录，前去登录？').then(action => {
+            this.$router.push({
+              name: "login"
+            });
+          });
+          return false;
+        } else {
+          this.$router.push({
+            name: 'recharge'
+          });
+        }
+  
       }
     },
     created() {

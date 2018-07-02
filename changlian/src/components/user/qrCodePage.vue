@@ -22,18 +22,18 @@ export default {
 	},
 	created(){
 		let _this = this;
-		alert(window.location.href);
-		alert('userId='+localStorage.getItem('userId'));
+		// alert(window.location.href);
+		// alert('userId='+localStorage.getItem('userId'));
 		localStorage.setItem('qrCodeId',this.$route.params.qrCodeId);
 		sessionStorage.setItem('qrCodeId',this.$route.params.qrCodeId);
 		let getScanQRCodePage = GLOBAL.interfacePath + '/clyun/getScanQRCodePage?qrCodeId='+this.$route.params.qrCodeId+'&userId='+(localStorage.getItem('userId')||'');
 		// console.log('>getScanQRCodePage|通过qrCodeId获取即将跳转的页面',getScanQRCodePage);
-		alert(getScanQRCodePage);
+		// alert(getScanQRCodePage);
 		axios
 			.get(getScanQRCodePage)
 			.then(function(data){
 				let res = data.data;
-				alert(JSON.stringify(res));
+				// alert(JSON.stringify(res));
 				console.log('>>>getAfterScanQRCode|返回数据|',res);
 				if(res.code === 200){
 					_this.msg = res.body.msg;

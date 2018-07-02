@@ -30,7 +30,7 @@
 						<a style="color:#adadad;" href="tel:400-800-8888">400-800-8888</a>
 					</div>
 				</div>
-				<div @click="loginOut" class="btn-loginOut">
+				<div @click="loginOut()" class="btn-loginOut">
 					<div>退出登录</div>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 			loginOut() {
 				MessageBox.confirm('确定退出?').then(action => {
 					let _this = this;
-					let userId = sessionStorage.getItem('userId');
+					let userId = localStorage.getItem('userId');
 					//let loginOutUrl = GLOBAL.interfacePath + '';
 					let loginOutUrl = '';
 					axios
@@ -69,7 +69,8 @@
 							};
 							if (data.data.state === 'success') {
 								sessionStorage.removeItem('userId');
-								localStorage.removeItem('userId');
+								//清空localStorage
+								localStorage.clear();
 								_this.$router.replace({
 									name: 'personalCenter'
 								});

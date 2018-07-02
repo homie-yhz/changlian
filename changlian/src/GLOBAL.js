@@ -167,12 +167,12 @@ export function ws() {
     //   console.log(1);
     //   store.commit('setChargingMechineAmount',Math.floor((Math.random()*10)+1));
     // },1000);
-    if (!!sessionStorage.getItem('userId')) {
+    if (!!localStorage.getItem('userId')) {
         let _this = this;
         let websocket = null;
         if ('WebSocket' in window) {
-            console.log("ws://" + GLOBAL.interfacePathWS + "/websocket/" + sessionStorage.getItem('userId'));
-            websocket = new WebSocket("ws://" + GLOBAL.interfacePathWS + "/websocket/" + sessionStorage.getItem('userId'));
+            console.log("ws://" + GLOBAL.interfacePathWS + "/websocket/" + localStorage.getItem('userId'));
+            websocket = new WebSocket("ws://" + GLOBAL.interfacePathWS + "/websocket/" + localStorage.getItem('userId'));
         } else {
             alert('当前浏览器 Not support websocket');
         }
@@ -228,7 +228,7 @@ export function ws() {
 export function getOpenId() {
         let code, url = window.location.href;
         // alert(url);
-        if (!sessionStorage.getItem('openId')) {
+        if (!localStorage.getItem('openId')) {
             if (url.indexOf('code=') > -1) {
                 code = url.split('code=')[1].split('&')[0];
                 // alert('code'+code);
@@ -240,7 +240,7 @@ export function getOpenId() {
                         let res = data.data;
                         // alert(JSON.stringify(res));
                         // alert('openId:' + res.body.openid);
-                        sessionStorage.setItem('openId', res.body.openid);
+                        localStorage.setItem('openId', res.body.openid);
                         console.log('getOpenId|返回数据|', res);
                     })
                     .catch(function (err) {

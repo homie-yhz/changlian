@@ -70,7 +70,7 @@
     </div>
     <div class="blank"></div>
     <div class="center-list">
-      <a v-if="showPlatform" @click="routerToPlatform()" class="v-fm">
+      <a v-if="!!userInfo.operatorId" @click="routerToPlatform()" class="v-fm">
         <i class="icon-operator"></i>
         <p class="v-i1">经营者管理平台</p>
         <i class="icon-right"></i>
@@ -106,12 +106,13 @@
     getUserInfo,
     getCode
   } from "../../GLOBAL";
+  import wx from 'weixin-js-sdk';
   export default {
     data() {
       return {
         userInfo: {},
-        showPlatform:false,
-        userId:null
+        showPlatform: false,
+        userId: null
       };
     },
     methods: {
@@ -130,21 +131,24 @@
           });
         }
       },
-      routerToPlatform(){
-        if(!!localStorage.getItem('operatorId')){
-          this.$router.push({name:'operatorMain'});
-        }else{
-          this.$router.push({name:'operatorLogin'});
+      routerToPlatform() {
+        if (!!localStorage.getItem('operatorId')) {
+          this.$router.push({
+            name: 'operatorMain'
+          });
+        } else {
+          this.$router.push({
+            name: 'operatorLogin'
+          });
         }
       },
       scanQRCode() {
-        alert('调用扫一扫');
         wx.scanQRCode({
           needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function(res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            alert('扫一扫返回地址：' + result);
+            // alert('扫一扫返回地址：' + result);
           }
         });
       }
@@ -155,11 +159,11 @@
       console.log('login');
       console.log(this.userId);
       if (!!this.userId) {
-        this.showPlatform = true;
         getUserInfo()
           .then((userInfo) => {
-            console.log('userInfo',userInfo);
+            console.log('userInfo', userInfo);
             _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
+            localStorage.setItem('operatorId',_this.userInfo.operatorId||'');
           })
           .catch(function(err) {
             loader.hide();
@@ -169,35 +173,24 @@
               err: JSON.stringify(err)
             });
           })
-        //获取code 调用扫一扫功能
-        getCode(_this).then(function(WXoptions) {
+  
+      }
+      //获取code 调用扫一扫功能
+      getCode(_this)
+        .then(function(WXoptions) {
           // alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
           wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: 'wx632e516935ac17d7', // 必填，公众号的唯一标识
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wx1dfdc1b4affcd19d', // 必填，公众号的唯一标识
             timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
             nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
             signature: WXoptions.signature, // 必填，签名
             jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
           });
-          wx.ready(function() {
-            wx.getLocation({
-              type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-              success: function(res) {
-                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                var speed = res.speed; // 速度，以米/每秒计
-                var accuracy = res.accuracy; // 位置精度
-                alert('获取经纬度：经度：' + latitude + '(经度)/' + longitude + '(纬度)/' + speed + '(速度)/' + accuracy + '(经度)');
-              }
-            });
-          });
         });
-      }
     }
   };
 </script>
-
 <style lang="scss">
   @import "../../../static/css/common.scss";
   @import "../../../static/css/iconfont.css";

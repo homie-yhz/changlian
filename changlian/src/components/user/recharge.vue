@@ -7,34 +7,37 @@
         <span class="arrow-back"></span>
       </div>
     </header>
-    <!-- 充值模块 -->
-    <div class="recharge-box">
-      <div class="money-box">
-        <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.cardId}" :key="val.cardId">
-          <span class="agent-name">{{val.name}}</span>
-          <i class="icon-cl-log"></i>
-          <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
-          <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
-          <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
-          <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
-          <span class="give-money-end-time">赠额有效期至{{val.expirationDate}}</span>
-        </p>
-      </div>
-      <div class="mt-8 mb-5 fz-50">
-        <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span>
-      </div>
-      <div class="payMethod">
-        <p style="margin:.5rem auto;">支付方式</p>
-        <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
-                                                <i class="icon-zfb"></i>
-                                                <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
-                                              </div> -->
-        <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
-          <i class="icon-wx"></i>
-          <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
+    <div class="scroll-box" style="padding-bottom:3rem;overflow:scroll;">
+      <!-- 充值模块 -->
+      <div class="recharge-box">
+        <div class="money-box">
+          <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.id}" :key="val.cardId">
+            <span class="agent-name">{{val.name}}</span>
+            <i class="icon-cl-log"></i>
+            <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
+            <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
+            <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
+            <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
+            <span class="give-money-end-time">赠额有效期至{{val.expirationDate}}</span>
+          </p>
+        </div>
+        <div class="mt-8 mb-5 fz-50">
+          <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span>
+        </div>
+        <div class="payMethod">
+          <p style="margin:.5rem auto;">支付方式</p>
+          <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
+                                                  <i class="icon-zfb"></i>
+                                                  <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
+                                                </div> -->
+          <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
+            <i class="icon-wx"></i>
+            <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
+          </div>
         </div>
       </div>
     </div>
+  
     <!-- 充值按钮 -->
     <div class="recharge-bottom-box">
       <div class="agreement v-fcm">
@@ -79,7 +82,7 @@
           payMethod: "", //支付方式：微信/支付宝
           faceValue: '', //面值
           userId: localStorage.getItem('userId') || '',
-          openId: sessionStorage.getItem('openId') || ''
+          openId: localStorage.getItem('openId') || ''
         },
         showClAlert: false //展示 绑定弹出层
       };
@@ -182,7 +185,7 @@
         } else if (!this.postData.payMethod) {
           Toast("请选择支付方式！");
         } else {
-          this.postData.openId = sessionStorage.getItem('openId');
+          this.postData.openId = localStorage.getItem('openId');
           this.rechargeInterface();
         }
       },
@@ -330,6 +333,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    z-index:3;
     .agreement {
       height: 1rem;
     }
