@@ -62,7 +62,7 @@
         <p class="v-i1">充电记录</p>
         <i class="icon-right"></i>
       </a>
-      <a @click="routerTo('chooseStationPort')" :to="{name:'chooseStationPort',params:{stationId:userInfo.usualStationId}}" class="v-fm">
+      <a @click="routerTo('chooseStationPort',{'stationId':userInfo.usualStationId})" :to="{name:'chooseStationPort',params:{stationId:userInfo.usualStationId}}" class="v-fm">
         <i class="icon-star"></i>
         <p class="v-i1">常用电站</p>
         <i class="icon-right"></i>
@@ -102,6 +102,11 @@
 </template>
 
 <script>
+import {
+    Toast,
+    MessageBox
+  } from "mint-ui";
+  import "mint-ui/lib/toast/style.css";
   import GLOBAL, {
     getUserInfo,
     getCode
@@ -121,6 +126,16 @@
       // 跳到到相关页面
       routerTo(name, params) {
         if (!!localStorage.getItem('userId')) {
+          console.log(name);
+          if(name === 'chooseStationPort'){
+            console.log(params);
+            if(!params.stationId){
+              MessageBox.confirm('您还没有绑定电站，前去绑定？').then(action =>{
+                this.$router.push({name:'nearbyStation',params:{'listType':'normalList'}});
+              });
+              return false;
+            }
+          }
           this.$router.push({
             name: name,
             params: params

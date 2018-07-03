@@ -98,43 +98,42 @@
           this.postData.currentPage++;
           // let getRechargeLogListUrl = "../../../../static/data/stationInfo.json";
           let getRechargeLogListUrl = GLOBAL.interfacePath + '/clyun/getRechargeLogListUrl?' +
-            'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + this.postData.currentPage + '&listLen=' + this.postData.listLen;
+            'userId=' + localStorage.getItem('userId') + '&currentPage=' + this.postData.currentPage + '&listLen=' + this.postData.listLen;
           // let getRechargeLogListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
-          getRechargeLogListUrl = '';
           console.log(JSON.stringify(this.postData));
           axios.get(getRechargeLogListUrl).then(function(data) {
-            data = {
-              data: {
-                body: {
-                  'hasNext': true,
-                  'rechargeLogList': [{
-                    "state": "微信支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }, {
-                    "state": "微信支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }, {
-                    "state": "微信支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }, {
-                    "state": "微信支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }, {
-                    "state": "支付宝支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }, {
-                    "state": "支付宝支付成功",
-                    "time": "2017-09-08 08:04",
-                    "money": "20.00"
-                  }]
-                }
-              }
-            }
+            // data = {
+            //   data: {
+            //     body: {
+            //       'hasNext': true,
+            //       'rechargeLogList': [{
+            //         "state": "微信支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }, {
+            //         "state": "微信支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }, {
+            //         "state": "微信支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }, {
+            //         "state": "微信支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }, {
+            //         "state": "支付宝支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }, {
+            //         "state": "支付宝支付成功",
+            //         "time": "2017-09-08 08:04",
+            //         "money": "20.00"
+            //       }]
+            //     }
+            //   }
+            // }
             // console.log(JSON.stringify(data));
             let res = data.data;
             if (_this.scrollState === "refresh") {
@@ -149,10 +148,10 @@
             if (_this.rechargeLogList.length === 0) {
               let noDataDom = document.getElementsByClassName("no-data-text")[0];
               let noDataMsgHtml =
-                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+                '暂无充值记录！';
               noDataDom.innerHTML = noDataMsgHtml;
             } else {
-              _this.noDataText = "附近10公里范围内没有更多站点了！";
+              _this.noDataText = "暂无更多充值记录！";
             }
             _this.$nextTick(function() {
               _this.$refs.scrollDom.resize();

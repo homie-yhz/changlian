@@ -20,12 +20,12 @@
         <!-- 卡片列表 -->
         <ul class="cards-list">
           <li v-for="card in rechargeCardsList" :key="card.ID">
-            <p>{{card.buyCardTime}} 购卡</p>
+            <p>{{new Date(card.createTime).toLocaleString()}} 购卡</p>
             <div class="v-fb">
               <div>
-                <p><span>充</span>&nbsp;<span><span>￥</span>{{card.cardPrice}}</span>
+                <p><span>充</span>&nbsp;<span><span>￥</span>{{card.amount}}</span>
                 </p>
-                <p><span>余</span>&nbsp;<span><span>￥</span>{{card.cardBalance}}</span>
+                <p><span>余</span>&nbsp;<span><span>￥</span>{{card.residueFace}}</span>
                 </p>
               </div>
               <div class="book-mark v-fm">
@@ -49,11 +49,11 @@
               </div>
               <div>
                 <p>
-                  赠 <span>￥ {{card.cardGiveMoney}}</span>&nbsp;&nbsp;&nbsp;&nbsp;余
-                  <span> ￥ {{card.cardGiveMoneyBalance}}</span>
+                  赠 <span>￥ {{card.freeAmount}}</span>&nbsp;&nbsp;&nbsp;&nbsp;余
+                  <span> ￥ {{card.residueFree}}</span>
                 </p>
-                <p style="font-size:.4rem;text-align:right;">限{{card.allowUseAddr}}充电站使用</p>
-                <p class="tar" style="font-size:.4rem;text-align:right;">有效期至：{{card.giveMoneyEndTime}}</p>
+                <p style="font-size:.4rem;text-align:right;">限{{card.stationAddress}}充电站使用</p>
+                <p class="tar" style="font-size:.4rem;text-align:right;">有效期至：{{!card.expiryDate?'':new Date(card.expiryDate).toLocaleString()}}</p>
               </div>
             </div>
           </li>
@@ -82,40 +82,18 @@
       }
     },
     created() {
-
       let _this = this;
-			let getRechargeCardsList = GLOBAL.interfacePath + '/clyun/getRechargeCardsList?userId=' + sessionStorage.getItem('userId');
+			let getRechargeCardsList = GLOBAL.interfacePath + '/clyun/getRechargeCardsList?userId=' + localStorage.getItem('userId');
       axios
         .get(getRechargeCardsList)
         .then(function(data) {
           let res = data.data;
           if(res.code===200){
-            console.log('getRechargeCardsList|返回数据|' + JSON.stringify(res.body));
-						_this.rechargeCardsList = JSON.parse(res.body);
+            console.log('getRechargeCardsList|返回数据|',res.body);
+						_this.rechargeCardsList = res.body;
           }else{
             console.log(res.msg);
           }
-          // data.data = [{
-          //     ID: '001',
-          //     buyCardTime: '2017-01-02 10:30',
-          //     cardPrice: '100.00',
-          //     cardBalance: '100.00',
-          //     cardGiveMoney: '20.00',
-          //     cardGiveMoneyBalance: '11.11',
-          //     allowUseAddr: '石家庄天天家园小区',
-          //     giveMoneyEndTime: '2017-01-01'
-          //   },
-          //   {
-          //     ID: '001',
-          //     buyCardTime: '2017-01-02 10:30',
-          //     cardPrice: '100.00',
-          //     cardBalance: '100.00',
-          //     cardGiveMoney: '20.00',
-          //     cardGiveMoneyBalance: '11.11',
-          //     allowUseAddr: '石家庄天天家园小区',
-          //     giveMoneyEndTime: '2017-01-01'
-          //   }
-          // ];
         })
         .catch(function(err) {
           console.log({

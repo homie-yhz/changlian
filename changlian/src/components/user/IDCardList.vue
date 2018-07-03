@@ -20,7 +20,7 @@
 							</div>
 						</div>
 						<!-- 解绑按钮 -->
-						<div @click="unbind(IDCard.num)" :class="{'slide':IDCard.choosed}" class="btn-unbind">解绑</div>
+						<div @click="handleIDCard('unbind',IDCard.num)" :class="{'slide':IDCard.choosed}" class="btn-unbind">解绑</div>
 					</li>
 					<li @click="addIDCard()" class="add-IDCard v-fm">
 						<span>＋</span>
@@ -32,7 +32,7 @@
 					<div class="cardNum-Ipt">
 						<span>卡号</span> <input type="tel" v-model="bindIDCardNum" placeholder="请输入卡号">
 					</div>
-					<div @click="bindIDCard" class="btn-bind">立即绑定</div>
+					<div @click="handleIDCard('bind')" class="btn-bind">立即绑定</div>
 				</div>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 		Toast
 	} from "mint-ui";
 	import "mint-ui/lib/toast/style.css";
-import RegExp from '../../RegExp';
+	import RegExp from '../../RegExp';
 	export default {
 		data() {
 			return {
@@ -75,78 +75,61 @@ import RegExp from '../../RegExp';
 					}
 				}
 			},
-			unbind(cardId) {
+			addIDCard() {
+				this.showCardNumBox = true;
+			},
+			handleIDCard(method, unbindCardNum) {
+				let postData = {
+					'userId': localStorage.getItem('userId'),
+					'cardNum': '',
+					'method': ''
+				}
+				if (method === 'bind') {
+					postData.cardNum = this.bindIDCardNum;
+					postData.method = 1;
+					if (!this.bindIDCardNum || !RegExp.IDCard.test(this.bindIDCardNum)) {
+						Toast('请输入正确的ID卡卡号！');
+						return false;
+					}
+				}else{
+					postData.cardNum = unbindCardNum;
+					postData.method = 2;
+				}
 				let _this = this;
-				console.log('要解绑的ID' + cardId);
-				//解绑ID卡地址   将ID卡的 ID发送后台
-				//let unbindIDCardUrl = GLOBAL.interfacePath + '';
-				//params:   cardId='';
-				let unbindIDCardUrl = GLOBAL.interfacePath + '/clyun/unbindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+cardId;
-				console.log(unbindIDCardUrl);
+				let bindIDCardUrl = GLOBAL.interfacePath + '/clyun/bindIDCardUrl';
+				// ?userId=' + sessionStorage.getItem('userId')+'&cardNum='+this.bindIDCardNum
 				axios
-					.get(unbindIDCardUrl)
+					.post(bindIDCardUrl, postData)
 					.then(function(data) {
-						console.log('unbindIDCardUrl|返回数据|' + JSON.stringify(data.data));
 						let res = data.data;
-						if (res.code===200) {
-							Toast('解绑成功！');
+						if (res.code === 200) {
+							Toast(method==='bind'?'绑定成功！':'解绑成功！');
+							_this.bindIDCardNum = '';
+							_this.showCardNumBox = false;
 							_this.getIDCardList();
 						} else {
-							console.log('解绑失败！');
-							Toast(res.msg);
-							_this.getIDCardList();
+							Toast(method==='bind'?'绑定失败！':'解绑失败！' + res.msg);
 						}
 					})
 					.catch(function(err) {
 						console.log({
-							'url': unbindIDCardUrl,
+							'url': bindIDCardUrl,
 							'err': JSON.stringify(err)
 						});
 					});
-			},
-			addIDCard() {
-				this.showCardNumBox = true;
-			},
-			bindIDCard() {
-				if (!this.bindIDCardNum || !RegExp.num.test(this.bindIDCardNum)){
-					Toast('请输入正确的ID卡卡号！');
-				} else {
-					let _this = this;
-					let bindIDCardUrl = GLOBAL.interfacePath + '/bindIDCardUrl?userId=' + sessionStorage.getItem('userId')+'&cardNum='+this.bindIDCardNum;
-					axios
-						.get(bindIDCardUrl)
-						.then(function(data) {
-							let res = data.data;
-							console.log('code'+res.code);
-							if (res.code === 200) {
-								Toast('绑定成功！');
-								_this.bindIDCardNum = '';
-								_this.showCardNumBox = false;
-								_this.getIDCardList();
-							} else {
-								Toast(res.msg);
-							}
-						})
-						.catch(function(err) {
-							console.log({
-								'url': bindIDCardUrl,
-								'err': JSON.stringify(err)
-							});
-						});
-				}
 			},
 			//获取ID卡片列表
 			getIDCardList() {
 				let _this = this;
 				// let IDCardListUrl = "";
-				let IDCardListUrl = GLOBAL.interfacePath + '/IDCardListUrl?userId=' + sessionStorage.getItem('userId');
+				let IDCardListUrl = GLOBAL.interfacePath + '/clyun/IDCardListUrl?userId=' + localStorage.getItem('userId');
 				axios
 					.get(IDCardListUrl)
 					.then(function(data) {
 						console.log(data);
 						let res = data.data;
 						if (res.code === 200) {
-							console.log('getRechargeCardsList/IDCardListUrl|返回数据|' + JSON.stringify(res));
+							console.log('IDCardListUrl|返回数据|' + JSON.stringify(res));
 							_this.IDCardList = res.body;
 						}
 					})
@@ -161,7 +144,7 @@ import RegExp from '../../RegExp';
 		created() {
 			this.getIDCardList();
 		}
-	};
+	}
 </script>
 
 <style lang="scss">
