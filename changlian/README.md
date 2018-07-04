@@ -63,6 +63,7 @@ http://blog.csdn.net/u014633852/article/details/73706459
 104|saveTerminalInfo|用户扫描端口后 提交信息报错
 105|bindStationUrl|用户点击绑定电站按钮后的接口报错
 107|getRechargeCard|获取充值卡片信息报错
+108|
 # 2018 06 21 遇到问题汇总
 1.点击充电反应过慢
 

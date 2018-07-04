@@ -11,10 +11,12 @@
         <div style="width:85%;" class="register-box">
           <div>
             <input type="tel" v-model="body.phone" maxlength="11" placeholder="手机号">
-            <span @click="getCode" style="color:#2eafed">{{getCodeBtn.text}}</span>
+            <span @click="getCode" v-bind:style="{color:getCodeBtn.state===1?'#2eafed':'#bbbbbb'}">{{getCodeBtn.text}}</span>
           </div>
-          <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码">
+          <input type="tel" v-model="body.identifyCode" maxlength="6" placeholder="验证码" style="margin-bottom:3px;">
+          <input type="password" v-model="body.newPwd" maxlength="16" placeholder="密码（请输入6-16位字母+数字的密码组合）">
           <p @click="nextStep" class="btn btn-login v-fcm" :class="{disable:!allowNext}">下一步</p>
+          <!-- <p @click="nextStep" class="btn btn-login v-fcm">下一步</p> -->
         </div>
       </div>
     </div>
@@ -25,10 +27,11 @@
 import GLOBAL from "../../GLOBAL";
 import axios from "axios";
 import regExp from "../../RegExp";
-import { Toast } from "mint-ui";
+import loader from "../../loading";
+import { Toast, MessageBox } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
-const leftTime = 60;
-import loader from '../../loading';
+const leftTime = 5;
+
 export default {
   data() {
     return {
@@ -36,27 +39,59 @@ export default {
       title: "",
       allowNext: false,
       getCodeBtn: {
-        state: 1, //0:不可以点击  1：允许点击  2：倒计时
+        state: 0, //0:不可以点击  1：允许点击  2：倒计时
         leftTime: leftTime,
         text: "发送验证码" //倒计时剩余时间,
       },
       body: {
         phone: "",
-        identifyCode: ""
-      }
+        identifyCode: "",
+        newPwd: ""
+      },
     };
   },
   methods: {
-		back(){
+    back() {
       this.$router.go(-1);
+    },
+    nextStep() {
+      if (this.allowNext) {
+
+        loader.show();
+        let _this = this;
+        let url = GLOBAL.interfacePath + "/clyun/getBackPwd";
+        axios
+          .post(url, this.body)
+          .then(function(data) {
+            let res = data.data;
+            // console.log(res.code);
+            loader.hide();
+            if (res.code === 200) {
+              MessageBox.alert(res.msg).then(action => {
+                localStorage.clear();
+                _this.$router.replace({name: "login"});
+              });
+            } else {
+              MessageBox.alert(data.data.msg);
+            }
+          })
+          .catch(function(err) {
+            loader.hide();
+            console.log(err);
+          });
+      }
     },
     //获取验证码
     getCode() {
       if (this.getCodeBtn.state === 1) {
-        console.log("允许点击");
+        if(regExp.phone.test(this.body.phone)){
+          console.log("获取验证码成功！");
         this.getCodeBtn.text = leftTime + "s后重新获取";
         this.countDown();
         this.getIndentifyCode_IF();
+        }else{
+          MessageBox.alert('手机号输入有误！请重新输入！');
+        }
       }
     },
     //倒计时
@@ -69,11 +104,13 @@ export default {
           _this.countDown();
         } else {
           // 重置数据
-          _this.getCodeBtn = {
-            state: 1, //0:不可以点击  1：允许点击  2：倒计时
-            leftTime: leftTime,
-            text: "重新获取" //倒计时剩余时间,
-          };
+          _this.getCodeBtn.leftTime = leftTime;
+          _this.getCodeBtn.text = "重新获取";
+          if (_this.body.phone.length === 11) {
+            _this.getCodeBtn.state = 1;
+          } else {
+            _this.getCodeBtn.state = 0;
+          }
         }
       }, 1000);
     },
@@ -108,38 +145,24 @@ export default {
             err: JSON.stringify(err)
           });
         });
-    },
-    //点击下一步  注册成功
-    nextStep() {
-			let _this = this;
-      //let postRegisterInfoUrl = GLOBAL.interfacePath + '';
-      let postPhoneInfoUrl = "";
-      axios
-        .get(postPhoneInfoUrl)
-        .then(function(data) {
-					console.log("postPhoneInfoUrl|返回数据|" + JSON.stringify(data.data));
-					data.data = {
-						state:'success'
-					}
-					if(data.data.state === 'success'){
-						_this.$router.push({name:'setPwd'});
-					}else{
-						Toast('手机号或验证码有误！');
-					}
-        })
-        .catch(function(err) {
-          console.log({ url: postPhoneInfoUrl, err: JSON.stringify(err) });
-        });
     }
   },
-  created() {},
   watch: {
     body: {
       handler(nv) {
         console.log(JSON.stringify(nv));
+        if (this.getCodeBtn.state !== 2) {
+          if (nv.phone.length === 11) {
+            this.getCodeBtn.state = 1;
+            console.log("长度11 允许点击，点击后进行获取验证码操作");
+          } else {
+            this.getCodeBtn.state = 0;
+          }
+        }
         if (
           regExp.phone.test(nv.phone) &&
-          regExp.identifyCode.test(nv.identifyCode)
+          regExp.identifyCode.test(nv.identifyCode) &&
+          regExp.pwd.test(nv.newPwd)
         ) {
           this.allowNext = true;
         } else {
@@ -148,6 +171,9 @@ export default {
       },
       deep: true
     }
+  },
+  created(){
+
   }
 };
 </script>

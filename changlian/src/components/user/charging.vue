@@ -266,11 +266,11 @@
         loader.show();
         let _this = this;
         //let stopChargeUrl = GLOBAL.interfacePath + '';
-        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge?userId=' + sessionStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') + '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&chargeLogId=' + sessionStorage.getItem('chargeRecordId');
+        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge';
         // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
         console.log(stopChargeUrl);
         axios
-          .get(stopChargeUrl)
+          .post(stopChargeUrl,{'userId':localStorage.getItem('userId'),'chargeLogId':sessionStorage.getItem('chargeRecordId')})
           .then(function(data) {
             // let res = data.data;
             // console.log("stopChargeUrl|停止充电返回数据|", data.data);

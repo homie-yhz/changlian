@@ -5,14 +5,14 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 export default {
-    // env: 'UAT',
-    env: 'test',
+    env: 'UAT',
+    // env: 'test',
     // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
-    interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-    interfacePathWS: '192.168.43.202:8080/v1/api0',
+    // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+    // interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-    // interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-    // interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+    interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
@@ -93,6 +93,7 @@ export function getUserInfo() {
                 if (res.code === 200) {
                     console.log('>>>getUserInfoUrl|用户个人信息', data.data);
                     sessionStorage.setItem('loginState', res.body.loginState);
+                    localStorage.setItem('phone',res.body.phone);
                     //调用 获取用户信息接口的时候 就会改变vuex中的loginState与chargingMechineAmount的状态。
                     store.commit('setLoginState', res.body.loginState);
                     store.commit('setChargingMechineAmount', res.body.chargingMechineAmount);

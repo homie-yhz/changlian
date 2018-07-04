@@ -16,11 +16,11 @@
           <ul>
             <li v-if="chargeElecLogList.length>0" class="" v-for="chargeElecLog in chargeElecLogList" :key="chargeElecLog.id">
               <div>{{chargeElecLog.time||''}}</div>
-              <div>{{chargeElecLog.addr||''}}</div>
+              <div>{{chargeElecLog.stationName||''}}</div>
               <div>设备：{{chargeElecLog.equipmentNum}}</div>
               <div class="v-fb">
-                <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.chargeTime||''}}</p>
-                <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||''}} 元</p>
+                <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.charge_time|SToHM}}</p>
+                <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||'0.00'}} 元</p>
               </div>
             </li>
           </ul>
@@ -38,8 +38,12 @@
   import {
     Spinner
   } from 'mint-ui';
+  import {
+    timestampToData,
+    SToHM
+  } from "../../Filter";
+  SToHM();
   Vue.component('mt-spinner', Spinner);
-
   import VueScroller from "vue-scroller";
   Vue.use(VueScroller);
   export default {
@@ -48,10 +52,9 @@
         chargeElecLogList: [],
         hasNext: true,
         postData: {
-          currentPage: 1,
-          listLen: 1
+          currentPage: 0, 
+          listLen: 10
         },
-        loadingState: true,
         scrollState: '',
         height: '100%',
         noDataText: '没有更多数据！'
@@ -85,60 +88,59 @@
       },
       loadMore(done) {
         let _this = this;
-        setTimeout(function(){
           _this.postData.currentPage++;
           //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
           let getChargeElecLogListUrl = GLOBAL.interfacePath + '/clyun/getChargeElecLogListUrl?' +
-            'userId=' + sessionStorage.getItem('userId') + '&currentPage=' + _this.postData.currentPage + '&listLen=' + _this.postData.listLen;
-            console.log(getChargeElecLogListUrl);
-            getChargeElecLogListUrl = '';
+            'userId=' + localStorage.getItem('userId') + '&currentPage=' + _this.postData.currentPage + '&listLen=' + _this.postData.listLen;
+          console.log(getChargeElecLogListUrl);
           axios
             .get(getChargeElecLogListUrl)
             .then(function(data) {
-              data= {
-                data:{
-                  code:200,
-                  body:{
-                'hasNext': true,
-                'chargeElecLogList': [{
-                  "time": "2017-11-10 09:09",
-                  "addr": "龙井大事",
-                  "equipmentNum": "3213213213",
-                  "chargeTime": "2小时12分钟",
-                  "coast": "22"
-                }]
-              }
-                }
-              }
-              console.log('getChargeElecLogListUrl|返回数据|' + JSON.stringify(data.data));
+              console.log('充电记录列表',data.data);
               let res = data.data;
-
               if (res.code === 200) {
-                console.log('in');
-            if (_this.scrollState === "refresh") {
-              _this.chargeElecLogList = [];
-            }
-            _this.chargeElecLogList = _this.chargeElecLogList.concat(
-              res.body.chargeElecLogList
-            );
-            _this.hasNext = res.body.hasNext;
-            _this.scrollState = "";
+                let res = data.data;
   
-            if (_this.chargeElecLogList.length === 0) {
-              let noDataDom = document.getElementsByClassName("no-data-text")[0];
-              let noDataMsgHtml =
-                '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
-              noDataDom.innerHTML = noDataMsgHtml;
-            } else {
-              _this.noDataText = "没有更多数据！";
-            }
-            _this.$nextTick(function() {
-              _this.$refs.scrollDom.resize();
-            });
-            done();
-
+                if (res.code === 200) {
+                  console.log('in');
+                  if (_this.scrollState === "refresh") {
+                    _this.chargeElecLogList = [];
+                  }
+                  _this.chargeElecLogList = _this.chargeElecLogList.concat(
+                    res.body.chargeElecLogList
+                  );
+                  _this.hasNext = res.body.hasNext;
+                  _this.scrollState = "";
+  
+                  if (_this.chargeElecLogList.length === 0) {
+                    let noDataDom = document.getElementsByClassName("no-data-text")[0];
+                    let noDataMsgHtml =
+                      '暂无充电记录！';
+                    noDataDom.innerHTML = noDataMsgHtml;
+                  } else {
+                    _this.noDataText = "没有更多数据！";
+                  }
+                  _this.$nextTick(function() {
+                    _this.$refs.scrollDom.resize();
+                  });
+                  done();
+                }
+                // data= {
+                //   data:{
+                //     code:200,
+                //     body:{
+                //   'hasNext': true,
+                //   'chargeElecLogList': [{
+                //     "time": "2017-11-10 09:09",
+                //     "addr": "龙井大事",
+                //     "equipmentNum": "3213213213",
+                //     "chargeTime": "2小时12分钟",
+                //     "coast": "22"
+                //   }]
+                // }
+                //   }
+                // }
               }
-              
             })
             .catch(function(err) {
               console.log({
@@ -146,24 +148,23 @@
                 'err': JSON.stringify(err)
               });
             });
-        },1000);
-          
-    },
-    created() {
-  
-      let ICCardListUrl = GLOBAL.interfacePath + "";
-      axios
-        .get(ICCardListUrl)
-        .then(function(data) {
-          console.log("ICCardListUrl|返回数据|" + JSON.stringify(data.data));
-        })
-        .catch(function(err) {
-          console.log({
-            url: ICCardListUrl,
-            err: JSON.stringify(err)
-          });
-        });
-    }
+      },
+      mounted(){
+      },
+      created() {
+        // let ICCardListUrl = GLOBAL.interfacePath + "";
+        // axios
+        //   .get(ICCardListUrl)
+        //   .then(function(data) {
+        //     console.log("ICCardListUrl|返回数据|" + JSON.stringify(data.data));
+        //   })
+        //   .catch(function(err) {
+        //     console.log({
+        //       url: ICCardListUrl,
+        //       err: JSON.stringify(err)
+        //     });
+        //   });
+      }
     }
   };
 </script>
@@ -171,18 +172,18 @@
 <style lang="scss">
   @import "../../../static/css/common.scss";
   .chargeElecLog-list {
-    & ul{
-    padding: 0 .8rem;
+    & ul {
+      padding: 0 .8rem;
       li {
-      padding: .4rem 0;
-      border-bottom: 1px solid #cfcfcf;
-      &>div {
-        margin-bottom: .2rem;
-        &:last-child {
-          margin-bottom: 0;
+        padding: .4rem 0;
+        border-bottom: 1px solid #cfcfcf;
+        &>div {
+          margin-bottom: .2rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
       }
-    }
     }
   }
   

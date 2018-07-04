@@ -67,7 +67,7 @@
         GLOBAL.interfacePath +
         "/clyun/chargingList?" +
         "userId=" +
-        sessionStorage.getItem("userId")+'&chargeLogId=0';  //该接口中的 chargeLogId 是不需要的选项，但是要穿。
+        localStorage.getItem("userId")+'&chargeLogId=0';  //该接口中的 chargeLogId 是不需要的选项，但是要穿。
       axios
         .get(chargingList)
         .then(function(data) {
