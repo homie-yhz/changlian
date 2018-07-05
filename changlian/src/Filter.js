@@ -14,7 +14,18 @@ export function timestampToData(){
 		return h+'小时'+m+'分';
 	});
 }
-
+export function timestampToEnglishData(){
+	Vue.filter('timestampToEnglishData',function(timestamp){
+		let date = new Date(timestamp);
+		let Y = date.getFullYear();
+		let M = date.getMonth() + 1;
+		let D = date.getDate();
+		let h = date.getHours();
+		let m = date.getMinutes();
+		let s = date.getSeconds();
+		return Y+'-'+(M<10?'0'+M:M)+'-'+(D<10?'0'+D:D)+' '+(h<10?'0'+h:h)+':'+(m<10?'0'+m:m)
+	});
+}
 export function SToHM(){
 	Vue.filter('SToHM',function(value){
 		let h = Math.floor(value/60/60);

@@ -15,6 +15,10 @@
 						<span>修改登录密码</span>
 						<i class="icon-right"></i>
 					</router-link>
+					<div v-if="!!usualStationId" @click="unbindStation(usualStationId)">
+						<span>解绑电站</span>
+						<i class="icon-right"></i>
+					</div>
 					<p class="blank"></p>
 					<div>
 						<span>当前版本</span>
@@ -41,13 +45,15 @@
 <script>
 	import GLOBAL from "../../GLOBAL";
 	import axios from 'axios';
+	import loader from '../../loading';
 	import {
 		MessageBox
 	} from "mint-ui";
 	export default {
 		data() {
 			return {
-				level: ""
+				level: "",
+				usualStationId:''
 			};
 		},
 		methods: {
@@ -63,7 +69,7 @@
 					axios
 						.get(loginOutUrl)
 						.then(function(data) {
-							console.log('>>>退出登录|返回数据|' ,data.data);
+							console.log('>>>退出登录|返回数据|', data.data);
 							data.data = {
 								state: 'success'
 							};
@@ -84,10 +90,38 @@
 						});
 				});
 	
+			},
+			unbindStation(usualStationId) {
+				let _this = this;
+				MessageBox.confirm('确认解绑电站？').then(action => {
+				loader.show();
+					let unbindStationUrl = GLOBAL.interfacePath + '/clyun/unbindStation';
+					axios
+						.post(unbindStationUrl,{'userId':localStorage.getItem('userId'),'stationId':_this.usualStationId})
+						.then(function(data) {
+							loader.hide();
+							let res = data.data;
+							if (res.code === 200) {
+								localStorage.setItem('usualStationId', '');
+								_this.usualStationId = '';
+								MessageBox.alert(res.msg);
+							} else {
+								_this.usualStationId = '';
+								MessageBox.alert(res.msg);
+							}
+							console.log('unbindStationUrl|返回数据|', res);
+						})
+						.catch(function(err) {
+							loader.hide();
+							MessageBox.alert('接口异常！错误代码:105');
+							console.log(err);
+						});
+				});
 			}
 		},
 		created() {
 			this.level = GLOBAL.level;
+			this.usualStationId = localStorage.getItem('usualStationId');
 		}
 	};
 </script>

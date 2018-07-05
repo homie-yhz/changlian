@@ -189,6 +189,7 @@
                 loader.hide();
                 let res = data.data;
                 if(res.code === 200){
+                  localStorage.setItem('usualStationId',stationInfo.stationId);
                   MessageBox.alert('绑定电站成功！');
                   _this.$refs.scrollDom.triggerPullToRefresh();
                 }else{

@@ -84,6 +84,7 @@ export default {
               MessageBox.alert("登录成功！").then(action => {
               //设置userId 以及 登录状态 
               sessionStorage.setItem('userId',(res.body.userId||''));
+              localStorage.setItem('usualStationId',(res.body.usualStationId||''));
               getUserInfo();
               ws();
               // getOpenId();

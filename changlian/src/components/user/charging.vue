@@ -8,7 +8,7 @@
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
                     <span class="arrow-back"></span>
-                  </div> -->
+      </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -48,9 +48,7 @@
             <div class="v-fcm">
               <p>已充时长 {{chargeLog.hasChargedTime|timestampToData}}</p>
             </div>
-            <div class="v-fcm">
-              <!-- <p>当前功率 {{chargeLog.currentW}}瓦</p> -->
-            </div>
+            
           </div>
           <!-- 请求充电中 -->
           <div class="opacity0" :class="{'opacity1':chargeLog.chargeState===0}" style="position:absolute;width:100%;top:.7rem;">
@@ -68,6 +66,14 @@
             <div class="v-fm">预计充电时长</div>
             <div>{{chargeLog.expectedChargeTime|SToHM}}</div>
           </div>
+          <div class="v-fm v-fb" style="padding:.5rem .8rem;">
+            <div class="v-fm">已充电量</div>
+            <div>{{chargeLog.currentW+' 度'}}</div>
+          </div>
+          <div class="v-fm v-fb" style="padding:.5rem .8rem;">
+            <div class="v-fm">当前电压</div>
+            <div>{{(chargeLog.currentV||'')+' V'}}</div>
+          </div>
           <!-- <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
                 <div class="mb-40">收费标准</div>
                 <div class="v-fm v-fb">
@@ -80,12 +86,11 @@
       </div>
     </div>
     <!-- 底部停止充电按钮 -->
-    <div class="v-fcm opacity0" :class="{'opacity1':chargeLog.chargeState===2}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
-      <div @click="stopCharge" class="stop-btn v-fcm">停止充电</div>
+    <div class="v-fcm opacity0 displayNone" :class="{'opacity1 displayBlock':chargeLog.chargeState===2}" style="height:3rem;width:100%;bottom:0;position:absolute;z-index:2;">
+      <div @click="stopCharge()" class="stop-btn v-fcm">停止充电</div>
     </div>
   </div>
 </template>
-
 <script>
   let interval = null;
   import axios from "axios";
@@ -145,7 +150,7 @@
         this.wsTimes++;
         let _this = this;
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
         console.log('>>>chargeLog|充电信息', chargeLog);
         if (status === 2) {
           if(this.wsTimes>1){return false};
@@ -207,7 +212,7 @@
       requestChargeInfo() {
         let _this = this;
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
         // let chargeLog = '';
         console.log('>>>chargeLog|充电信息', chargeLog);
         axios
@@ -341,7 +346,12 @@
   .bgc-2e {
     background-color: #2e2e2e;
   }
-  
+  .displayBlock{
+    display:block!important;
+  }
+  .displayNone{
+    display:none;
+  }
   .charge-box {
     color: #fff;
     height: 100%;
@@ -416,7 +426,9 @@
   }
   
   .cost-method-box {
-    &>div {}
+    &>div {
+      border-bottom:1px solid #fff;
+    }
   }
   
   .icon-point-green {

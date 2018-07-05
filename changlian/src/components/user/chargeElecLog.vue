@@ -17,7 +17,10 @@
             <li v-if="chargeElecLogList.length>0" class="" v-for="chargeElecLog in chargeElecLogList" :key="chargeElecLog.id">
               <div>{{chargeElecLog.time||''}}</div>
               <div>{{chargeElecLog.stationName||''}}</div>
-              <div>设备：{{chargeElecLog.equipmentNum}}</div>
+              <div class="v-fb">
+                <p> 设备：{{chargeElecLog.equipmentNum}}</p>
+                <p>已充电量：{{chargeElecLog.currentW+' 度'}}</p>
+              </div>
               <div class="v-fb">
                 <p class="v-fm"><i class="icon-time"></i>充电时间：{{chargeElecLog.charge_time|SToHM}}</p>
                 <p class="v-fm"><i class="icon-money"></i>充电费用：{{chargeElecLog.coast||'0.00'}} 元</p>
