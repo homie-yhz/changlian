@@ -44,10 +44,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                          <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                              <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                          <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                              <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -176,23 +176,34 @@
        * 绑定电站接口：bindStationUrl
        * 绑定成功后进行刷新操作。
        * params:  stationId->stationInfo   userId->localStorage
-      */
+       */
       bindStation(stationInfo) {
         let _this = this;
         if (!!localStorage.getItem('userId')) {
           loader.show();
           MessageBox.confirm('您即将绑定电站？').then(action => {
-            let bindStationUrl = GLOBAL.interfacePath + '/clyun/bindStation';
+            let bindStationUrl = GLOBAL.interfacePathToken + '/clyun/bindStation';
             axios
-              .post(bindStationUrl,{'stationId':(stationInfo.stationId).toString(),'userId':localStorage.getItem('userId')})
+              .post(
+                bindStationUrl, {
+                  'stationId': (stationInfo.stationId).toString(),
+                  'userId': localStorage.getItem('userId')
+                }, {
+                  'headers': {token:localStorage.getItem('token')||''}
+                })
               .then(function(data) {
                 loader.hide();
                 let res = data.data;
-                if(res.code === 200){
-                  localStorage.setItem('usualStationId',stationInfo.stationId);
+                if (res.code === 200) {
+                  localStorage.setItem('usualStationId', stationInfo.stationId);
                   MessageBox.alert('绑定电站成功！');
                   _this.$refs.scrollDom.triggerPullToRefresh();
-                }else{
+                } 
+                else if(res.code === 501){
+                  MessageBox.alert(res.msg).then(action=>{
+                    _this.$router.push({name:'login'});
+                  });
+                }else {
                   MessageBox.alert(res.msg);
                 }
                 console.log('bindStationUrl|返回数据|', res);
@@ -361,11 +372,11 @@
       let _this = this;
       console.log('listType|电站列表：' + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
-      this.postData.userId = sessionStorage.getItem('userId');
-  
-      getUserInfo().then(function(userInfo) {
-        _this.userInfo = userInfo;
-      });
+      this.postData.userId = localStorage.getItem('userId');
+      //~~~
+      // getUserInfo().then(function(userInfo) {
+      //   _this.userInfo = userInfo;
+      // });
   
       //获取附近电站信息列表
       //调用  是否登录接口

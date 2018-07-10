@@ -88,6 +88,9 @@
       };
     },
     methods: {
+      back(){
+        this.$router.go(-1);
+      },
       //监听子组件关闭事件
       closeClAlert(state) {
         this.showClAlert = state;

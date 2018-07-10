@@ -53,7 +53,7 @@
 		data() {
 			return {
 				level: "",
-				usualStationId:''
+				usualStationId: ''
 			};
 		},
 		methods: {
@@ -94,10 +94,17 @@
 			unbindStation(usualStationId) {
 				let _this = this;
 				MessageBox.confirm('确认解绑电站？').then(action => {
-				loader.show();
-					let unbindStationUrl = GLOBAL.interfacePath + '/clyun/unbindStation';
+					loader.show();
+					let unbindStationUrl = GLOBAL.interfacePathToken + '/clyun/unbindStation';
 					axios
-						.post(unbindStationUrl,{'userId':localStorage.getItem('userId'),'stationId':_this.usualStationId})
+						.post(unbindStationUrl, {
+							'userId': localStorage.getItem('userId'),
+							'stationId': _this.usualStationId
+						}, {
+							'headers': {
+								'token': localStorage.getItem('token')
+							}
+						})
 						.then(function(data) {
 							loader.hide();
 							let res = data.data;
@@ -105,6 +112,12 @@
 								localStorage.setItem('usualStationId', '');
 								_this.usualStationId = '';
 								MessageBox.alert(res.msg);
+							} else if (res.code === 501) {
+								MessageBox.alert(res.msg).then(action => {
+									_this.$router.push({
+										name: 'login'
+									});
+								});
 							} else {
 								_this.usualStationId = '';
 								MessageBox.alert(res.msg);

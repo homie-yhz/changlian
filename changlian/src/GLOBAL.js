@@ -4,48 +4,37 @@ import { MessageBox } from 'mint-ui';
 import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
+// axios.defaults.headers['token'] = localStorage.getItem('token');
+/**
+ * 
+interfacePathToken
+{
+    'headers': {token:localStorage.getItem('token')||''}
+}
+else if (res.code === 501) {
+    MessageBox.alert(res.msg).then(action => {
+        _this.$router.push({
+            name: 'login'
+        });
+    });
+}
+
+*/
 export default {
     env: 'UAT',
     // env: 'test',
-    // interfacePath: 'http://192.168.43.164:8080/v1/api0',   // 杰哥手机  志鸿本机
     // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+    // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
     // interfacePathWS: '192.168.43.202:8080/v1/api0',
 
     interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
     interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level: '2.2.1'
-}
-
-//判断是否登录模块
-export let judgeLoginObj = {
-    url: '',//let judgeLoginUrl = GLOBAL.interfacePath + '';
-    normalFn: function () {
-        return axios.get(this.url);
-    },
-    promiseFn: function () {
-        return new Promise(function (resolve, reject) {
-            axios
-                .get(this.url)
-                .then(function (data) {
-                    console.log('judgeLoginUrl|返回数据|' + JSON.stringify(data.data));
-                    data.data = {
-                        "hasLogin": false
-                    }
-                    if (data.data.hasLogin) {
-                        resolve(true);
-                    } else {
-                        resolve(false);
-                    }
-                })
-                .catch(function (err) {
-                    console.log({ 'url': judgeLoginUrl, 'err': JSON.stringify(err) });
-                });
-        });
-    }
 }
 
 //判断是否有设备正在充电  模块
@@ -92,8 +81,9 @@ export function getUserInfo() {
                 let res = data.data;
                 if (res.code === 200) {
                     console.log('>>>getUserInfoUrl|用户个人信息', data.data);
-                    sessionStorage.setItem('loginState', res.body.loginState);
-                    localStorage.setItem('phone',res.body.phone);
+                    sessionStorage.setItem('loginState', res.body.loginState||'');
+                    localStorage.setItem('phone',res.body.phone||'');
+                    localStorage.setItem('usualStationId',res.body.usualStationId||'');
                     //调用 获取用户信息接口的时候 就会改变vuex中的loginState与chargingMechineAmount的状态。
                     store.commit('setLoginState', res.body.loginState);
                     store.commit('setChargingMechineAmount', res.body.chargingMechineAmount);
@@ -253,3 +243,4 @@ export function getOpenId() {
             }
         }
 }
+

@@ -17,6 +17,9 @@ const cardsBag = r => require.ensure([], () => r(require('@/components/user/card
 const ICCardRecharge = r => require.ensure([], () => r(require('@/components/user/ICCardRecharge.vue')), 'News');
 const identifyCodeInput = r => require.ensure([], () => r(require('@/components/user/identifyCodeInput.vue')), 'News');
 const login = r => require.ensure([], () => r(require('@/components/user/login.vue')), 'News');
+const checkLogin = r => require.ensure([], () => r(require('@/components/user/checkLogin.vue')), 'News');
+const bindPhone = r => require.ensure([], () => r(require('@/components/user/bindPhone.vue')), 'News');
+
 const register = r => require.ensure([], () => r(require('@/components/user/register.vue')), 'News');
 const getBackPwd = r => require.ensure([], () => r(require('@/components/user/getBackPwd.vue')), 'News');
 const setPwd = r => require.ensure([], () => r(require('@/components/user/setPwd.vue')), 'News');
@@ -29,7 +32,6 @@ const phoneInput = r => require.ensure([], () => r(require('@/components/user/ph
 const pwdInput = r => require.ensure([], () => r(require('@/components/user/pwdInput.vue')), 'News');
 const recharge = r => require.ensure([], () => r(require('@/components/user/recharge.vue')), 'News');
 const rechargeLog = r => require.ensure([], () => r(require('@/components/user/rechargeLog.vue')), 'News');
-const startElec = r => require.ensure([], () => r(require('@/components/user/startElec.vue')), 'News');
 const chooseStationPort = r => require.ensure([], () => r(require('@/components/user/chooseStationPort.vue')), 'News');
 const chooseChargeMethod = r => require.ensure([], () => r(require('@/components/user/chooseChargeMethod.vue')), 'News');
 const usuallyStation = r => require.ensure([], () => r(require('@/components/user/usuallyStation.vue')), 'News');
@@ -116,6 +118,16 @@ export default new Router({
       component: login
     },
     {
+      path: '/checkLogin',
+      name: 'checkLogin',
+      component: checkLogin
+    },
+    {
+      path: '/bindPhone',
+      name: 'bindPhone',
+      component: bindPhone
+    },
+    {
       path: '/register',
       name: 'register',
       component: register
@@ -179,11 +191,6 @@ export default new Router({
       path: '/rechargeLog',
       name: 'rechargeLog',
       component: rechargeLog
-    },
-    {
-      path: '/startElec',
-      name: 'startElec',
-      component: startElec
     },
     {
       path: '/chooseStationPort/:stationId',
