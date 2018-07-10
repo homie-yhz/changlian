@@ -199,8 +199,6 @@ export default {
     height: 2rem;
     width: 100%;
     border-bottom: 1px solid #bbbbbb;
-    &:last-child {
-    }
   }
 }
 
