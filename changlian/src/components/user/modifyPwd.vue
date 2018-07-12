@@ -32,7 +32,7 @@
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
   const leftTime = 60;
-  
+
   export default {
     data() {
       return {
@@ -55,7 +55,7 @@
           return false;
         }
         //如果两个密码相等  那么请求后台接口
-          let postPwdUrl = GLOBAL.interfacePath+'/clyun/resetPwd';
+          let postPwdUrl = GLOBAL.interfacePathToken+'/clyun/resetPwd';
           axios
             .post(postPwdUrl, {
               userId: localStorage.getItem('userId'),
@@ -72,6 +72,8 @@
                     name: "login"
                   });
                 });
+              }else if(res.code === 501){
+
               }else{
                 Toast(res.msg);
               }
@@ -128,7 +130,7 @@
       border-bottom: 1px solid #bbbbbb;
     }
   }
-  
+
   .btn-login {
     margin: 0.8rem 0;
     border-radius: 3px;

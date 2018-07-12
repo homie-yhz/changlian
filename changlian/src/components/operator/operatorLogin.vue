@@ -66,11 +66,11 @@
 					Toast('请输入8位以上的账号！')
 				} else if (!this.operatorLoginInfo.userPwd) {
 					Toast('请输入密码！')
-				} 
+				}
 				else {
 					//需要3个参数  还有一个 userId
 					_this.operatorLoginInfo.userId = localStorage.getItem('userId');
-					let operatorLogin = GLOBAL.interfacePath + '/clyun/sysLogin';
+					let operatorLogin = GLOBAL.interfacePathToken + '/clyun/sysLogin';
 					console.log(_this.operatorLoginInfo);
 					axios
 						.post(operatorLogin, _this.operatorLoginInfo)
@@ -81,8 +81,10 @@
 								localStorage.setItem('operatorId',res.body.thirdId);
 								MessageBox.alert('登录成功！').then(()=>{
 									_this.$router.replace({name:'operatorMain'});
-								});	
-							}else{
+								});
+							}else if(res.code === 501){
+
+              }else{
 								MessageBox.alert(res.msg);
 							}
 						})
@@ -108,7 +110,7 @@
 		height: 2rem;
 		border-bottom: 1px solid #d9d9d9;
 	}
-	
+
 	.arrow-back {
 		width: 0.4rem;
 		height: 0.4rem;
@@ -117,7 +119,7 @@
 		transform: rotate(-45deg);
 		margin-left: 0.5rem;
 	}
-	
+
 	.operator-login-box {
 		&>input {
 			height: 1.8rem;
@@ -128,7 +130,7 @@
 			}
 		}
 	}
-	
+
 	.btn-login {
 		background-color: #19d64e;
 		color: #fff;
@@ -136,7 +138,7 @@
 		border-radius: 3px;
 		height: 1.6rem;
 	}
-	
+
 	.other-login-method {
 		margin-top: 2rem;
 		color: #999;
@@ -149,18 +151,18 @@
 			border-top: 1px solid #dbdbdb;
 		}
 	}
-	
+
 	.register-or-backpwd>a {
 		margin-top: 0.2rem;
 		text-decoration: underline;
 		color: #e65300;
 	}
-	
+
 	.agreement {
 		color: #5c5c5c;
 		font-size: 0.55rem;
 	}
-	
+
 	.btn-operator-login {
 		margin-top: 1.4rem;
 		background-color: #3db0bf!important;

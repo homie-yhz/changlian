@@ -58,7 +58,7 @@ export default {
 
         loader.show();
         let _this = this;
-        let url = GLOBAL.interfacePath + "/clyun/bindPhone";
+        let url = GLOBAL.interfacePathToken + "/clyun/bindPhone";
         axios
           .post(url, _this.body)
           .then(function(data) {
@@ -70,6 +70,8 @@ export default {
                 //注册成功 跳转到个人主页。
                 _this.$router.replace({name: "personalCenter"});
               });
+            }else if(res.code === 501){
+
             } else {
               MessageBox.alert(data.data.msg);
             }

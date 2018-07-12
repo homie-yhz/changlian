@@ -27,9 +27,9 @@
         <div class="payMethod">
           <p style="margin:.5rem auto;">支付方式</p>
           <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
-                                                  <i class="icon-zfb"></i>
-                                                  <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
-                                                </div> -->
+                                                    <i class="icon-zfb"></i>
+                                                    <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
+                                                  </div> -->
           <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
             <i class="icon-wx"></i>
             <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-  
+
     <!-- 充值按钮 -->
     <div class="recharge-bottom-box">
       <div class="agreement v-fcm">
@@ -64,7 +64,7 @@
   } from "mint-ui";
   import axios from "axios";
   import "mint-ui/lib/toast/style.css";
-  
+
   import GLOBAL, {
     getUserInfo,
     getOpenId
@@ -88,7 +88,7 @@
       };
     },
     methods: {
-      back(){
+      back() {
         this.$router.go(-1);
       },
       //监听子组件关闭事件
@@ -118,7 +118,7 @@
             if (res.code === 200) {
               _this.rechargeCardsList = res.body;
             }
-            //返回703 说明没有绑定电站  无法充值，跳转绑定电站页面。 
+            //返回703 说明没有绑定电站  无法充值，跳转绑定电站页面。
             else if (res.code === 703) {
               MessageBox.alert(res.msg).then(action => {
                 this.$route.push({
@@ -142,7 +142,7 @@
       },
       // 充值接口
       rechargeInterface() {
-        let rechargeUrl = GLOBAL.interfacePath + '/clyun/rechargeUrl';
+        let rechargeUrl = GLOBAL.interfacePathToken + '/clyun/rechargeUrl';
         // alert('发送数据：' + JSON.stringify(this.postData));
         axios
           .post(rechargeUrl, this.postData)
@@ -168,6 +168,8 @@
                   }
                 }
               );
+            } else if (res.code === 501) {
+              //
             } else {
               MessageBox.alert(res.msg);
             }
@@ -283,19 +285,19 @@
       }
     }
   }
-  
+
   .payMethod {
     margin-top: 0.2rem;
     .icon-check-yes {
       border: none;
     }
   }
-  
+
   .agreement>a {
     color: #2eafed;
     font-size: 0.55rem;
   }
-  
+
   .icon-wx {
     width: 0.8rem;
     height: 0.8rem;
@@ -304,7 +306,7 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-  
+
   .icon-zfb {
     width: 0.8rem;
     height: 0.8rem;
@@ -313,14 +315,14 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-  
+
   .icon-select {
     height: 0.8rem;
     width: 0.8rem;
     border-radius: 50%;
     border: 1px solid #bbbbbb;
   }
-  
+
   .icon-check {
     border: 1.4rem solid transparent;
     border-bottom: 1.4rem solid #fff;
@@ -330,13 +332,13 @@
     bottom: -1px;
     z-index: 2;
   }
-  
+
   .recharge-bottom-box {
     height: 3rem;
     position: absolute;
     bottom: 0;
     width: 100%;
-    z-index:3;
+    z-index: 3;
     .agreement {
       height: 1rem;
     }

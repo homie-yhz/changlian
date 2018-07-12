@@ -97,7 +97,7 @@
         setTimeout(() => {
           this.postData.currentPage++;
           // let getRechargeLogListUrl = "../../../../static/data/stationInfo.json";
-          let getRechargeLogListUrl = GLOBAL.interfacePath + '/clyun/getRechargeLogListUrl?' +
+          let getRechargeLogListUrl = GLOBAL.interfacePathToken + '/clyun/getRechargeLogListUrl?' +
             'userId=' + localStorage.getItem('userId') + '&currentPage=' + this.postData.currentPage + '&listLen=' + this.postData.listLen;
           // let getRechargeLogListUrl = GLOBAL.interfacePath+'/getStationList?body='+JSON.stringify(_this.postData);
           console.log(JSON.stringify(this.postData));
@@ -136,6 +136,9 @@
             // }
             // console.log(JSON.stringify(data));
             let res = data.data;
+            if(res.code === 501){
+                //
+            }
             if (_this.scrollState === "refresh") {
               _this.rechargeLogList = [];
             }
@@ -144,7 +147,7 @@
             );
             _this.hasNext = res.body.hasNext;
             _this.scrollState = "";
-  
+
             if (_this.rechargeLogList.length === 0) {
               let noDataDom = document.getElementsByClassName("no-data-text")[0];
               let noDataMsgHtml =
@@ -202,7 +205,7 @@
       }
     }
   }
-  
+
   .rechargeLog-list {
     & ul{
       padding: 0 .8rem;

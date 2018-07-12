@@ -12,9 +12,12 @@ export default{
 		},
 		hide:function(){
 			let loader = document.getElementById('loader');
-			loader.style.opacity = '0';
-			setTimeout(function(){
-				document.body.removeChild(loader);
-			},500);
+			console.log(loader);
+			if(!!loader){
+				loader.style.opacity = '0';
+				setTimeout(function(){
+					document.body.removeChild(loader);
+				},500);
+			}
 		}
 };

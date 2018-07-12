@@ -7,8 +7,8 @@
         <span class="arrow-back"></span>
       </div>
       <!-- <div @click="back()" class="poa rt-0 v-fcm h-100" style="width:10%;">
-                    <span class="arrow-back"></span>
-      </div> -->
+                                <span class="arrow-back"></span>
+                  </div> -->
     </header>
     <div class="scroll-box" style="padding-bottom:2rem">
       <div>
@@ -48,7 +48,7 @@
             <div class="v-fcm">
               <p>已充时长 {{chargeLog.hasChargedTime|timestampToData}}</p>
             </div>
-            
+  
           </div>
           <!-- 请求充电中 -->
           <div class="opacity0" :class="{'opacity1':chargeLog.chargeState===0}" style="position:absolute;width:100%;top:.7rem;">
@@ -75,13 +75,13 @@
             <div>{{(chargeLog.currentV||'')+' V'}}</div>
           </div>
           <!-- <div style="padding:.5rem .8rem;border-top:1px solid #fff;border-bottom:1px solid #fff;">
-                <div class="mb-40">收费标准</div>
-                <div class="v-fm v-fb">
-                  <div class="v-fm">
-                    {{chargeLog.wRange}}</div>
-                  <div>{{chargeLog.priceRate}}</div>
-                </div>
-              </div> -->
+                            <div class="mb-40">收费标准</div>
+                            <div class="v-fm v-fb">
+                              <div class="v-fm">
+                                {{chargeLog.wRange}}</div>
+                              <div>{{chargeLog.priceRate}}</div>
+                            </div>
+                          </div> -->
         </div>
       </div>
     </div>
@@ -91,6 +91,7 @@
     </div>
   </div>
 </template>
+
 <script>
   let interval = null;
   import axios from "axios";
@@ -150,10 +151,12 @@
         this.wsTimes++;
         let _this = this;
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        let chargeLog = GLOBAL.interfacePathToken + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
         console.log('>>>chargeLog|充电信息', chargeLog);
         if (status === 2) {
-          if(this.wsTimes>1){return false};
+          if (this.wsTimes > 1) {
+            return false
+          };
           axios
             .get(chargeLog)
             .then(function(data) {
@@ -190,6 +193,8 @@
                     parseInt(_this.chargeLog.hasChargedTime) + 1
                   ).toString();
                 }, 1000);
+              } else if (res.code === 501) {
+                //
               }
             }).catch(function(err) {
               console.log({
@@ -212,7 +217,7 @@
       requestChargeInfo() {
         let _this = this;
         // 获取充电信息
-        let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+        let chargeLog = GLOBAL.interfacePathToken + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
         // let chargeLog = '';
         console.log('>>>chargeLog|充电信息', chargeLog);
         axios
@@ -259,6 +264,8 @@
                   });
                 });
               }
+            } else if (res.code === 501) {
+              //
             }
           }).catch(function(err) {
             console.log({
@@ -271,12 +278,19 @@
         loader.show();
         let _this = this;
         //let stopChargeUrl = GLOBAL.interfacePath + '';
-        let stopChargeUrl = GLOBAL.interfacePath + '/clyun/stopCharge';
+        let stopChargeUrl = GLOBAL.interfacePathToken + '/clyun/stopCharge';
         // 'http://192.168.31.23:8080/v1/api0/clyun/stopCharge?userId=1&consoleNumber=2&portNumber=3&chargingTime=4&chargeLogId=6'
         console.log(stopChargeUrl);
         axios
-          .post(stopChargeUrl,{'userId':localStorage.getItem('userId'),'chargeLogId':sessionStorage.getItem('chargeRecordId')})
+          .post(stopChargeUrl, {
+            'userId': localStorage.getItem('userId'),
+            'chargeLogId': sessionStorage.getItem('chargeRecordId')
+          
+          })
           .then(function(data) {
+            if (res.code === 501) {
+              //
+            }
             // let res = data.data;
             // console.log("stopChargeUrl|停止充电返回数据|", data.data);
             // if (res.code === 200) {
@@ -346,12 +360,15 @@
   .bgc-2e {
     background-color: #2e2e2e;
   }
-  .displayBlock{
-    display:block!important;
+  
+  .displayBlock {
+    display: block!important;
   }
-  .displayNone{
-    display:none;
+  
+  .displayNone {
+    display: none;
   }
+  
   .charge-box {
     color: #fff;
     height: 100%;
@@ -427,7 +444,7 @@
   
   .cost-method-box {
     &>div {
-      border-bottom:1px solid #fff;
+      border-bottom: 1px solid #fff;
     }
   }
   

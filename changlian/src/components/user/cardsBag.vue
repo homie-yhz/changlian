@@ -68,7 +68,7 @@
     getUserInfo
   } from '../../GLOBAL';
   import axios from 'axios';
-  
+
   export default {
     data() {
       return {
@@ -76,22 +76,24 @@
         rechargeCardsList: []
       };
     },
-    methods:{
-      back(){
+    methods: {
+      back() {
         this.$router.go(-1);
       }
     },
     created() {
       let _this = this;
-			let getRechargeCardsList = GLOBAL.interfacePath + '/clyun/getRechargeCardsList?userId=' + localStorage.getItem('userId');
+      let getRechargeCardsList = GLOBAL.interfacePathToken + '/clyun/getRechargeCardsList?userId=' + localStorage.getItem('userId');
       axios
         .get(getRechargeCardsList)
         .then(function(data) {
           let res = data.data;
-          if(res.code===200){
-            console.log('getRechargeCardsList|返回数据|',res.body);
-						_this.rechargeCardsList = res.body;
-          }else{
+          if (res.code === 200) {
+            console.log('getRechargeCardsList|返回数据|', res.body);
+            _this.rechargeCardsList = res.body;
+          } else if (res.code === 501) {
+            //
+          } else {
             console.log(res.msg);
           }
         })
@@ -117,7 +119,7 @@
       &>p {
         color: #666;
         margin-bottom: .1rem;
-        font-size:.7rem;
+        font-size: .7rem;
       }
       margin-top: .8rem;
       &>div {

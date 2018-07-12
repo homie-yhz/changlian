@@ -87,7 +87,7 @@
 				let _this = this;
 				this.postData.currentPage++;
 				//let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
-				let getNewsCenter = GLOBAL.interfacePath + '/clyun/getNewsCenter?body=' + JSON.stringify(this.postData);
+				let getNewsCenter = GLOBAL.interfacePathToken + '/clyun/getNewsCenter?body=' + JSON.stringify(this.postData);
 				console.log(getNewsCenter);
 				axios
 					.get(getNewsCenter)
@@ -106,7 +106,7 @@
 								);
 								_this.hasNext = res.body.hasNext;
 								_this.scrollState = "";
-	
+
 								if (_this.newsList.length === 0) {
 									let noDataDom = document.getElementsByClassName("no-data-text")[0];
 									let noDataMsgHtml =
@@ -120,7 +120,9 @@
 								});
 								done();
 							}
-						}
+						}else if(res.code === 501){
+
+            }
 					})
 					.catch(function(err) {
 						console.log({
@@ -149,7 +151,7 @@
 			}
 		}
 	}
-	
+
 	.icon-time {
 		display: block;
 		width: .9rem;
@@ -157,7 +159,7 @@
 		background: url('../../../static/img/clock-blue.png') center center no-repeat;
 		background-size: 100% 100%;
 	}
-	
+
 	.icon-money {
 		display: block;
 		width: .9rem;

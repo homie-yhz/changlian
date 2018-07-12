@@ -100,10 +100,6 @@
 						.post(unbindStationUrl, {
 							'userId': localStorage.getItem('userId'),
 							'stationId': _this.usualStationId
-						}, {
-							'headers': {
-								'token': localStorage.getItem('token')
-							}
 						})
 						.then(function(data) {
 							loader.hide();
@@ -113,11 +109,7 @@
 								_this.usualStationId = '';
 								MessageBox.alert(res.msg);
 							} else if (res.code === 501) {
-								MessageBox.alert(res.msg).then(action => {
-									_this.$router.push({
-										name: 'login'
-									});
-								});
+								
 							} else {
 								_this.usualStationId = '';
 								MessageBox.alert(res.msg);

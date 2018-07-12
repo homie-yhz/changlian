@@ -6,9 +6,12 @@ import GLOBAL from './GLOBAL';
 import store from './store';
 // axios.defaults.headers['token'] = localStorage.getItem('token');
 /**
- * 
+ *
+ *
+ stopCharge 接口有必要写token吗 已修改。
+ getRechargeLogListUrl 接口有问题  需要沟通后端。
 interfacePathToken
-{
+,{
     'headers': {token:localStorage.getItem('token')||''}
 }
 else if (res.code === 501) {
@@ -20,16 +23,19 @@ else if (res.code === 501) {
 }
 
 */
-export default {
-    env: 'UAT',
-    // env: 'test',
-    // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-    // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
-    // interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-    interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-    interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
-    interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+
+
+export default {
+    // env: 'UAT',
+    env: 'test',
+    interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+    interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
+    interfacePathWS: '192.168.43.202:8080/v1/api0',
+
+    // interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    // interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
+    // interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
@@ -88,6 +94,8 @@ export function getUserInfo() {
                     store.commit('setLoginState', res.body.loginState);
                     store.commit('setChargingMechineAmount', res.body.chargingMechineAmount);
                     resolve(res.body);
+                }else if(res.code === 501){
+                    
                 }
                 // data.data = {
                 //     bindState: false,

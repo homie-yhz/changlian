@@ -8,7 +8,7 @@
       </div>
     </header>
     <ul class="scroll-box ">
-  
+
     </ul>
     <div class="scroll-box">
       <div class="chargeElecLog-list" style="position:relative;height:100%;">
@@ -55,7 +55,7 @@
         chargeElecLogList: [],
         hasNext: true,
         postData: {
-          currentPage: 0, 
+          currentPage: 0,
           listLen: 10
         },
         scrollState: '',
@@ -93,7 +93,7 @@
         let _this = this;
           _this.postData.currentPage++;
           //let getChargeElecLogListUrl = GLOBAL.interfacePath + '';
-          let getChargeElecLogListUrl = GLOBAL.interfacePath + '/clyun/getChargeElecLogListUrl?' +
+          let getChargeElecLogListUrl = GLOBAL.interfacePathToken + '/clyun/getChargeElecLogListUrl?' +
             'userId=' + localStorage.getItem('userId') + '&currentPage=' + _this.postData.currentPage + '&listLen=' + _this.postData.listLen;
           console.log(getChargeElecLogListUrl);
           axios
@@ -103,7 +103,7 @@
               let res = data.data;
               if (res.code === 200) {
                 let res = data.data;
-  
+
                 if (res.code === 200) {
                   console.log('in');
                   if (_this.scrollState === "refresh") {
@@ -114,7 +114,7 @@
                   );
                   _this.hasNext = res.body.hasNext;
                   _this.scrollState = "";
-  
+
                   if (_this.chargeElecLogList.length === 0) {
                     let noDataDom = document.getElementsByClassName("no-data-text")[0];
                     let noDataMsgHtml =
@@ -143,6 +143,8 @@
                 // }
                 //   }
                 // }
+              }else if(res.code ===501){
+                  //
               }
             })
             .catch(function(err) {
@@ -189,7 +191,7 @@
       }
     }
   }
-  
+
   .icon-time {
     display: block;
     width: .9rem;
@@ -197,7 +199,7 @@
     background: url('../../../static/img/clock-blue.png') center center no-repeat;
     background-size: 100% 100%;
   }
-  
+
   .icon-money {
     display: block;
     width: .9rem;

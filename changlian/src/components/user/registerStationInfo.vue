@@ -76,7 +76,7 @@
 			}
 		},
 		methods: {
-			//提交  我录入的电站信息  
+			//提交  我录入的电站信息
 			saveStationInfo() {
 				console.log('asdfassfadd');
 				if (!this.postData.stationName) {
@@ -92,11 +92,14 @@
 				} else if (!this.postData.longitude || !this.postData.latitude) {
 					Toast('等待定位信息！');
 				} else {
-					let saveStationInfo = GLOBAL.interfacePath + '/clyun/saveStationInfo';
+					let saveStationInfo = GLOBAL.interfacePathToken + '/clyun/saveStationInfo';
 					axios
 						.post(saveStationInfo, this.postData)
 						.then(function(data) {
 							let res = data.data;
+							if(res.code === 501){
+
+              }
 							// alert(res.code);
 							console.log('saveStationInfo|返回数据|', res);
 						})
@@ -161,7 +164,7 @@
 			/**
 			 * qrCodeId:  from->qrCodePage
 			 */
-			let getMyStationInfo = GLOBAL.interfacePath + '/clyun/getMyStationInfo?userId=' + (localStorage.getItem('userId') || 0) + '&qrCodeId=' + localStorage.getItem('qrCodeId');
+			let getMyStationInfo = GLOBAL.interfacePathToken + '/clyun/getMyStationInfo?userId=' + (localStorage.getItem('userId') || 0) + '&qrCodeId=' + localStorage.getItem('qrCodeId');
 			console.log(getMyStationInfo);
 			axios
 				.get(getMyStationInfo)
@@ -170,19 +173,21 @@
 					// alert('返回的信息：'+JSON.stringify(res));
 					console.log('getMyStationInfo|返回数据|', res);
 					if (res.code === 200) {
-	
+
 						_this.consoleList = _this.consoleList.concat(res.body.consoleList);
 						_this.cooperatorList = _this.cooperatorList.concat(res.body.cooperatorList);
 						_this.postData.sysUserId = res.body.sysUserId;
 						_this.postData.qrCodeId = res.body.qrCodeId;
-	
+
 						//注册信息回传
 						if (res.body.registerStationInfo !== null) {
 							_this.postData = res.body.registerStationInfo;
 							//回传信息后将 consoleId 存起来，然后扫描端口信息并注册
 							localStorage.setItem('registerConsoleId', res.body.registerStationInfo.consoleId)
 						}
-					}
+					}else if(res.code === 501){
+
+          }
 				})
 				.catch(function(err) {
 					MessageBox.alert('接口异常！(错误:102)')
@@ -213,7 +218,7 @@
 		border-radius: 3px;
 		height: 1.6rem;
 	}
-	
+
 	#registerBox {
 		&>div {
 			@include fm;
@@ -236,7 +241,7 @@
 			}
 		}
 	}
-	
+
 	.icon-right {
 		border-top: 1px solid #888;
 		border-right: 1px solid #888;

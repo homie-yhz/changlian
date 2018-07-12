@@ -64,7 +64,7 @@
     created() {
       let _this = this;
       let chargingList =
-        GLOBAL.interfacePath +
+        GLOBAL.interfacePathToken +
         "/clyun/chargingList?" +
         "userId=" +
         localStorage.getItem("userId")+'&chargeLogId=0';  //该接口中的 chargeLogId 是不需要的选项，但是要穿。
@@ -89,6 +89,8 @@
           if (res.code === 200) {
             console.log('>>>正在充电列表：',chargingList,res);
             _this.chargingList = res.body;
+          }else if(res.code === 501){
+
           } else {
             alert(res.msg);
           }
@@ -128,7 +130,7 @@
       }
     }
   }
-  
+
   .handle-method {
     margin: 0 0 0.5rem 0.8rem;
     font-size: 0.5rem;

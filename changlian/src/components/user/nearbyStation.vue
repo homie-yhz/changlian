@@ -47,7 +47,7 @@
                               <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                              <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                    <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -188,22 +188,18 @@
                 bindStationUrl, {
                   'stationId': (stationInfo.stationId).toString(),
                   'userId': localStorage.getItem('userId')
-                }, {
-                  'headers': {token:localStorage.getItem('token')||''}
                 })
               .then(function(data) {
                 loader.hide();
+                console.log(data);
                 let res = data.data;
                 if (res.code === 200) {
                   localStorage.setItem('usualStationId', stationInfo.stationId);
                   MessageBox.alert('绑定电站成功！');
                   _this.$refs.scrollDom.triggerPullToRefresh();
-                } 
-                else if(res.code === 501){
-                  MessageBox.alert(res.msg).then(action=>{
-                    _this.$router.push({name:'login'});
-                  });
-                }else {
+                }else if(res.code === 501){
+                  //拦截器。
+                }else{
                   MessageBox.alert(res.msg);
                 }
                 console.log('bindStationUrl|返回数据|', res);

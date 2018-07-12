@@ -52,7 +52,7 @@
 			}
 		},
 		methods: {
-			//提交  我录入的电站信息  
+			//提交  我录入的电站信息
 			saveStationInfo() {
 				if (this.postData.consoleId === '-') {
 					Toast('请选择电站名称！');
@@ -60,7 +60,7 @@
 					Toast('请选择终端！');
 				} else {
 					let _this = this;
-					let saveStationInfo = GLOBAL.interfacePath + '/clyun/saveTerminalInfo';
+					let saveStationInfo = GLOBAL.interfacePathToken + '/clyun/saveTerminalInfo';
 					alert(JSON.stringify(this.postData));
 					axios
 						.post(saveStationInfo, this.postData)
@@ -72,7 +72,9 @@
 										name: 'registerStationInfo'
 									});
 								});
-							}
+							}else if(res.code === 501){
+
+              }
 						})
 						.catch(function(err) {
 							MessageBox.alert('接口异常！(错误代码:104)')
@@ -95,11 +97,14 @@
 						'terminalId': '-'
 					}];
 					this.postData.terminalId = '-';
-					let getTerminalListUrl = GLOBAL.interfacePath + '/clyun/getTerminalList?consoleId=' + this.postData.consoleId;
+					let getTerminalListUrl = GLOBAL.interfacePathToken + '/clyun/getTerminalList?consoleId=' + this.postData.consoleId;
 					axios
 						.get(getTerminalListUrl)
 						.then(function(data) {
 							let res = data.data;
+							if(res.code === 501){
+
+              }
 							console.log('getTerminalListUrl|返回数据|', res);
 							_this.terminalList = _this.terminalList.concat(res.body);
 						})
@@ -114,7 +119,7 @@
 		},
 		created() {
 			let _this = this;
-			let getMyTerminalInfoUrl = GLOBAL.interfacePath + '/clyun/getMyTerminalInfo?userId=' + (localStorage.getItem('userId') || '') + '&consoleId=' + (localStorage.getItem('registerConsoleId')||'') + '&qrCodeId=' + this.$route.params.qrCodeId;
+			let getMyTerminalInfoUrl = GLOBAL.interfacePathToken + '/clyun/getMyTerminalInfo?userId=' + (localStorage.getItem('userId') || '') + '&consoleId=' + (localStorage.getItem('registerConsoleId')||'') + '&qrCodeId=' + this.$route.params.qrCodeId;
 			alert('registerTerminalInfoUrl'+getMyTerminalInfoUrl);
 			axios
 				.get(getMyTerminalInfoUrl)
@@ -129,7 +134,9 @@
 						_this.postData.terminalId = res.body.registerTerminalInfo.terminalId;
 						_this.postData.qrCodeId = _this.$route.params.qrCodeId;
 						console.log(_this.postData);
-					}
+					}else if(res.code === 501){
+
+          }
 				})
 				.catch(function(err) {
 					console.log({
@@ -159,7 +166,7 @@
 		border-radius: 3px;
 		height: 1.6rem;
 	}
-	
+
 	#registerBox {
 		&>div {
 			@include fm;
@@ -182,7 +189,7 @@
 			}
 		}
 	}
-	
+
 	.icon-right {
 		border-top: 1px solid #888;
 		border-right: 1px solid #888;

@@ -91,24 +91,26 @@
 						Toast('请输入正确的ID卡卡号！');
 						return false;
 					}
-				}else{
+				} else {
 					postData.cardNum = unbindCardNum;
 					postData.method = 2;
 				}
 				let _this = this;
-				let bindIDCardUrl = GLOBAL.interfacePath + '/clyun/bindIDCardUrl';
+				let bindIDCardUrl = GLOBAL.interfacePathToken + '/clyun/bindIDCardUrl';
 				// ?userId=' + sessionStorage.getItem('userId')+'&cardNum='+this.bindIDCardNum
 				axios
 					.post(bindIDCardUrl, postData)
 					.then(function(data) {
 						let res = data.data;
 						if (res.code === 200) {
-							Toast(method==='bind'?'绑定成功！':'解绑成功！');
+							Toast(method === 'bind' ? '绑定成功！' : '解绑成功！');
 							_this.bindIDCardNum = '';
 							_this.showCardNumBox = false;
 							_this.getIDCardList();
+						} else if (res.code === 501) {
+							//
 						} else {
-							Toast(method==='bind'?'绑定失败！':'解绑失败！' + res.msg);
+							Toast(method === 'bind' ? '绑定失败！' : '解绑失败！' + res.msg);
 						}
 					})
 					.catch(function(err) {
@@ -122,7 +124,7 @@
 			getIDCardList() {
 				let _this = this;
 				// let IDCardListUrl = "";
-				let IDCardListUrl = GLOBAL.interfacePath + '/clyun/IDCardListUrl?userId=' + localStorage.getItem('userId');
+				let IDCardListUrl = GLOBAL.interfacePathToken + '/clyun/IDCardListUrl?userId=' + localStorage.getItem('userId');
 				axios
 					.get(IDCardListUrl)
 					.then(function(data) {
@@ -131,6 +133,8 @@
 						if (res.code === 200) {
 							console.log('IDCardListUrl|返回数据|' + JSON.stringify(res));
 							_this.IDCardList = res.body;
+						} else if (res.code === 501) {
+							//
 						}
 					})
 					.catch(function(err) {

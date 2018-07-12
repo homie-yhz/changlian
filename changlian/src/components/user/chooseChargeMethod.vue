@@ -111,16 +111,21 @@
             Toast("请选择充电方式");
           } else {
             loader.show();
+            let _this = this;
             //设置chargingTime:即为充电ID
             sessionStorage.setItem('methodId', this.postData.chargeMethodId);
             sessionStorage.setItem('chargingTime', this.postData.chargingTime)
             // 请求充电
-            let requestChargeUrl = GLOBAL.interfacePath + '/clyun/startCharge?' +
-              'userId=' + localStorage.getItem('userId') + '&consoleNumber=' + sessionStorage.getItem('consoleNumber') +
-              '&portNumber=' + sessionStorage.getItem('portNumber') + '&chargingTime=' + sessionStorage.getItem('chargingTime') + '&methodId=' + this.postData.chargeMethodId;
+            let requestChargeUrl = GLOBAL.interfacePathToken + '/clyun/startCharge';
             console.log('>>>请求充电', requestChargeUrl);
             axios
-              .get(requestChargeUrl)
+              .post(requestChargeUrl, {
+                userId:localStorage.getItem('userId'),
+                consoleId:sessionStorage.getItem('consoleNumber'),
+                terminalId:sessionStorage.getItem('portNumber'),
+                chargingTime:sessionStorage.getItem('chargingTime'),
+                chargeMethodID:_this.postData.chargeMethodId
+              })
               .then(function(data) {
                 loader.hide();
                 let res = data.data;
@@ -132,6 +137,8 @@
                     _this.$router.replace({
                       name: 'charging'
                     });
+                  } else if (res.code === 501) {
+                    //
                   } else {
                     MessageBox.alert('请求充电失败！请重新请求！');
                   }
