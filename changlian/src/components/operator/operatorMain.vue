@@ -8,27 +8,37 @@
 		</header>
 		<div class="operator-main-box">
 			<!-- <router-link :to="{name:'agentList'}">
-					<i class="icon-star"></i>
-					<div>代理商管理</div>
-				</router-link>
-				<router-link :to="{name:'updateAgent'}">
-					<i class="icon-star"></i>
-					<div>绑定设备</div>
-				</router-link> -->
-			<a @click="scanQRCode()">
+						<i class="icon-star"></i>
+						<div>代理商管理</div>
+					</router-link>
+					<router-link :to="{name:'updateAgent'}">
+						<i class="icon-star"></i>
+						<div>绑定设备</div>
+					</router-link> -->
+			<a @click="scanQRCode()" v-if="roleTypeList.indexOf('wxdz')>-1">
 				<i class="icon-star"></i>
 				<div>维护电站</div>
 				<div>点击扫描中控二维码</div>
 			</a>
-			<a @click="scanQRCode()">
+			<a @click="scanQRCode()" v-if="roleTypeList.indexOf('whzd')>-1">
 				<i class="icon-star"></i>
 				<div>维护终端</div>
 				<div>点击扫描终端二维码</div>
 			</a>
+			<router-link :to="{'name':'operatorCenter'}" v-if="roleTypeList.indexOf('ckzhxx')>-1">
+				<i class="icon-star" ></i>
+				<div>查看账户信息</div>
+				<div></div>
+			</router-link>
+			<a v-if="roleTypeList.indexOf('cz')>-1">
+				<i class="icon-star"></i>
+				<div>充值</div>
+				<div></div>
+			</a>
 		</div>
 	</div>
 </template>
-
+wxdz whzd ckzhxx cz
 <script>
 	import axios from "axios";
 	import GLOBAL, {
@@ -39,11 +49,12 @@
 		Toast
 	} from 'mint-ui'
 	import 'mint-ui/lib/toast/style.css';
-  import wx from 'weixin-js-sdk';
+	import wx from 'weixin-js-sdk';
 	export default {
 		data() {
 			return {
-				operatorLoginInfo: {}
+				operatorLoginInfo: {},
+				roleTypeList:[]
 			};
 		},
 		methods: {
@@ -76,6 +87,8 @@
 						jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
 					});
 				})
+
+				
 		}
 	};
 </script>
@@ -105,11 +118,12 @@
 			}
 		}
 	}
-	.arrow-back{
-		border-left:1px solid #fff;
-		border-top:1px solid #fff;
-		width:.5rem;
-		height:.5rem;
+	
+	.arrow-back {
+		border-left: 1px solid #fff;
+		border-top: 1px solid #fff;
+		width: .5rem;
+		height: .5rem;
 		transform: rotate(-45deg);
 	}
 </style>

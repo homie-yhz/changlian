@@ -223,7 +223,7 @@
         });
   
       //请求个人信息接口  获取金额
-      if (sessionStorage.getItem('loginState') === 'true') {
+      if (!!localStorage.getItem('userId')) {
         getUserInfo().then(function(userInfo) {
           _this.userInfo = userInfo;
         });

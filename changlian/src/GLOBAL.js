@@ -21,7 +21,6 @@ else if (res.code === 501) {
         });
     });
 }
-
 */
 
 
@@ -29,20 +28,19 @@ else if (res.code === 501) {
 export default {
     // env: 'UAT',
     env: 'test',
-    interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-    interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
-    interfacePathWS: '192.168.43.202:8080/v1/api0',
+    // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+    // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
+    // interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-    // interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-    // interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
-    // interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+    interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+    interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
+    interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
     publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level: '2.2.1'
 }
-
 //判断是否有设备正在充电  模块
 export let hasChargingMechineObj = {
     url: '',//let hasChargingMechineUrl = GLOBAL.interfacePath + '';
@@ -95,7 +93,7 @@ export function getUserInfo() {
                     store.commit('setChargingMechineAmount', res.body.chargingMechineAmount);
                     resolve(res.body);
                 }else if(res.code === 501){
-                    
+
                 }
                 // data.data = {
                 //     bindState: false,

@@ -51,6 +51,9 @@ const errorPage = r => require.ensure([], () => r(require('@/components/user/err
 const operatorPlatform = r => require.ensure([], () => r(require('@/components/operator/operatorPlatform.vue')), 'News');
 const operatorLogin = r => require.ensure([], () => r(require('@/components/operator/operatorLogin.vue')), 'News');
 const operatorMain = r => require.ensure([], () => r(require('@/components/operator/operatorMain.vue')), 'News');
+const operatorCenter = r => require.ensure([], () => r(require('@/components/operator/operatorCenter.vue')), 'News');
+const operatorRecharge = r => require.ensure([], () => r(require('@/components/operator/operatorRecharge.vue')), 'News');
+
 const agentList = r => require.ensure([], () => r(require('@/components/operator/agentList.vue')), 'News'); //代理商列表
 const createAgent = r => require.ensure([], () => r(require('@/components/operator/createAgent.vue')), 'News'); //创建代理商
 const updateAgent = r => require.ensure([], () => r(require('@/components/operator/updateAgent.vue')), 'News'); //修改更新代理商信息
@@ -248,6 +251,16 @@ export default new Router({
       name: 'operatorMain',
       component: operatorMain
     }, 
+    {
+      path: '/operatorCenter',
+      name: 'operatorCenter',
+      component: operatorCenter
+    },
+    {
+      path: '/operatorRecharge',
+      name: 'operatorRecharge',
+      component: operatorRecharge
+    },
     {
       path: '/agentList',
       name: 'agentList',
