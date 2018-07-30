@@ -55,6 +55,8 @@
       getUserInfo().then(function(userInfo){
         store.commit('setChargingMechineAmount',userInfo.chargingMechineAmount);
       });
+    },
+    beforeCreate(){
     }
   }
 </script>

@@ -14,7 +14,7 @@
           <span class="iconfont icon-sousuo"></span>
           <input type="text" class="v-i1 search-station" placeholder="请输入电站" style="" v-model.lazy="searchInfo">
         </div>
-        <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:stationList.stationId}}" v-show="userInfo.loginState && userInfo.bindState" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
+        <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:usualStationId}}" v-show="showUsuallyStation" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
             <i class="icon-star"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
@@ -36,7 +36,7 @@
             <router-link v-for="stationInfo in stationList" :key="stationInfo.stationId" tag="div" :to="{name:'chooseStationPort',params:{stationId:stationInfo.stationId}}" class="v-fm station-item" style="width:100%;">
               <div class="ml-6 v-i1" :stationId="stationInfo.stationId">
                 <!-- 地址 -->
-                <p class="fw-b">{{stationInfo.stationAddr}}</p>
+                <p class="fw-b">{{stationInfo.stationName}}</p>
                 <!-- 允许支付方式 -->
                 <p class="icon-label-box mt-2">
                   <span style="margin-right:.2rem;" v-for="payMethod in stationInfo.payMethods">{{payMethod}}</span>
@@ -44,10 +44,10 @@
                 <!-- 充电口情况 -->
                 <p class="v-fm mt-2">
                   <span class="v-fm mr-6">
-                              <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
+                    <span class="icon-total v-fcm">共</span><span style="width:1rem;">{{stationInfo.totalChargePortsNum}}</span>
                   </span>
                   <span class="v-fm mr-6">
-                    <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
+                      <span class="icon-idle v-fcm">闲</span><span style="width:1rem;">{{stationInfo.idleChargePortsNum}}</span>
                   </span>
                 </p>
               </div>
@@ -65,7 +65,7 @@
                   </div>
                 </div>
                 <!-- 绑定按钮 -->
-                <div @click.prevent="bindStation(stationInfo)" class="btn-bind" v-if="stationInfo.showBindBtn">
+                <div @click.prevent="bindStation(stationInfo)" class="btn-bind" v-if="showBindBtn">
                   绑定
                 </div>
               </div>
@@ -138,7 +138,8 @@
         hasNext: true,
         noDataText: "附近10公里范围内没有更多站点了",
         showUsuallyStation: false, //是否展示常用电站按钮
-  
+        showBindBtn: false,
+        usualStationId:localStorage.getItem('usualStationId'),
         //正式数据
         // postData: {
         //   pageIndex: 0,
@@ -180,8 +181,8 @@
       bindStation(stationInfo) {
         let _this = this;
         if (!!localStorage.getItem('userId')) {
-          loader.show();
           MessageBox.confirm('您即将绑定电站？').then(action => {
+            loader.show();
             let bindStationUrl = GLOBAL.interfacePathToken + '/clyun/bindStation';
             axios
               .post(
@@ -196,10 +197,18 @@
                 if (res.code === 200) {
                   localStorage.setItem('usualStationId', stationInfo.stationId);
                   MessageBox.alert('绑定电站成功！');
+                  _this.$router.push({
+                    name: 'nearbyStation',
+                    params: {
+                      'listType': 'normalList'
+                    }
+                  });
+                  _this.showBindBtn = false;
+                  _this.showUsuallyStation = true;
                   _this.$refs.scrollDom.triggerPullToRefresh();
-                }else if(res.code === 501){
+                } else if (res.code === 501) {
                   //拦截器。
-                }else{
+                } else {
                   MessageBox.alert(res.msg);
                 }
                 console.log('bindStationUrl|返回数据|', res);
@@ -368,7 +377,13 @@
       let _this = this;
       console.log('listType|电站列表：' + this.$route.params.listType);
       this.postData.listType = this.$route.params.listType;
+      if (this.postData.listType === 'normalList') {
+        this.showBindBtn = false;
+      } else if (this.postData.listType === 'bindList') {
+        this.showBindBtn = true;
+      }
       this.postData.userId = localStorage.getItem('userId');
+      this.showUsuallyStation = localStorage.getItem('userId') && localStorage.getItem('usualStationId');
       //~~~
       // getUserInfo().then(function(userInfo) {
       //   _this.userInfo = userInfo;

@@ -21,14 +21,12 @@ axios.interceptors.request.use(
       console.log('请求拦截器报错');
       return Promise.reject(err);
   });
-
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
     console.log(response);
     let res = response.data;
     if(res.code === 501){
-    console.log('222');
       MessageBox.alert(res.msg).then(action=>{
         router.push({name:'login'});
       });
@@ -39,8 +37,8 @@ axios.interceptors.response.use(
     console.log('拦截器response ERROR',error);
       return Promise.reject(error)   // 返回接口返回的错误信息
   });
-Vue.config.productionTip = false
-
+Vue.config.productionTip = false;
+Vue.prototype.$http = axios;
 
 /* eslint-disable no-new */
 new Vue({

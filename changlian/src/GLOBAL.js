@@ -26,8 +26,8 @@ else if (res.code === 501) {
 
 
 export default {
-    // env: 'UAT',
-    env: 'test',
+    env: 'UAT',
+    // env: 'test',
     // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
     // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
     // interfacePathWS: '192.168.43.202:8080/v1/api0',

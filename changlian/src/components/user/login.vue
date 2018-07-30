@@ -88,6 +88,7 @@
               if (res.code === 200) {
                 localStorage.setItem('userId',res.body.userId);
                 localStorage.setItem('token',res.body.token);
+                localStorage.setItem('usualStationId',res.body.usualStationId);
                 MessageBox.alert("登录成功！").then(action => {
                   //设置userId 以及 登录状态 
                   getUserInfo();

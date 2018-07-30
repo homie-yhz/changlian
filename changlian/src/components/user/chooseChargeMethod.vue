@@ -120,11 +120,11 @@
             console.log('>>>请求充电', requestChargeUrl);
             axios
               .post(requestChargeUrl, {
-                userId:localStorage.getItem('userId'),
-                consoleId:sessionStorage.getItem('consoleNumber'),
-                terminalId:sessionStorage.getItem('portNumber'),
-                chargingTime:sessionStorage.getItem('chargingTime'),
-                chargeMethodID:_this.postData.chargeMethodId
+                userId: localStorage.getItem('userId'),
+                consoleId: sessionStorage.getItem('consoleNumber'),
+                terminalId: sessionStorage.getItem('portNumber'),
+                chargingTime: sessionStorage.getItem('chargingTime'),
+                chargeMethodID: _this.postData.chargeMethodId
               })
               .then(function(data) {
                 loader.hide();
@@ -138,10 +138,12 @@
                       name: 'charging'
                     });
                   } else if (res.code === 501) {
-                    //
+                    console.log('错误501');
                   } else {
                     MessageBox.alert('请求充电失败！请重新请求！');
                   }
+                } else if (res.code === 501) {
+                  console.log('错误5011');
                 } else {
                   MessageBox.alert(res.msg);
                 }
@@ -154,7 +156,7 @@
               });
           }
         } else {
-          MessageBox.alert('您还没有登录，前去登录？').then(action => {
+          MessageBox.alert('还未登录，请先登录！').then(action => {
             this.$router.push({
               name: "login"
             });
@@ -164,9 +166,19 @@
       recharge() {
         //未登录 去登录
         if (!localStorage.getItem('userId')) {
-          MessageBox.alert('您还没有登录，前去登录？').then(action => {
+          MessageBox.alert('还未登录，请先登录！').then(action => {
             this.$router.push({
               name: "login"
+            });
+          });
+          return false;
+        } else if (!localStorage.getItem('usualStationId')) {
+          MessageBox.confirm('您还没有绑定电站，前去绑定？').then(action => {
+            this.$router.push({
+              name: 'nearbyStation',
+              params: {
+                'listType': 'bindList'
+              }
             });
           });
           return false;
@@ -175,7 +187,6 @@
             name: 'recharge'
           });
         }
-  
       }
     },
     created() {
@@ -301,7 +312,7 @@
     margin-bottom: 0.5rem;
     @include fw;
     li {
-      width: 30%;
+      width: 47.5%;
       margin: 0.5rem 5% 0 0;
       height: 2.5rem;
       border: 1px solid #2daeec;
@@ -317,7 +328,7 @@
           margin-top: 0.2rem;
         }
       }
-      &:nth-child(3n) {
+      &:nth-child(2n) {
         margin-right: 0;
       }
     }
