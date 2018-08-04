@@ -11,11 +11,11 @@
       <!-- 充值模块 -->
       <div class="recharge-box">
         <div class="money-box">
-          <div class="" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.id}" :key="val.cardId">
+          <div class="" v-for="val in rechargeCardsList" @click="chooseCard(val)" :key="val.cardId" :class="{'checked':postData.chargeCardId===val.id}">
+            <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
             <p class="v-fcm por">
               <span class="agent-name">{{val.name}}</span>
               <i class="icon-cl-log"></i>
-            <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
               <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
               <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
               <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
@@ -29,9 +29,9 @@
         <div class="payMethod">
           <p style="margin:.5rem auto;">支付方式</p>
           <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
-                                                          <i class="icon-zfb"></i>
-                                                          <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
-                                                        </div> -->
+                                                                    <i class="icon-zfb"></i>
+                                                                    <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
+                                                                  </div> -->
           <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
             <i class="icon-wx"></i>
             <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
@@ -203,7 +203,7 @@
     created() {
       //获取充值卡片信息
       this.getRechargeCardInfo();
-      // getOpenId();
+      getOpenId();
     }
   };
 </script>
@@ -212,31 +212,42 @@
   @import "../../../static/css/common.scss";
   @import "../../../static/css/iconfont.css";
   .recharge-box {
-    padding: 0 0.7rem;
+    padding: 0 3% 0 4%;
     &>.money-box {
       display: flex;
       flex-wrap: wrap;
       div {
+        position: relative;
         color: #fff;
         overflow: hidden;
+        margin-top: 0.5rem;
         width: 48%;
-        height: 4rem;
-        border-radius: 4px;
-        margin-top: 0.5rem;
-        margin-top: 0.5rem;
-        background: url("../../../static/img/recharge-card-bg-blue.jpg") center center no-repeat;
-        background-size: 100%;
+        border-radius: 5px;
         &:nth-child(2n-1) {
-            margin-right: 4%;
+          margin-right: 4%;
+        }
+        box-shadow:0;
+        transition: box-shadow 200ms linear;
+        .give-money {
+          right: 0;
+          top: 3px;
+          display: block;
+          border-top-left-radius: 10rem;
+          border-bottom-left-radius: 10rem;
+          padding: 0.1rem 0.4rem;
+          background: #e51c23;
+          color: #fff;
+          font-size: 0.55rem;
+          position: absolute;
+          z-index: 2;
         }
         p {
+          border-radius: 5px;
+          overflow: hidden;
+          background: url("../../../static/img/recharge-card-bg-blue.jpg") center center no-repeat;
+          background-size: 100%;
           height: 4rem;
-          &.checked {
-            color: #fff;
-            border: 1px solid #1189bd;
-            box-shadow: 0 0 6px #0564a8;
-          }
-          
+          width: 98%;
           .icon-check-yes {
             position: absolute;
             bottom: 1px;
@@ -245,17 +256,11 @@
             height: 0.7rem;
             z-index: 11;
           }
-          .give-money {
-            right: 0;
-            top: 3px;
-            display: block;
-            border-radius: 10rem;
-            padding: 0.1rem 0.4rem;
-            background: #e51c23;
-            color: #fff;
-            font-size: 0.55rem;
-            position: absolute;
-          }
+        }
+        &.checked {
+          color: #fff;
+          box-shadow: -5px -3px 12px 0px #0564a8;
+
         }
       }
       .agent-name {
