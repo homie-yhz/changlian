@@ -11,15 +11,17 @@
       <!-- 充值模块 -->
       <div class="recharge-box">
         <div class="money-box">
-          <p class="v-fcm por" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.id}" :key="val.cardId">
-            <span class="agent-name">{{val.name}}</span>
-            <i class="icon-cl-log"></i>
-            <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
+          <div class="" v-for="val in rechargeCardsList" @click="chooseCard(val)" :class="{'checked':postData.chargeCardId===val.id}" :key="val.cardId">
+            <p class="v-fcm por">
+              <span class="agent-name">{{val.name}}</span>
+              <i class="icon-cl-log"></i>
             <span v-show="!!val.freeValue" class="give-money">赠{{val.freeValue}}元</span>
-            <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
-            <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
-            <span class="give-money-end-time">赠额有效期至{{val.expirationDate}}</span>
-          </p>
+              <span class="fz-60"><span>¥</span>&nbsp;<span class="fz-100">{{val.faceValue}}</span></span>
+              <i v-show="postData.chargeCardId===val.id" class="icon-check"></i>
+              <i v-show="postData.chargeCardId===val.id" class="icon-check-yes"></i>
+              <span class="give-money-end-time">赠额有效期至{{val.expirationDate}}</span>
+            </p>
+          </div>
         </div>
         <div class="mt-8 mb-5 fz-50">
           <span style="color:#e51c23;">赠额使用规则：</span><span>仅限绑定设备使用</span>
@@ -27,9 +29,9 @@
         <div class="payMethod">
           <p style="margin:.5rem auto;">支付方式</p>
           <!-- <div @click="payMethods('zfb')" class="v-fm mt-2 mb-10">
-                                                    <i class="icon-zfb"></i>
-                                                    <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
-                                                  </div> -->
+                                                          <i class="icon-zfb"></i>
+                                                          <p class="v-i1">支付宝支付</p><i :class="{'icon-check-yes':postData.payMethod==='zfb'}" class="icon-select"></i>
+                                                        </div> -->
           <div @click="payMethods('wx')" class="v-fm mt-5 mb-5">
             <i class="icon-wx"></i>
             <p class="v-i1">微信支付</p><i :class="{'icon-check-yes':postData.payMethod==='wx'}" class="icon-select"></i>
@@ -37,7 +39,7 @@
         </div>
       </div>
     </div>
-
+  
     <!-- 充值按钮 -->
     <div class="recharge-bottom-box">
       <div class="agreement v-fcm">
@@ -64,7 +66,7 @@
   } from "mint-ui";
   import axios from "axios";
   import "mint-ui/lib/toast/style.css";
-
+  
   import GLOBAL, {
     getUserInfo,
     getOpenId
@@ -201,7 +203,7 @@
     created() {
       //获取充值卡片信息
       this.getRechargeCardInfo();
-      getOpenId();
+      // getOpenId();
     }
   };
 </script>
@@ -214,7 +216,7 @@
     &>.money-box {
       display: flex;
       flex-wrap: wrap;
-      p {
+      div {
         color: #fff;
         overflow: hidden;
         width: 48%;
@@ -224,32 +226,36 @@
         margin-top: 0.5rem;
         background: url("../../../static/img/recharge-card-bg-blue.jpg") center center no-repeat;
         background-size: 100%;
-        &.checked {
-          color: #fff;
-          border: 1px solid #1189bd;
-          box-shadow: 0 0 6px #0564a8;
-        }
         &:nth-child(2n-1) {
-          margin-right: 4%;
+            margin-right: 4%;
         }
-        .give-money {
-          position: absolute;
-          right: 0;
-          top: 3px;
-          display: block;
-          border-radius: 10rem;
-          padding: 0.1rem 0.4rem;
-          background: #e51c23;
-          color: #fff;
-          font-size: 0.55rem;
-        }
-        .icon-check-yes {
-          position: absolute;
-          bottom: 1px;
-          right: 1px;
-          width: 0.7rem;
-          height: 0.7rem;
-          z-index: 11;
+        p {
+          height: 4rem;
+          &.checked {
+            color: #fff;
+            border: 1px solid #1189bd;
+            box-shadow: 0 0 6px #0564a8;
+          }
+          
+          .icon-check-yes {
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            width: 0.7rem;
+            height: 0.7rem;
+            z-index: 11;
+          }
+          .give-money {
+            right: 0;
+            top: 3px;
+            display: block;
+            border-radius: 10rem;
+            padding: 0.1rem 0.4rem;
+            background: #e51c23;
+            color: #fff;
+            font-size: 0.55rem;
+            position: absolute;
+          }
         }
       }
       .agent-name {
@@ -285,19 +291,19 @@
       }
     }
   }
-
+  
   .payMethod {
     margin-top: 0.2rem;
     .icon-check-yes {
       border: none;
     }
   }
-
+  
   .agreement>a {
     color: #2eafed;
     font-size: 0.55rem;
   }
-
+  
   .icon-wx {
     width: 0.8rem;
     height: 0.8rem;
@@ -306,7 +312,7 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-
+  
   .icon-zfb {
     width: 0.8rem;
     height: 0.8rem;
@@ -315,14 +321,14 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-
+  
   .icon-select {
     height: 0.8rem;
     width: 0.8rem;
     border-radius: 50%;
     border: 1px solid #bbbbbb;
   }
-
+  
   .icon-check {
     border: 1.4rem solid transparent;
     border-bottom: 1.4rem solid #fff;
@@ -332,15 +338,15 @@
     bottom: -1px;
     z-index: 2;
   }
-
+  
   .recharge-bottom-box {
-    height: 3rem;
+    height: 3.5rem;
     position: absolute;
     bottom: 0;
     width: 100%;
     z-index: 3;
     .agreement {
-      height: 1rem;
+      height: 1.5rem;
     }
     .recharge-btn-box {
       height: 2rem;

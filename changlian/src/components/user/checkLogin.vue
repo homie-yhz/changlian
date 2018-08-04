@@ -12,7 +12,6 @@
 		MessageBox
 	} from "mint-ui";
 	import "mint-ui/lib/toast/style.css";
-	
 	export default {
 		data() {
 			return {
@@ -23,7 +22,7 @@
 			let url = window.location.href;
 			let code = '';
 			let _this = this;
-			alert(window.location.href);
+			// alert(window.location.href);
 			if (url.indexOf('code=') > -1) {
 				code = url.split('code=')[1].split('&')[0];
 				//获取code
@@ -38,7 +37,11 @@
 						// alert('openId:' + res.body.openid);
 						let res = data.data;
 						if (res.code === 200) {
+							console.log('获取登陆后信息——————————————————————————————————');
+							console.log(res.body);
 							localStorage.setItem('userId', res.body.userId || '');
+							localStorage.setItem('token',res.body.token||'');
+							localStorage.setItem('openId',res.body.openid||'');
 							MessageBox.alert("登录成功！").then(action => {
 								//设置userId 以及 登录状态 
 								getUserInfo();

@@ -272,14 +272,14 @@
           if (_this.hasNext) {
             let noDataDom = document.getElementsByClassName("no-data-text")[0];
           }
-  
           if (_this.stationList.length === 0) {
             let noDataDom = document.getElementsByClassName("no-data-text")[0];
             let noDataMsgHtml =
               '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
             noDataDom.innerHTML = noDataMsgHtml;
           } else {
-            _this.noDataText = "附近10公里范围内没有更多站点了！";
+            let noDataDom = document.getElementsByClassName('no-data-text')[0];
+            noDataDom.innerHTML = '附近10公里范围内没有更多站点了！'
           }
           _this.$nextTick(function() {
             _this.$refs.scrollDom.resize();
@@ -384,72 +384,7 @@
       }
       this.postData.userId = localStorage.getItem('userId');
       this.showUsuallyStation = localStorage.getItem('userId') && localStorage.getItem('usualStationId');
-      //~~~
-      // getUserInfo().then(function(userInfo) {
-      //   _this.userInfo = userInfo;
-      // });
   
-      //获取附近电站信息列表
-      //调用  是否登录接口
-      // axios
-      //   .all([judgeLoginObj.normalFn(), hasChargingMechineObj.normalFn()])
-      //   .then(function() {
-      //     console.log("all");
-      //     axios.spread(function(acc, pers) {
-      //       console.log(acc);
-      //       console.log(pers);
-      //     });
-      //   });
-  
-  
-      //获取code 调用扫一扫功能
-      /*getCode(_this).then(function(WXoptions) {
-        alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
-        wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx1dfdc1b4affcd19d', // 必填，公众号的唯一标识
-          timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
-          nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
-          signature: WXoptions.signature, // 必填，签名
-          jsApiList: ['scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
-        });
-        wx.ready(function() {
-          wx.getLocation({
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: function(res) {
-              var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              var speed = res.speed; // 速度，以米/每秒计
-              var accuracy = res.accuracy; // 位置精度
-              _this.postData.position[0] = longitude;
-              _this.postData.position[1] = latitude;
-              alert('获取经纬度：经度：'+latitude+'(经度)/'+longitude+'(纬度)/'+speed+'(速度)/'+accuracy+'(经度)');
-              alert(JSON.stringify('发送给后台的定位信息'+_this.postData.position));
-            }
-          });
-        });
-      });
-      */
-  
-  
-  
-      // function judgeLoginFn(){
-      //   return axios.get('');
-      // }
-      // function hasChargingMechineFn(){
-      //   return axios.get('');
-      // }
-      // axios.all([judgeLoginFn(),hasChargingMechineFn()]).then(function(){
-      //   console.log('2222');
-  
-      //   axios.spread(function(acc,pers){
-      //     console.log(222);
-      //     console.log(acc);
-      //     console.log(pers);
-      //   });
-      // })
-  
-      var html = `  `;
     },
     watch: {
       searchInfo: function(nv, ov) {
@@ -469,6 +404,7 @@
 <style lang="scss">
   @import "../../../static/css/common.scss";
   @import "../../../static/css/iconfont.css";
+  .loading-layer{font-size:.55rem!important;}
   //重置tabs样式
   .vux-tab .vux-tab-item.vux-tab-selected {
     color: rgb(46, 175, 237) !important;

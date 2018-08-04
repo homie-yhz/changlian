@@ -5,29 +5,9 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 // axios.defaults.headers['token'] = localStorage.getItem('token');
-/**
- *
- *
- stopCharge 接口有必要写token吗 已修改。
- getRechargeLogListUrl 接口有问题  需要沟通后端。
-interfacePathToken
-,{
-    'headers': {token:localStorage.getItem('token')||''}
-}
-else if (res.code === 501) {
-    MessageBox.alert(res.msg).then(action => {
-        _this.$router.push({
-            name: 'login'
-        });
-    });
-}
-*/
-
-
-
 export default {
-    env: 'UAT',
-    // env: 'test',
+    // env: 'UAT',
+    env: 'test',
     // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
     // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
     // interfacePathWS: '192.168.43.202:8080/v1/api0',
@@ -88,6 +68,7 @@ export function getUserInfo() {
                     sessionStorage.setItem('loginState', res.body.loginState||'');
                     localStorage.setItem('phone',res.body.phone||'');
                     localStorage.setItem('usualStationId',res.body.usualStationId||'');
+                    localStorage.setItem('openId',res.body.openid||'');
                     //调用 获取用户信息接口的时候 就会改变vuex中的loginState与chargingMechineAmount的状态。
                     store.commit('setLoginState', res.body.loginState);
                     store.commit('setChargingMechineAmount', res.body.chargingMechineAmount);
