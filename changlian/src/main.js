@@ -14,7 +14,7 @@ axios.interceptors.request.use(
       if (!!token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
           config.headers.token = token;
       }
-      console.log('config',config);
+      // console.log('config',config);
       return config;
   },
   err => {
@@ -24,7 +24,7 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
-    console.log(response);
+    console.log('<<<拦截器response:',response);
     let res = response.data;
     if(res.code === 501){
       MessageBox.alert(res.msg).then(action=>{

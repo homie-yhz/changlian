@@ -162,7 +162,7 @@
           });
           return false;
         }
-        console.log(name);
+        // console.log(name);
         // 如果点击的为 常用电站  或者  充值 按钮，会校验是否存在 绑定电站的信息，没有则提示跳转页面，有 则 跳转到正常页面
         if ((name === 'chooseStationPort' || name === 'recharge') && !localStorage.getItem('usualStationId')) {
           MessageBox.confirm('您还没有绑定电站，前去绑定？').then(action => {
@@ -206,12 +206,10 @@
     created() {
       let _this = this;
       this.userId = localStorage.getItem("userId");
-      console.log('login');
-      console.log(this.userId);
       if (!!this.userId) {
         getUserInfo()
           .then((userInfo) => {
-            console.log('userInfo', userInfo);
+            console.log('>>>userInfo', userInfo);
             _this.userInfo = Object.assign({}, _this.userInfo, userInfo);
             localStorage.setItem('operatorId', _this.userInfo.operatorId || '');
           })
@@ -231,7 +229,7 @@
           // alert('获取到的微信配置信息：---' + JSON.stringify(WXoptions));
           wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: 'wx1dfdc1b4affcd19d', // 必填，公众号的唯一标识
+            appId: WXoptions.appId, // 必填，公众号的唯一标识
             timestamp: WXoptions.timestamp, // 必填，生成签名的时间戳
             nonceStr: WXoptions.nonceStr, // 必填，生成签名的随机串
             signature: WXoptions.signature, // 必填，签名

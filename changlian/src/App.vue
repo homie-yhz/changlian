@@ -34,7 +34,6 @@
         return !!localStorage.getItem('userId');
       },
       chargingMechineAmount:function(){
-        console.log('chargingMechineAmount改变');
         return store.state.chargingMechineAmount;
       }
     },

@@ -4,23 +4,37 @@ import { MessageBox } from 'mint-ui';
 import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
-// axios.defaults.headers['token'] = localStorage.getItem('token');
+
+//测试地址
+// export default {
+//     // env: 'UAT',
+//     env: 'test',
+//     // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+//     // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
+//     // interfacePathWS: '192.168.43.202:8080/v1/api0',
+
+//     interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+//     interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
+//     interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+
+//     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
+//     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
+//     level: '2.2.1'
+// }
+
+// 正式地址
 export default {
-    env: 'UAT',
+    env: 'Pro',
     // env: 'test',
-    // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-    // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
-    // interfacePathWS: '192.168.43.202:8080/v1/api0',
+    interfacePath: 'http://csi.hebchanglian.com.cn/v1/api0',      //正式 接口地址
+    interfacePathToken: 'http://csi.hebchanglian.com.cn/v1/api1', //正式 带有Token的接口地址
+    interfacePathWS: '39.106.112.119:8080/v1/api0',           //正式 websocket地址
 
-    interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-    interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
-    interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
-
-    appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
+    appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',    //app 地址
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
-    publicAccountAddress: 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjEyMDAxMA==&scene=124#wechat_redirect',
     level: '2.2.1'
 }
+
 //判断是否有设备正在充电  模块
 export let hasChargingMechineObj = {
     url: '',//let hasChargingMechineUrl = GLOBAL.interfacePath + '';
@@ -56,9 +70,9 @@ export let hasChargingMechineObj = {
  *
  */
 export function getUserInfo() {
-    console.log('调用getUseInfo|用户信息接口');
     return new Promise(function (resolve, reject) {
         let getUserInfoUrl = GLOBAL.interfacePath + '/clyun/getUserInfo?userId=' + localStorage.getItem('userId') || '';
+        console.log('>>>getUseInfo|用户信息接口|'+getUserInfoUrl);
         axios
             .get(getUserInfoUrl)
             .then(function (data) {
@@ -140,7 +154,7 @@ export function getCode(_this) {
 }
 
 export function ws() {
-    console.log('ws start');
+    console.log('*************ws start**********');
     // window.setInterval(function(){
     //   console.log(1);
     //   store.commit('setChargingMechineAmount',Math.floor((Math.random()*10)+1));
@@ -163,7 +177,7 @@ export function ws() {
         websocket.onopen = function () {
             setMessageInnerHTML("*******WebSocket连接成功*********");
         }
-
+        
         //接收到消息的回调方法
         websocket.onmessage = function (event) {
             console.log('>>>>>>>>WS返回数据<<<<<<<<<<', JSON.parse(JSON.parse(event.data).body));
