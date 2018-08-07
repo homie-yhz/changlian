@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-  
+
     <!-- 充值按钮 -->
     <div class="recharge-bottom-box">
       <div class="agreement v-fcm">
@@ -66,7 +66,7 @@
   } from "mint-ui";
   import axios from "axios";
   import "mint-ui/lib/toast/style.css";
-  
+
   import GLOBAL, {
     getUserInfo,
     getOpenId
@@ -162,7 +162,7 @@
                   "paySign": res.body.sign //微信签名
                 },
                 function(res) {
-                  alert(JSON.stringify(res));
+//                  alert(JSON.stringify(res));
                   if (res.err_msg === "get_brand_wcpay_request:ok") { // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
                     MessageBox.alert('充值成功！');
                   } else {
@@ -296,19 +296,19 @@
       }
     }
   }
-  
+
   .payMethod {
     margin-top: 0.2rem;
     .icon-check-yes {
       border: none;
     }
   }
-  
+
   .agreement>a {
     color: #2eafed;
     font-size: 0.55rem;
   }
-  
+
   .icon-wx {
     width: 0.8rem;
     height: 0.8rem;
@@ -317,7 +317,7 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-  
+
   .icon-zfb {
     width: 0.8rem;
     height: 0.8rem;
@@ -326,14 +326,14 @@
     background-size: 100% 100%;
     margin-right: 0.5rem;
   }
-  
+
   .icon-select {
     height: 0.8rem;
     width: 0.8rem;
     border-radius: 50%;
     border: 1px solid #bbbbbb;
   }
-  
+
   .icon-check {
     border: 1.4rem solid transparent;
     border-bottom: 1.4rem solid #fff;
@@ -343,7 +343,7 @@
     bottom: -1px;
     z-index: 2;
   }
-  
+
   .recharge-bottom-box {
     height: 3.5rem;
     position: absolute;

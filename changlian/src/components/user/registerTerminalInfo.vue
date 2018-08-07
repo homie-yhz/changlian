@@ -61,7 +61,7 @@
 				} else {
 					let _this = this;
 					let saveStationInfo = GLOBAL.interfacePathToken + '/clyun/saveTerminalInfo';
-					alert(JSON.stringify(this.postData));
+//					alert(JSON.stringify(this.postData));
 					axios
 						.post(saveStationInfo, this.postData)
 						.then(function(data) {
@@ -120,7 +120,7 @@
 		created() {
 			let _this = this;
 			let getMyTerminalInfoUrl = GLOBAL.interfacePathToken + '/clyun/getMyTerminalInfo?userId=' + (localStorage.getItem('userId') || '') + '&consoleId=' + (localStorage.getItem('registerConsoleId')||'') + '&qrCodeId=' + this.$route.params.qrCodeId;
-			alert('registerTerminalInfoUrl'+getMyTerminalInfoUrl);
+//			alert('registerTerminalInfoUrl'+getMyTerminalInfoUrl);
 			axios
 				.get(getMyTerminalInfoUrl)
 				.then(function(data) {

@@ -200,7 +200,7 @@
           //     }
           //   ]
           // };
-  
+
           //set 充电站Id
           _this.postData.stationId = data.data.stationId;
         })
@@ -210,7 +210,7 @@
             err: JSON.stringify(err)
           });
         });
-  
+
       let stationDetailInfoUrl = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + this.$route.params.stationId;
       //let stationDetailInfoUrl = GLOBAL.interfacePath + '';
       axios
@@ -222,7 +222,7 @@
             _this.stationDetail = res.body;
             sessionStorage.setItem('stationAddr',res.body.stationAddr);
           } else {
-            alert(res.msg);
+//            alert(res.msg);
           }
         })
         .catch(function(err) {
@@ -244,7 +244,7 @@
     padding: 0.3rem 0 0.4rem 0.8rem;
     border-bottom: 1px solid #e6e6e6;
   }
-  
+
   .ports-box {
     display: flex;
     flex-wrap: wrap;
@@ -304,7 +304,7 @@
       }
     }
   }
-  
+
   .icon-total {
     background-color: $cl-c;
     font-size: 0.45rem;
@@ -314,7 +314,7 @@
     border-radius: 3px;
     color: #fff;
   }
-  
+
   .fast-charge {
     width: 2rem;
     background-color: $cl-c;
@@ -322,7 +322,7 @@
     margin: auto 0.2rem;
     border-radius: 3px;
   }
-  
+
   .slow-charge {
     width: 2rem;
     background-color: #fff;
@@ -331,10 +331,10 @@
     margin: auto 0.2rem;
     border-radius: 3px;
   }
-  
-  
+
+
   /* 剩余的 */
-  
+
   .icon-idle {
     background-color: #00d94a;
     color: #fff;
@@ -344,7 +344,7 @@
     margin-right: 0.2rem;
     border-radius: 3px;
   }
-  
+
   .icon-label-box>span {
     padding: 0 0.3rem;
     border: 1px solid #e3e3e3;
@@ -352,7 +352,7 @@
     font-size: 0.5rem;
     margin-right: 0.4rem;
   }
-  
+
   .station-info-2 {
     padding: 0.3rem 0.8rem 0.2rem;
     border-bottom: 1px solid #e6e6e6;
@@ -360,7 +360,7 @@
       margin-bottom: 0.1rem;
     }
   }
-  
+
   .start-charge-btn {
     height: 2rem;
     position: absolute;
@@ -370,7 +370,7 @@
     bottom: 0;
     z-index: 2;
   }
-  
+
   .balance {
     width: 3rem;
   }

@@ -90,7 +90,7 @@
                 localStorage.setItem('token',res.body.token);
                 localStorage.setItem('usualStationId',res.body.usualStationId);
                 MessageBox.alert("登录成功！").then(action => {
-                  //设置userId 以及 登录状态 
+                  //设置userId 以及 登录状态
                   getUserInfo();
                     // getOpenId();
                   ws();
@@ -121,11 +121,11 @@
       },
       wxLogin() {
         //引到用户手动授权
-  
+
         let localUrl = encodeURIComponent(GLOBAL.appPath + '#/checkLogin');
-        alert(localUrl);
+//        alert(localUrl);
         let wxLoginUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1dfdc1b4affcd19d&redirect_uri=${localUrl}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
-        alert(wxLoginUrl);
+//        alert(wxLoginUrl);
         window.location.href = wxLoginUrl;
       }
     }
@@ -139,7 +139,7 @@
     height: 2rem;
     border-bottom: 1px solid #d9d9d9;
   }
-  
+
   .arrow-back {
     width: 0.4rem;
     height: 0.4rem;
@@ -148,7 +148,7 @@
     transform: rotate(-45deg);
     margin-left: 0.5rem;
   }
-  
+
   .login-box {
     &>input {
       height: 1.8rem;
@@ -159,7 +159,7 @@
       }
     }
   }
-  
+
   .btn-login {
     background-color: #2eafed;
     color: #fff;
@@ -167,7 +167,7 @@
     border-radius: 3px;
     height: 1.6rem;
   }
-  
+
   .other-login-method {
     margin-top: 2rem;
     color: #999;
@@ -180,13 +180,13 @@
       border-top: 1px solid #dbdbdb;
     }
   }
-  
+
   .register-or-backpwd>a {
     margin-top: 0.4rem;
     color: #2eafed;
     font-size: 0.55rem;
   }
-  
+
   .agreement {
     color: #5c5c5c;
     font-size: 0.55rem;
