@@ -44,6 +44,7 @@ const userAgreement = r => require.ensure([], () => r(require('@/components/user
 const qrCodePage = r => require.ensure([], () => r(require('@/components/user/qrCodePage.vue')), 'News');
 const registerStationInfo = r => require.ensure([], () => r(require('@/components/user/registerStationInfo.vue')), 'News');
 const registerTerminalInfo = r => require.ensure([], () => r(require('@/components/user/registerTerminalInfo.vue')), 'News');
+const scanQR = r => require.ensure([], () => r(require('@/components/user/scanQR.vue')), 'News');
 
 // errorPage
 const errorPage = r => require.ensure([], () => r(require('@/components/user/errorPage.vue')), 'News');
@@ -64,6 +65,11 @@ export default new Router({
     {
       path:'/',
       redirect:'nearbyStation/normalList',
+    },
+    {
+      path: '/scanQR',
+      name: 'scanQR',
+      component: scanQR
     },
     {
       path: '/nearbyStation/:listType',

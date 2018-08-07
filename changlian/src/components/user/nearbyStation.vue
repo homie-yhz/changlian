@@ -275,7 +275,7 @@
           if (_this.stationList.length === 0) {
             let noDataDom = document.getElementsByClassName("no-data-text")[0];
             let noDataMsgHtml =
-              '<img src="../../../static/img/empty.jpg"><p>没有发现充电站</p>';
+              '<img src="http://csi.hebchanglian.com.cn/mpa/static/img/empty.png"><p>没有发现充电站</p>';
             noDataDom.innerHTML = noDataMsgHtml;
           } else {
             let noDataDom = document.getElementsByClassName('no-data-text')[0];
@@ -384,7 +384,6 @@
       }
       this.postData.userId = localStorage.getItem('userId');
       this.showUsuallyStation = localStorage.getItem('userId') && localStorage.getItem('usualStationId');
-  
     },
     watch: {
       searchInfo: function(nv, ov) {

@@ -19,7 +19,8 @@ import store from './store';
 
 //     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
-//     level: '2.2.1'
+//     level: '2.2.1',
+    // appId:'wx1dfdc1b4affcd19d'
 // }
 
 // 正式地址
@@ -31,6 +32,7 @@ export default {
     interfacePathWS: '39.106.112.119:8080/v1/api0',           //正式 websocket地址
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',    //app 地址
+    appId:'wxbe2a6a0de66c0305',
     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
     level: '2.2.1'
 }
@@ -239,7 +241,7 @@ export function getOpenId() {
                         console.log({ 'url': getOpenId, 'err': err });
                     });
             }else {
-                var url1 = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1dfdc1b4affcd19d&redirect_uri=' + encodeURIComponent(url) + '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
+                var url1 = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+GLOBAL.appId+'&redirect_uri=' + encodeURIComponent(url) + '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
                 window.location.href = url1;
             }
         }
