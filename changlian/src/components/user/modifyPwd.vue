@@ -31,7 +31,6 @@
     Toast,MessageBox
   } from "mint-ui";
   import "mint-ui/lib/toast/style.css";
-  const leftTime = 60;
 
   export default {
     data() {

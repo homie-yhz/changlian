@@ -27,15 +27,14 @@ import $ from "jquery";
 import axios from 'axios';
 import GLOBAL from '../../GLOBAL';
 //倒计时时间设定
-const leftTime = 60;
 export default {
   data() {
     return {
       title:'',
       getCodeBtn: {
         state: 0,                    //0:不可以点击  1：允许点击  2：倒计时
-        leftTime: leftTime,
-        text: leftTime + "s后重新获取" //倒计时剩余时间,
+        leftTime: GLOBAL.leftTime,
+        text: GLOBAL.leftTime + "s后重新获取" //倒计时剩余时间,
       },
       nextStepBtn:{
         state:0,                     //0:不可以点击 1：允许点击
@@ -55,7 +54,7 @@ export default {
     getCode() {
       if(this.getCodeBtn.state === 1){
         console.log('允许点击');
-        this.getCodeBtn.text = leftTime + "s后重新获取";
+        this.getCodeBtn.text = GLOBAL.leftTime + "s后重新获取";
         this.countDown();
         this.getIndentifyCode_IF();
       }
@@ -72,7 +71,7 @@ export default {
           // 重置数据
           _this.getCodeBtn = {
             state: 1,           //0:不可以点击  1：允许点击  2：倒计时
-            leftTime: leftTime,
+            leftTime: GLOBAL.leftTime,
             text:"重新获取"      //倒计时剩余时间,
           }
         }

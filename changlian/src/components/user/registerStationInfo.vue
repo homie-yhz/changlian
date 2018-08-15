@@ -50,12 +50,14 @@
 		Toast,MessageBox
 	} from "mint-ui";
 	import "mint-ui/lib/toast/style.css";
+	import loader from '../../loading.js';
 	export default {
 		data() {
 			return {
 				postData: {
 					stationName: '',
 					stationAddr: '',
+					stationId:'',
 					terminalCount: '',
 					consoleId: '-',
 					cooperatorId: '-',
@@ -78,7 +80,8 @@
 		methods: {
 			//提交  我录入的电站信息
 			saveStationInfo() {
-				console.log('asdfassfadd');
+				loader.show();
+				let _this = this;
 				if (!this.postData.stationName) {
 					Toast('请输入电站名称！');
 				} else if (!this.postData.stationAddr) {
@@ -97,6 +100,12 @@
 						.post(saveStationInfo, this.postData)
 						.then(function(data) {
 							let res = data.data;
+							console.log(res);
+							loader.hide();
+							if(res.code === 200){
+								Toast(res.msg);
+								_this.postData.stationId = res.body.stationId;
+							}
 							if(res.code === 501){
 
               }

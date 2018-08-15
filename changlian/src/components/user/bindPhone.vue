@@ -29,7 +29,6 @@ import regExp from "../../RegExp";
 import loader from "../../loading";
 import { Toast, MessageBox } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
-const leftTime = 60;
 
 export default {
   data() {
@@ -39,7 +38,7 @@ export default {
       allowNext: false,
       getCodeBtn: {
         state: 0, //0:不可以点击  1：允许点击  2：倒计时
-        leftTime: leftTime,
+        leftTime: GLOBAL.leftTime,
         text: "发送验证码" //倒计时剩余时间,
       },
       body: {
@@ -87,7 +86,7 @@ export default {
       if (this.getCodeBtn.state === 1) {
         if(regExp.phone.test(this.body.phone)){
           console.log("获取验证码成功！");
-        this.getCodeBtn.text = leftTime + "s后重新获取";
+        this.getCodeBtn.text = GLOBAL.leftTime + "s后重新获取";
         this.countDown();
         this.getIndentifyCode_IF();
         }else{
@@ -105,7 +104,7 @@ export default {
           _this.countDown();
         } else {
           // 重置数据
-          _this.getCodeBtn.leftTime = leftTime;
+          _this.getCodeBtn.leftTime = GLOBAL.leftTime;
           _this.getCodeBtn.text = "重新获取";
           if (_this.body.phone.length === 11) {
             _this.getCodeBtn.state = 1;

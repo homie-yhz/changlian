@@ -78,9 +78,9 @@
 							let res = data.data;
 							console.log(res);
 							if(res.code === 200){
-								localStorage.setItem('operatorId',res.body.thirdId);
+								localStorage.setItem('operatorId',res.body.sysuser);
 								MessageBox.alert('登录成功！').then(()=>{
-									_this.$router.replace({name:'operatorMain'});
+									_this.$router.replace({name:'operatorCenter'});
 								});
 							}else if(res.code === 501){
 

@@ -17,11 +17,11 @@
           <p class="mb-20">选择充电口</p>
           <p class="v-fb fz-50">
             <span class="v-fm">
-              <i class="icon-port icon-ac-blue"></i>交流电：需自带充电器
-            </span>
+                <i class="icon-port icon-ac-blue"></i>交流电：需自带充电器
+              </span>
             <span class="v-fm">
-              <i class="icon-port icon-dc-blue"></i>直流电：无需带充电器
-            </span>
+                <i class="icon-port icon-dc-blue"></i>直流电：无需带充电器
+              </span>
           </p>
           <div class="ports-box">
             <div class="v-fm" @click="choosePort(port)" :class="{broken:port.state==='broken'||port.state ==='',charging:port.state==='charging',idle:port.state==='idle',checked:postData.consoleId===port.consoleId}" :key="port.consoleId" v-for="(port,key) in chargePortsList">
@@ -99,13 +99,13 @@
         if (portState === "idle") {
           //增加样式
           sessionStorage.setItem('portIndex', port.portIndex);
-          sessionStorage.setItem('num',port.num);
-          sessionStorage.setItem('stationId',this.$route.params.stationId);
-          sessionStorage.setItem('portId',port.ID);
-          sessionStorage.setItem('portNumber',port.portNumber);
-          sessionStorage.setItem('consoleId',port.consoleId);
-          sessionStorage.setItem('consoleNumber',port.consoleNumber);
-
+          sessionStorage.setItem('num', port.num);
+          sessionStorage.setItem('stationId', this.$route.params.stationId);
+          sessionStorage.setItem('portId', port.ID);
+          sessionStorage.setItem('portNumber', port.portNumber);
+          sessionStorage.setItem('consoleId', port.consoleId);
+          sessionStorage.setItem('consoleNumber', port.consoleNumber);
+  
           this.postData.consoleId = port.consoleId;
           this.$router.push({
             name: "chooseChargeMethod",
@@ -118,9 +118,15 @@
             }
           });
         } else if (portState === "broken" || portState === '') {
-          Toast("抱歉！该充电口暂时无法使用！");
+          Toast({
+            message: '抱歉！该充电口暂时无法使用！',
+            duration: 1000
+          });
         } else if (portState === "charging") {
-          Toast("该端口正在使用！");
+          Toast({
+            message: '该端口正在使用！',
+            duration: 1000
+          });
         }
       }
     },
@@ -200,7 +206,7 @@
           //     }
           //   ]
           // };
-
+  
           //set 充电站Id
           _this.postData.stationId = data.data.stationId;
         })
@@ -210,7 +216,7 @@
             err: JSON.stringify(err)
           });
         });
-
+  
       let stationDetailInfoUrl = GLOBAL.interfacePath + '/clyun/stationDetailInfo?stationId=' + this.$route.params.stationId;
       //let stationDetailInfoUrl = GLOBAL.interfacePath + '';
       axios
@@ -220,9 +226,9 @@
           console.log('>>>stationDetail|电站详情', res);
           if (res.code === 200) {
             _this.stationDetail = res.body;
-            sessionStorage.setItem('stationAddr',res.body.stationAddr);
+            sessionStorage.setItem('stationAddr', res.body.stationAddr);
           } else {
-//            alert(res.msg);
+            //            alert(res.msg);
           }
         })
         .catch(function(err) {
@@ -244,7 +250,7 @@
     padding: 0.3rem 0 0.4rem 0.8rem;
     border-bottom: 1px solid #e6e6e6;
   }
-
+  
   .ports-box {
     display: flex;
     flex-wrap: wrap;
@@ -304,7 +310,7 @@
       }
     }
   }
-
+  
   .icon-total {
     background-color: $cl-c;
     font-size: 0.45rem;
@@ -314,7 +320,7 @@
     border-radius: 3px;
     color: #fff;
   }
-
+  
   .fast-charge {
     width: 2rem;
     background-color: $cl-c;
@@ -322,7 +328,7 @@
     margin: auto 0.2rem;
     border-radius: 3px;
   }
-
+  
   .slow-charge {
     width: 2rem;
     background-color: #fff;
@@ -331,10 +337,10 @@
     margin: auto 0.2rem;
     border-radius: 3px;
   }
-
-
+  
+  
   /* 剩余的 */
-
+  
   .icon-idle {
     background-color: #00d94a;
     color: #fff;
@@ -344,7 +350,7 @@
     margin-right: 0.2rem;
     border-radius: 3px;
   }
-
+  
   .icon-label-box>span {
     padding: 0 0.3rem;
     border: 1px solid #e3e3e3;
@@ -352,7 +358,7 @@
     font-size: 0.5rem;
     margin-right: 0.4rem;
   }
-
+  
   .station-info-2 {
     padding: 0.3rem 0.8rem 0.2rem;
     border-bottom: 1px solid #e6e6e6;
@@ -360,7 +366,7 @@
       margin-bottom: 0.1rem;
     }
   }
-
+  
   .start-charge-btn {
     height: 2rem;
     position: absolute;
@@ -370,7 +376,7 @@
     bottom: 0;
     z-index: 2;
   }
-
+  
   .balance {
     width: 3rem;
   }

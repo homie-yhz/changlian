@@ -16,7 +16,7 @@
         </div>
         <router-link tag="div" :to="{name:'chooseStationPort',params:{stationId:usualStationId}}" v-show="showUsuallyStation" class="v-fm" style="margin-right:.6rem;padding:.1rem 0;">
           <div class="">
-            <i class="icon-star"></i>
+            <i class="icon-star" style="background-size:100% 100%!important;"></i>
             <span class="fz-50 db" style="color:black;">常用</span>
           </div>
         </router-link>
@@ -38,7 +38,7 @@
                 <!-- 地址 -->
                 <p class="fw-b">{{stationInfo.stationName}}</p>
                 <!-- 允许支付方式 -->
-                <p class="icon-label-box mt-2">
+                <p class="icon-label-box" style="margin-top:.1rem;">
                   <span style="margin-right:.2rem;" v-for="payMethod in stationInfo.payMethods">{{payMethod}}</span>
                 </p>
                 <!-- 充电口情况 -->

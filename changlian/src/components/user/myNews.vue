@@ -110,7 +110,7 @@
 								if (_this.newsList.length === 0) {
 									let noDataDom = document.getElementsByClassName("no-data-text")[0];
 									let noDataMsgHtml =
-										'暂无充电记录！';
+										'暂无消息记录！';
 									noDataDom.innerHTML = noDataMsgHtml;
 								} else {
 									_this.noDataText = "没有更多数据！";

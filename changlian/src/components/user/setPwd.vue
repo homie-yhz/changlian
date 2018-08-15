@@ -30,7 +30,6 @@ import axios from "axios";
 import regExp from "../../RegExp";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/toast/style.css";
-const leftTime = 60;
 
 export default {
   data() {

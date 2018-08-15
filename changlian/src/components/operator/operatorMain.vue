@@ -38,7 +38,6 @@
 		</div>
 	</div>
 </template>
-wxdz whzd ckzhxx cz
 <script>
 	import axios from "axios";
 	import GLOBAL, {

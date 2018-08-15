@@ -5,35 +5,37 @@ import 'mint-ui/lib/message-box/style.css';
 import GLOBAL from './GLOBAL';
 import store from './store';
 
-//测试地址
+//测试 配置
 // export default {
+//     level: '2.2.1',  //版本号
 //     // env: 'UAT',
 //     env: 'test',
-//     // interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
-//     // interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
-//     // interfacePathWS: '192.168.43.202:8080/v1/api0',
+//     interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
+//     interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
+//     interfacePathWS: '192.168.43.202:8080/v1/api0',
 
-//     interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
-//     interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
-//     interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
-
-//     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
+//     //测试地址
+//     // interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
+//     // interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
+//     // interfacePathWS: 'test.hebchanglian.com.cn:8080/v1/api0',
+//     // appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',
 //     //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
-//     level: '2.2.1',
-    // appId:'wx1dfdc1b4affcd19d'
+//     leftTime:60,   //倒计时时间
+//     appId:'wx1dfdc1b4affcd19d'
 // }
 
-// 正式地址
+// 正式 配置
 export default {
-    env: 'Pro',
-    // env: 'test',
+    // env: 'Pro',
+    env: 'test',
     interfacePath: 'http://csi.hebchanglian.com.cn/v1/api0',      //正式 接口地址
     interfacePathToken: 'http://csi.hebchanglian.com.cn/v1/api1', //正式 带有Token的接口地址
     interfacePathWS: '39.106.112.119:8080/v1/api0',           //正式 websocket地址
 
     appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',    //app 地址
     appId:'wxbe2a6a0de66c0305',
-    //主页为：http://test.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
+    leftTime:60,   //倒计时时间
+    //主页为：http://csi.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
     level: '2.2.1'
 }
 

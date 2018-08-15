@@ -182,11 +182,15 @@
         });
       },
       routerToPlatform() {
-        if (!!localStorage.getItem('operatorId')) {
+        if(!localStorage.getItem('userId')){
+          MessageBox.confirm('管理员需先注册并登陆个人充电账号才可进入管理员通道,谢谢！').then(action=>{
+            this.$router.push('login');
+          });
+        }else if (!!localStorage.getItem('operatorId')) {
           this.$router.push({
             name: 'operatorCenter'
           });
-        } else {
+        }else {
           this.$router.push({
             name: 'operatorLogin'
           });

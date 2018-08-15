@@ -70,6 +70,10 @@
 				<p class="v-i1">联系我们</p>
 				<i class="icon-right"></i>
 			</a>
+			<a class="v-fm">
+				<p class="v-i1" @click="loginOut()">退出登录</p>
+				<i class="icon-right"></i>
+			</a>
 			<!-- <a @click="" class="v-fm">
 				<p class="v-i1">用户充电记录</p>
 				<i class="icon-right"></i>
@@ -80,6 +84,9 @@
 
 <script>
 	import wx from 'weixin-js-sdk';
+	import {
+		Toast,MessageBox
+	} from "mint-ui";
 	import GLOBAL, {
 		getCode
 	} from '../../GLOBAL.js';
@@ -100,6 +107,12 @@
 					success: function(res) {
 						var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
 					}
+				});
+			},
+			loginOut(){
+				MessageBox.confirm('确认退出？').then(action=>{
+					localStorage.removeItem('operatorId');
+					this.$router.replace('personalCenter');
 				});
 			}
 		},
