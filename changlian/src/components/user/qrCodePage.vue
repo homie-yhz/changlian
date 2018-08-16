@@ -2,7 +2,7 @@
 	<div>
 		<div class="v-fcm" v-if="showQRCode" style="height:100%;">
 			<div style="height:70%;text-align: center;padding: 0 1rem;">
-				<img src="../../../static/img/changlian.jpg" alt="">
+				<img :src="changlianQRCodeUrl" alt="" style="width:80%;">
 				<div style="text-align:center;font-size:1rem;">{{msg}}</div>
 			</div>
 		</div>
@@ -18,6 +18,11 @@ export default {
 		return {
 			showQRCode:false,
 			msg:''
+		}
+	},
+	computed:{
+		changlianQRCodeUrl:function(){
+			return GLOBAL.env==='test'?'../../../static/img/changlianQRCodeTest.jpg':'../../../static/img/changlianQRCode.jpg';
 		}
 	},
 	created(){

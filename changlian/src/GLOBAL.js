@@ -26,8 +26,8 @@ import store from './store';
 
 // 正式 配置
 export default {
-    // env: 'Pro',
-    env: 'test',
+    env: 'Pro',
+    // env: 'test',
     interfacePath: 'http://csi.hebchanglian.com.cn/v1/api0',      //正式 接口地址
     interfacePathToken: 'http://csi.hebchanglian.com.cn/v1/api1', //正式 带有Token的接口地址
     interfacePathWS: '39.106.112.119:8080/v1/api0',           //正式 websocket地址

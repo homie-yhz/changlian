@@ -105,6 +105,7 @@
 							if(res.code === 200){
 								Toast(res.msg);
 								_this.postData.stationId = res.body.stationId;
+								alert('点击保存获取到的stationId:'+JSON.stringify(res.body));
 							}
 							if(res.code === 501){
 
@@ -128,7 +129,7 @@
 			},
 			scanQRCode() {
 				console.log(1);
-				if (!!localStorage.getItem('registerTerminalId')) {
+				if (!!this.postData.stationId) {
 					wx.scanQRCode({
 						needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
 						scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -190,7 +191,11 @@
 
 						//注册信息回传
 						if (res.body.registerStationInfo !== null) {
-							_this.postData = res.body.registerStationInfo;
+							// _this.postData = res.body.registerStationInfo;
+							_this.postData = Object.assign({},res.body.registerStationInfo);
+							// this.obj = Object.assign({}, this.obj)
+							alert('首次加载页面获取到的信息：'+JSON.stringify(res.body.registerStationInfo));
+							alert('_this.postData',JSON.stringify(_this.postData));
 							//回传信息后将 consoleId 存起来，然后扫描端口信息并注册
 							localStorage.setItem('registerConsoleId', res.body.registerStationInfo.consoleId)
 						}
