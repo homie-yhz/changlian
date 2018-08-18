@@ -123,9 +123,9 @@
         //引到用户手动授权
 
         let localUrl = encodeURIComponent(GLOBAL.appPath + '#/checkLogin');
-//        alert(localUrl);
-        let wxLoginUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1dfdc1b4affcd19d&redirect_uri=${localUrl}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
-//        alert(wxLoginUrl);
+       alert(GLOBAL.appPath+'#/checkLogin');
+        let wxLoginUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=`+GLOBAL.appId+`&redirect_uri=${localUrl}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
+       alert(wxLoginUrl);
         window.location.href = wxLoginUrl;
       }
     }

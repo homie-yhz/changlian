@@ -25,14 +25,14 @@
 						<span style="color:#adadad;">{{level}}</span>
 					</div>
 					<p class="blank"></p>
-					<div>
+					<!-- <div>
 						<span>分享给好友</span>
 						<span class="icon-right"></span>
 					</div>
 					<div>
 						<span>加盟电话</span>
 						<a style="color:#adadad;" href="tel:400-800-8888">400-800-8888</a>
-					</div>
+					</div> -->
 				</div>
 				<div @click="loginOut()" class="btn-loginOut">
 					<div>退出登录</div>

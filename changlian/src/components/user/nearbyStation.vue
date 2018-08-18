@@ -22,11 +22,11 @@
         </router-link>
       </div>
       <!-- 搜索列表 -->
-      <tab v-if="postData.listType==='normalList'" v-model="index01" prevent-default @on-before-index-change="switchTabItem">
+      <!-- <tab v-if="postData.listType==='normalList'" v-model="index01" prevent-default @on-before-index-change="switchTabItem">
         <tab-item selected>全部</tab-item>
         <tab-item>慢充</tab-item>
         <tab-item>快充</tab-item>
-      </tab>
+      </tab> -->
     </div>
     <!-- 电站列表 -->
     <div class="scroll-box" :class="{pt1:postData.listType==='bindList',pt2:postData.listType === 'normalList'}" style="padding-bottom:2rem;">
@@ -56,7 +56,7 @@
                   <!-- 快慢充 -->
                   <div v-if="stationInfo.chargeType==='fast'" class="v-fcm fast-charge">快充</div>
                   <div v-if="stationInfo.chargeType==='slow'" class="v-fcm slow-charge">慢充</div>
-                  <div class="v-fcm" style="width:2.8rem;border-left:1px solid #e3e3e3;">
+                  <div class="v-fcm" style="width:3.8rem;border-left:1px solid #e3e3e3;">
                     <div>
                       <i class="icon-distance" style="margin-top:.2rem;"></i>
                       <!-- 据我多远 -->
@@ -136,7 +136,7 @@
         chargingNum: 0,
         showFloatCircle: false, //是否展示悬浮球。
         hasNext: true,
-        noDataText: "附近10公里范围内没有更多站点了",
+        noDataText: "没有更多站点了！",
         showUsuallyStation: false, //是否展示常用电站按钮
         showBindBtn: false,
         usualStationId:localStorage.getItem('usualStationId'),
@@ -279,7 +279,7 @@
             noDataDom.innerHTML = noDataMsgHtml;
           } else {
             let noDataDom = document.getElementsByClassName('no-data-text')[0];
-            noDataDom.innerHTML = '附近10公里范围内没有更多站点了！'
+            noDataDom.innerHTML = '没有更多站点了！'
           }
           _this.$nextTick(function() {
             _this.$refs.scrollDom.resize();
@@ -502,10 +502,10 @@
   }
   
   .pt1 {
-    padding-top: 3.5rem !important;
+    padding-top: 4rem !important;
   }
   
   .pt2 {
-    padding-top: 5.5rem !important;
+    padding-top: 4rem !important;
   }
 </style>

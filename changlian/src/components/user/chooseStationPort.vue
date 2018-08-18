@@ -55,9 +55,9 @@
               <span>运营商:</span>
               <span>{{stationDetail.operator}}</span>
             </div>
-            <div class="v-fb">
+            <!-- <div class="v-fb">
               <span>停车费用:</span><span>{{stationDetail.parkCost}}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

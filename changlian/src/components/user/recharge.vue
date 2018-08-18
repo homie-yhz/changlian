@@ -1,7 +1,7 @@
 <template>
   <!-- 充值页面 -->
   <div>
-    <header class="header-bg-fff v-fcm por">
+    <header class="header-bg-fff v-fcm por" style="z-index:3;">
       <div class="v-fcm m-auto h-100" style="width:80%">充值</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
@@ -83,7 +83,7 @@
         cardInfo: {},
         postData: {
           chargeCardId: "", //卡号
-          payMethod: "", //支付方式：微信/支付宝
+          payMethod: "wx", //支付方式：微信/支付宝
           faceValue: '', //面值
           userId: localStorage.getItem('userId') || '',
           openId: localStorage.getItem('openId') || ''
@@ -93,6 +93,7 @@
     },
     methods: {
       back() {
+        console.log('back');
         this.$router.go(-1);
       },
       //监听子组件关闭事件
@@ -125,7 +126,7 @@
             //返回703 说明没有绑定电站  无法充值，跳转绑定电站页面。
             else if (res.code === 703) {
               MessageBox.alert(res.msg).then(action => {
-                this.$route.push({
+                _this.$router.push({
                   name: 'nearbyStation',
                   params: {
                     listType: 'normalList'
@@ -146,6 +147,7 @@
       },
       // 充值接口
       rechargeInterface() {
+        let _this = this;
         let rechargeUrl = GLOBAL.interfacePathToken + '/clyun/rechargeUrl';
         // alert('发送数据：' + JSON.stringify(this.postData));
         axios
@@ -166,7 +168,11 @@
                 function(res) {
                   //                  alert(JSON.stringify(res));
                   if (res.err_msg === "get_brand_wcpay_request:ok") { // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-                    MessageBox.alert('充值成功！');
+                    MessageBox.alert('充值成功！').then(action=>{
+                      _this.$router.replace({
+                        name:'personalCenter'
+                      })
+                    });
                   } else {
                     MessageBox.alert('充值失败！');
                   }

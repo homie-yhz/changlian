@@ -7,7 +7,7 @@
       </div>
     </header>
     <!-- 选择充电方式 -->
-    <div class="scroll-box" style="padding-bottom:4.8rem;">
+    <div class="scroll-box" style="padding-bottom:2.2rem;">
       <div>
         <!-- 设备相关信息 -->
         <div class="equitment-box v-fb v-fm" style="background-color:#fff;">
@@ -21,9 +21,12 @@
         </div>
         <div class="blank"></div>
         <div class="cl-box">
-  
+          <div class="v-fb v-fm v-i1" style="height:auto;padding:0 0 .5rem;">
+            <span class="tac">余额：<span class="cl-red balance">{{userInfo.balance||'*'}} 元</span></span>
+            <a @click="recharge()" class="v-fcm btn-recharge">去充值</a>
+          </div>
           <!-- 选择充电方式模块 -->
-          <p>选择充电方式</p>
+          <p>选择充电时长</p>
           <div class="method-box">
             <div :class="{'checked':postData.chargeMethodId === method.methodId}" class="v-fcm" @click="chooseChargeMethod(method)" v-for="method in chargeMethods" :key="method.methodId">
               {{method.name}}
@@ -35,7 +38,7 @@
           </div>
   
           <!-- 收费说明块 -->
-          <p class="mt-10">收费标准说明</p>
+          <p style="margin-top:.5rem;">收费标准说明</p>
           <ul class="charge-description">
             <li v-for="chargeDescriptionItem in chargeDescripetionList">
               <p>{{chargeDescriptionItem.wRange}}</p>
@@ -46,15 +49,12 @@
       </div>
     </div>
     <!-- 余额  以及  去充值 -->
-        <div class="footer" style="position:absolute;bottom:0;width:100%;padding:0 .8rem;z-index:2;border-top: 1px solid #e3e3e3;">
-          <div class="v-fb v-fm v-i1" style="height:auto;padding:.5rem 0;">
-            <span class="tac">余额：<span class="cl-red balance">{{userInfo.balance||'*'}} 元</span></span>
-            <a @click="recharge()" class="v-fcm btn-recharge">去充值</a>
-          </div>
-          <div class="v-fcm" style="width:80%;z-index:2;margin:0 auto;padding:0 0 .5rem 0;">
-            <div @click="startCharge()" class="v-fcm btn-start-charge">开始充电</div>
-          </div>
-        </div>
+    <div class="footer v-fcm" style="position:absolute;bottom:0;width:100%;z-index:2;border-top: 1px solid #e3e3e3;">
+  
+      <div class="v-fcm" style="width:80%;z-index:2;margin: .2rem 0;">
+        <div @click="startCharge()" class="v-fcm btn-start-charge">开始充电</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -277,7 +277,7 @@
       width: 30%;
       height: 1.6rem;
       margin-right: 5%;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
       overflow: hidden;
       &:nth-child(3n) {
         margin-right: 0;
@@ -309,12 +309,11 @@
   
   // 收费说明
   .charge-description {
-    margin-bottom: 0.5rem;
     @include fw;
     li {
       width: 47.5%;
-      margin: 0.5rem 5% 0 0;
-      height: 2.5rem;
+      margin: 0.3rem 5% 0 0;
+      height: 2.3rem;
       border: 1px solid #2daeec;
       border-radius: 4px;
       background-color: #f7f7f7;

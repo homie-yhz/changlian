@@ -13,7 +13,7 @@ import store from './store';
 //     interfacePath: 'http://192.168.43.202:8080/v1/api0',   // 杰哥手机  志鸿本机
 //     interfacePathToken: 'http://192.168.43.202:8080/v1/api1',   // 带有token的接口
 //     interfacePathWS: '192.168.43.202:8080/v1/api0',
-
+//     resourcePath:'192.168.43.202:8080/mpa',  //资源地址
 //     //测试地址
 //     // interfacePath: 'http://test.hebchanglian.com.cn:8080/v1/api0',   //UAT 接口路径
 //     // interfacePathToken: 'http://test.hebchanglian.com.cn:8080/v1/api1',
@@ -32,11 +32,12 @@ export default {
     interfacePathToken: 'http://csi.hebchanglian.com.cn/v1/api1', //正式 带有Token的接口地址
     interfacePathWS: '39.106.112.119:8080/v1/api0',           //正式 websocket地址
 
-    appPath: 'http://test.hebchanglian.com.cn/mpa/index.html',    //app 地址
+    appPath: 'http://csi.hebchanglian.com.cn/mpa/index.html',    //app 地址
+    resourcePath:'http://csi.hebchanglian.com.cn/mpa',  //资源地址
     appId:'wxbe2a6a0de66c0305',
     leftTime:60,   //倒计时时间
     //主页为：http://csi.hebchanglian.com.cn/mpa/index.html#/nearbyStation/normalList
-    level: '2.2.1'
+    level: '1.0.0'
 }
 
 //判断是否有设备正在充电  模块

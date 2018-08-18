@@ -80,7 +80,6 @@
 		methods: {
 			//提交  我录入的电站信息
 			saveStationInfo() {
-				loader.show();
 				let _this = this;
 				if (!this.postData.stationName) {
 					Toast('请输入电站名称！');
@@ -95,6 +94,7 @@
 				} else if (!this.postData.longitude || !this.postData.latitude) {
 					Toast('等待定位信息！');
 				} else {
+					loader.show();
 					let saveStationInfo = GLOBAL.interfacePathToken + '/clyun/saveStationInfo';
 					axios
 						.post(saveStationInfo, this.postData)
@@ -105,6 +105,7 @@
 							if(res.code === 200){
 								Toast(res.msg);
 								_this.postData.stationId = res.body.stationId;
+								localStorage.setItem('registerConsoleId',res.body.consoleId);
 								alert('点击保存获取到的stationId:'+JSON.stringify(res.body));
 							}
 							if(res.code === 501){
@@ -174,7 +175,7 @@
 			/**
 			 * qrCodeId:  from->qrCodePage
 			 */
-			let getMyStationInfo = GLOBAL.interfacePathToken + '/clyun/getMyStationInfo?userId=' + (localStorage.getItem('userId') || 0) + '&qrCodeId=' + localStorage.getItem('qrCodeId');
+			let getMyStationInfo = GLOBAL.interfacePathToken + '/clyun/getMyStationInfo?userId=' + (localStorage.getItem('userId') || 0) + '&qrCodeId=' + localStorage.getItem('registerStationInfoQRCode');
 			console.log(getMyStationInfo);
 			axios
 				.get(getMyStationInfo)
@@ -195,9 +196,9 @@
 							_this.postData = Object.assign({},res.body.registerStationInfo);
 							// this.obj = Object.assign({}, this.obj)
 							alert('首次加载页面获取到的信息：'+JSON.stringify(res.body.registerStationInfo));
-							alert('_this.postData',JSON.stringify(_this.postData));
+							alert('_this.postData:'+JSON.stringify(_this.postData));
 							//回传信息后将 consoleId 存起来，然后扫描端口信息并注册
-							localStorage.setItem('registerConsoleId', res.body.registerStationInfo.consoleId)
+							
 						}
 					}else if(res.code === 501){
 
