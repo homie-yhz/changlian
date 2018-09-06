@@ -4,13 +4,13 @@
 			<div class="v-fm">
 				<div class="setting-message v-fm">
 					<!-- <i class="iconfont icon-lingdang"></i>
-						<div class="v-f" style="height:.8rem;">
-							<span class="icon-point-red"></span>
-						</div>
-						<span @click="routerTo('myNews','')"></span>
-						<div class="v-fcm" @click="routerTo('settings','')">
-							<i class="iconfont icon-ttpodicon" style="display:block;"></i>
-						</div> -->
+									<div class="v-f" style="height:.8rem;">
+										<span class="icon-point-red"></span>
+									</div>
+									<span @click="routerTo('myNews','')"></span>
+									<div class="v-fcm" @click="routerTo('settings','')">
+										<i class="iconfont icon-ttpodicon" style="display:block;"></i>
+									</div> -->
 				</div>
 				<div class="tac v-i1">{{operator.userName}}</div>
 				<div class="icon-scan2" @click="scanQRCode()" style="margin-left:2rem;"></div>
@@ -27,28 +27,28 @@
 				</div>
 			</div>
 			<!-- <div class="v-fcm">
-				<div class="v-fb">
-					<div style="padding:.5rem 2rem;text-align:center;">
-						<i class="icon-recharge"></i> 
-						充值
-					</div>
-					<div style="padding:.5rem 2rem;text-align:center;">
-						<i class="icon-out-money"></i> 
-						提现
-					</div>
-				</div>
-			</div> -->
+							<div class="v-fb">
+								<div style="padding:.5rem 2rem;text-align:center;">
+									<i class="icon-recharge"></i> 
+									充值
+								</div>
+								<div style="padding:.5rem 2rem;text-align:center;">
+									<i class="icon-out-money"></i> 
+									提现
+								</div>
+							</div>
+						</div> -->
 		</header>
 		<div class="center-list">
 			<!-- <a href="">您有一笔12000.0元的资金到账待确认</a> -->
 			<!-- <a @click="routerTo('rechargeLog')" class="v-fm">
-				<p class="v-i1">充值记录</p>
-				<i class="icon-right"></i>
-			</a>
-			<a @click="routerTo('chargeElecLog')" class="v-fm">
-				<p class="v-i1">提现记录</p>
-				<i class="icon-right"></i>
-			</a> -->
+							<p class="v-i1">充值记录</p>
+							<i class="icon-right"></i>
+						</a>
+						<a @click="routerTo('chargeElecLog')" class="v-fm">
+							<p class="v-i1">提现记录</p>
+							<i class="icon-right"></i>
+						</a> -->
 			<a @click="scanQRCode()" class="v-fm">
 				<p class="v-i1">维护电站</p>
 				<i class="icon-right"></i>
@@ -62,7 +62,7 @@
 				<p class="v-i1">使用帮助</p>
 				<i class="icon-right"></i>
 			</a>
-			<a  class="v-fm">
+			<a class="v-fm">
 				<p class="v-i1">版本信息</p>
 				<i class="icon-right"></i>
 			</a>
@@ -75,9 +75,9 @@
 				<i class="icon-right"></i>
 			</a>
 			<!-- <a @click="" class="v-fm">
-				<p class="v-i1">用户充电记录</p>
-				<i class="icon-right"></i>
-			</a> -->
+							<p class="v-i1">用户充电记录</p>
+							<i class="icon-right"></i>
+						</a> -->
 		</div>
 	</div>
 </template>
@@ -85,7 +85,8 @@
 <script>
 	import wx from 'weixin-js-sdk';
 	import {
-		Toast,MessageBox
+		Toast,
+		MessageBox
 	} from "mint-ui";
 	import GLOBAL, {
 		getCode
@@ -109,10 +110,19 @@
 					}
 				});
 			},
-			loginOut(){
-				MessageBox.confirm('确认退出？').then(action=>{
-					localStorage.removeItem('operatorId');
-					this.$router.replace('personalCenter');
+			loginOut() {
+				let sysLogoutUrl = GLOBAL.interfacePathToken + '/clyun/sysLogout';
+				MessageBox.confirm('确认退出？').then(action => {
+					axios.post(sysLogoutUrl,{'userId':localStorage.getItem('userId')}).then(data => {
+						console.log(data);
+						let res = data.data;
+						if (res.code === 200) {
+							localStorage.removeItem('operatorId');
+							this.$router.replace('personalCenter');
+						}else{
+							Toast(res.msg);
+						}
+					});
 				});
 			}
 		},
@@ -149,7 +159,6 @@
 						'err': err
 					});
 				});
-	
 	
 			/**获取用户权限接口，展示相关内容
 			 * roleType:  1->代理商  2->合作伙伴 
@@ -188,7 +197,7 @@
 	
 	.my-account-box {
 		margin-top: 1rem;
-		padding-bottom:1rem;
+		padding-bottom: 1rem;
 		color: #fff500;
 		.line-vertical {
 			width: 0;
@@ -203,13 +212,15 @@
 			}
 		}
 	}
-	.icon-scan3{
+	
+	.icon-scan3 {
 		display: block;
 		background: url('../../../static/img/scan-white.png') center center no-repeat;
 		background-size: 100% 100%;
 		width: 1.5rem;
 		height: 1.5rem;
-	}	
+	}
+	
 	.icon-recharge {
 		background: url('../../../static/img/money-white.png') center center no-repeat;
 		background-size: 100% 100%;

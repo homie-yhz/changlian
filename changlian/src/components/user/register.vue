@@ -133,6 +133,7 @@ export default {
           if (res.code === 200) {
             // sessionStorage.setItem("smsId", res.body.smsId);
             // _this.body.smsId = res.body.smsId;
+            console.log(GLOBAL.env);
             if(GLOBAL.env === 'test' || GLOBAL.env === 'UAT'){
               alert("验证码" + res.body.code);
             }
@@ -145,7 +146,7 @@ export default {
           loader.hide();
           console.log({
             url: getIndentifyCodeUrl,
-            err: JSON.stringify(err)
+            err: err
           });
         });
     }

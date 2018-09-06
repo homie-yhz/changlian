@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="header-poa-white v-fcm por">
+    <header class="header-poa v-fcm por">
       <div class="v-fcm m-auto h-100" style="width:80%">登录</div>
       <div @click="back()" class="poa lt-0 v-fcm h-100" style="width:10%;">
         <span class="arrow-back"></span>
@@ -16,7 +16,7 @@
           </div>
         </div>
         <!-- 登录输入框 -->
-        <div style="width:85%;" class="m-auto login-box">
+        <div style="width:85%;margin-bottom:2rem;" class="m-auto login-box">
           <input type="text" v-model="body.phone" placeholder="手机号" maxlength="11" style="margin-bottom:3px;">
           <input type="password" v-model="body.pwd" placeholder="密码" maxlength="16">
           <p class="v-fb register-or-backpwd">

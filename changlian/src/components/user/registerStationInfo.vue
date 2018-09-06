@@ -106,7 +106,7 @@
 								Toast(res.msg);
 								_this.postData.stationId = res.body.stationId;
 								localStorage.setItem('registerConsoleId',res.body.consoleId);
-								alert('点击保存获取到的stationId:'+JSON.stringify(res.body));
+								// alert('点击保存获取到的stationId:'+JSON.stringify(res.body));
 							}
 							if(res.code === 501){
 
@@ -195,10 +195,9 @@
 							// _this.postData = res.body.registerStationInfo;
 							_this.postData = Object.assign({},res.body.registerStationInfo);
 							// this.obj = Object.assign({}, this.obj)
-							alert('首次加载页面获取到的信息：'+JSON.stringify(res.body.registerStationInfo));
-							alert('_this.postData:'+JSON.stringify(_this.postData));
+							// alert('首次加载页面获取到的信息：'+JSON.stringify(res.body.registerStationInfo));
+							// alert('_this.postData:'+JSON.stringify(_this.postData));
 							//回传信息后将 consoleId 存起来，然后扫描端口信息并注册
-							
 						}
 					}else if(res.code === 501){
 

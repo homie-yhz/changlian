@@ -110,7 +110,7 @@
       console.log("0" + this.paySuccessState);
       let _this = this;
       // 获取充电信息
-      let chargeLog = GLOBAL.interfacePath + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + sessionStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
+      let chargeLog = GLOBAL.interfacePathToken + '/clyun/chargeLog?chargeLogId=' + sessionStorage.getItem('chargeRecordId') + '&userId=' + localStorage.getItem('userId') + '&methodId=' + sessionStorage.getItem('methodId');
       // let chargeLog = '';
       console.log('chargeLog', chargeLog);
       axios

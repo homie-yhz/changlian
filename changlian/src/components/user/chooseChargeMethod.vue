@@ -40,7 +40,7 @@
           <!-- 收费说明块 -->
           <p style="margin-top:.5rem;">收费标准说明</p>
           <ul class="charge-description">
-            <li v-for="chargeDescriptionItem in chargeDescripetionList">
+            <li v-for="chargeDescriptionItem in chargeDescripetionList" :key="chargeDescriptionItem.wRange">
               <p>{{chargeDescriptionItem.wRange}}</p>
               <p>{{chargeDescriptionItem.priceRate}}</p>
             </li>

@@ -67,7 +67,7 @@
 						.then(function(data) {
 							let res = data.data;
 							if (res.code === 200) {
-								alert('提交成功后的维护电站qrCodeId:'+JSON.stringify(res.body));
+								// alert('提交成功后的维护电站qrCodeId:'+JSON.stringify(res.body));
 								localStorage.setItem('registerStationInfoQRCode',res.body.qrCodeId);
 								MessageBox.alert('提交成功！').then(action => {
 									_this.$router.replace({
@@ -122,14 +122,14 @@
 		created() {
 			let _this = this;
 			let getMyTerminalInfoUrl = GLOBAL.interfacePathToken + '/clyun/getMyTerminalInfo?userId=' + (localStorage.getItem('userId') || '') + '&consoleId=' + (localStorage.getItem('registerConsoleId')||'') + '&qrCodeId=' + localStorage.getItem('registerTerminalInfoQRCode');
-			alert('registerTerminalInfoUrl'+getMyTerminalInfoUrl);
+			// alert('registerTerminalInfoUrl'+getMyTerminalInfoUrl);
 			axios
 				.get(getMyTerminalInfoUrl)
 				.then(function(data) {
 					let res = data.data;
 					console.log('|返回数据|', res);
 					if (res.code === 200) {
-						alert(JSON.stringify(res.body));
+						// alert(JSON.stringify(res.body));
 						_this.stationList = _this.stationList.concat(res.body.consoleList);
 						_this.terminalList = _this.terminalList.concat(res.body.terminalList);
 						console.log(_this.stationList);

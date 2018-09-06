@@ -71,6 +71,7 @@
   background: url('../../static/img/bolt-black.png') center center no-repeat;
   background-size:100% 100%;
   display: block;
+  margin:.1rem auto 0;
 }
 /* 扫一扫 */
 .icon-scan {
